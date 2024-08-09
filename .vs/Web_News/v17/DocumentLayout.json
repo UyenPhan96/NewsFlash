@@ -1,0 +1,133 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\TTNN\\Web_News\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|d:\\ttnn\\web_news\\web_news\\areas\\admin\\views\\shared\\_layoutadmin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|solutionrelative:web_news\\areas\\admin\\views\\shared\\_layoutadmin.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|d:\\ttnn\\web_news\\web_news\\areas\\admin\\views\\homeadmin\\homepage.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|solutionrelative:web_news\\areas\\admin\\views\\homeadmin\\homepage.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|d:\\ttnn\\web_news\\web_news\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|solutionrelative:web_news\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|d:\\ttnn\\web_news\\web_news\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|solutionrelative:web_news\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|d:\\ttnn\\web_news\\web_news\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|solutionrelative:web_news\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|d:\\ttnn\\web_news\\web_news\\areas\\admin\\controllers\\homeadmincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|solutionrelative:web_news\\areas\\admin\\controllers\\homeadmincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|d:\\ttnn\\web_news\\web_news\\areas\\admin\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{09BD9DB3-21F0-4555-8E13-3EB4BD843A91}|Web_News\\Web_News.csproj|solutionrelative:web_news\\areas\\admin\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\TTNN\\Web_News\\Web_News\\appsettings.json",
+              "RelativeDocumentMoniker": "Web_News\\appsettings.json",
+              "ToolTip": "D:\\TTNN\\Web_News\\Web_News\\appsettings.json",
+              "RelativeToolTip": "Web_News\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAADAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-08-07T07:18:36.644Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "D:\\TTNN\\Web_News\\Web_News\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Web_News\\Controllers\\HomeController.cs",
+              "ToolTip": "D:\\TTNN\\Web_News\\Web_News\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Web_News\\Controllers\\HomeController.cs",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAQwBgAAAAfAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-07T04:57:54.016Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\TTNN\\Web_News\\Web_News\\Program.cs",
+              "RelativeDocumentMoniker": "Web_News\\Program.cs",
+              "ToolTip": "D:\\TTNN\\Web_News\\Web_News\\Program.cs",
+              "RelativeToolTip": "Web_News\\Program.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAABEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-06T07:26:20.758Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_LayoutAdmin.cshtml",
+              "DocumentMoniker": "D:\\TTNN\\Web_News\\Web_News\\Areas\\Admin\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "RelativeDocumentMoniker": "Web_News\\Areas\\Admin\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "ToolTip": "D:\\TTNN\\Web_News\\Web_News\\Areas\\Admin\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "RelativeToolTip": "Web_News\\Areas\\Admin\\Views\\Shared\\_LayoutAdmin.cshtml",
+              "ViewState": "AQIAAAoAAAAAAAAAAAAAABMAAAAHAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-08-06T07:24:51.392Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "_ViewStart.cshtml",
+              "DocumentMoniker": "D:\\TTNN\\Web_News\\Web_News\\Areas\\Admin\\Views\\_ViewStart.cshtml",
+              "RelativeDocumentMoniker": "Web_News\\Areas\\Admin\\Views\\_ViewStart.cshtml",
+              "ToolTip": "D:\\TTNN\\Web_News\\Web_News\\Areas\\Admin\\Views\\_ViewStart.cshtml",
+              "RelativeToolTip": "Web_News\\Areas\\Admin\\Views\\_ViewStart.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-08-06T07:24:24.087Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HomePage.cshtml",
+              "DocumentMoniker": "D:\\TTNN\\Web_News\\Web_News\\Areas\\Admin\\Views\\HomeAdmin\\HomePage.cshtml",
+              "RelativeDocumentMoniker": "Web_News\\Areas\\Admin\\Views\\HomeAdmin\\HomePage.cshtml",
+              "ToolTip": "D:\\TTNN\\Web_News\\Web_News\\Areas\\Admin\\Views\\HomeAdmin\\HomePage.cshtml",
+              "RelativeToolTip": "Web_News\\Areas\\Admin\\Views\\HomeAdmin\\HomePage.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-08-06T07:23:49.939Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HomeAdminController.cs",
+              "DocumentMoniker": "D:\\TTNN\\Web_News\\Web_News\\Areas\\Admin\\Controllers\\HomeAdminController.cs",
+              "RelativeDocumentMoniker": "Web_News\\Areas\\Admin\\Controllers\\HomeAdminController.cs",
+              "ToolTip": "D:\\TTNN\\Web_News\\Web_News\\Areas\\Admin\\Controllers\\HomeAdminController.cs",
+              "RelativeToolTip": "Web_News\\Areas\\Admin\\Controllers\\HomeAdminController.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAAQAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-06T07:23:11.759Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
