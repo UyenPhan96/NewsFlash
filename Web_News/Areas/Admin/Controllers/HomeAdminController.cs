@@ -7,7 +7,7 @@ namespace Web_News.Areas.Admin.Controllers
     {
         public IActionResult HomePage()
         {
-            //yyy
+            
             return View();
         }
     }
