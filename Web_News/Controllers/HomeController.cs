@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Web_News.Models;
@@ -17,7 +18,7 @@ namespace Web_News.Controllers
         {
             return View();
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Privacy()
         {
             return View();

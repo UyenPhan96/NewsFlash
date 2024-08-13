@@ -617,6 +617,10 @@
       "PackagePath": "staticwebassets\\LayoutPage\\styles.css"
     },
     {
+      "Id": "D:\\TTNN\\Web_News\\Web_News\\wwwroot\\css\\StyleLogin.css",
+      "PackagePath": "staticwebassets\\css\\StyleLogin.css"
+    },
+    {
       "Id": "D:\\TTNN\\Web_News\\Web_News\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
