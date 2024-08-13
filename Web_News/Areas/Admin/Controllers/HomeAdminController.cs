@@ -11,6 +11,7 @@ namespace Web_News.Areas.Admin.Controllers
         
         public IActionResult HomePage()
         {
+            // jjj
             return View();
         }
     }
