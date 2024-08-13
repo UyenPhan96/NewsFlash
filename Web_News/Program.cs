@@ -5,6 +5,7 @@ using Web_News.Services.Account;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddHttpContextAccessor();
@@ -25,6 +26,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Account/Login";               // Đường dẫn đến trang đăng nhập
         options.AccessDeniedPath = "/Account/AccessDenied"; // Đường dẫn đến trang từ chối truy cập
     });
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
