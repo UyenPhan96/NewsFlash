@@ -6,11 +6,27 @@ using Web_News.Services.Account;
 var builder = WebApplication.CreateBuilder(args);
 
 
+builder.Services.AddScoped<IAccountService, AccountService>();
 
-
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContextConnection")));
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// Đăng ký các dịch vụ xác thực và quyền hạn
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";               // Đường dẫn đến trang đăng nhập
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Đường dẫn đến trang từ chối truy cập
+    });
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

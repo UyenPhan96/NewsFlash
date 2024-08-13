@@ -1,0 +1,23 @@
+﻿@model Web_News.ViewModels.LoginViewModel
+
+<!-- Form đăng nhập -->
+<form asp-action="Login" method="post">
+    <div class="form-group">
+        <label asp-for="UsernameOrEmail"></label>
+        <input asp-for="UsernameOrEmail" class="form-control" placeholder="Username or Email" />
+        <span asp-validation-for="UsernameOrEmail" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+<!-- Nút đăng nhập bằng Google -->
+<div class="d-flex justify-content-center my-3">
+    <a href="#" class="btn btn-danger w-100 disabled">
+        Đăng nhập bằng Google
+    </a>
+</div>
