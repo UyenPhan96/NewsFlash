@@ -1,23 +1,38 @@
 ﻿@model Web_News.ViewModels.LoginViewModel
 
+
+<!-- Hiển thị lỗi chung -->
+@if (ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger">
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    </div>
+}
 <!-- Form đăng nhập -->
 <form asp-action="Login" method="post">
     <div class="form-group">
-        <label asp-for="UsernameOrEmail"></label>
-        <input asp-for="UsernameOrEmail" class="form-control" placeholder="Username or Email" />
+        <label asp-for="UsernameOrEmail">Tên đăng nhập</label>
+        <input asp-for="UsernameOrEmail" class="form-control" placeholder="Nhập địa chỉ email" />
         <span asp-validation-for="UsernameOrEmail" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+        <label asp-for="Password">Mật khẩu</label>
+        <input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
 </form>
 
-<!-- Nút đăng nhập bằng Google -->
+<div class="text-center mt-3">
+    <p>Chưa có tài khoản? <a asp-controller="Account" asp-action="Register">Đăng ký ngay</a></p>
+    <p> <a asp-controller="" asp-action="">Quên mật khẩu</a></p>
+</div>
+
+
 <div class="d-flex justify-content-center my-3">
     <a href="#" class="btn btn-danger w-100 disabled">
         Đăng nhập bằng Google
     </a>
 </div>
+
+

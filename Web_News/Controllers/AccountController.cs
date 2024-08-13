@@ -42,8 +42,8 @@ namespace Web_News.Controllers
                     }
                 }
 
-                // Đăng nhập thất bại
-                ModelState.AddModelError(string.Empty, "Invalid username or password.");
+                // Đăng nhập thất bại - Thông báo "Tài khoản hoặc mật khẩu sai"
+                ModelState.AddModelError(string.Empty, "Tài khoản hoặc mật khẩu sai.");
             }
 
             return View(model);
@@ -63,7 +63,6 @@ namespace Web_News.Controllers
             return View();
         }
 
-        // POST: Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -95,12 +94,13 @@ namespace Web_News.Controllers
 
             if (!success)
             {
-                ModelState.AddModelError(string.Empty, "Username already exists.");
+                ModelState.AddModelError(string.Empty, "Mật khẩu phải có ít nhất 8 chữ cái, bao gồm chữ hoa, chữ thường, số");
                 return View(model);
             }
 
             return RedirectToAction("Login");
         }
+
 
 
         // Hỗ trợ kiểm tra định dạng email
