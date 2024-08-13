@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Web_News.Models;
+using Web_News.Services.PasswordH;
+using System.Text.RegularExpressions;
 
 namespace Web_News.Services.Account
 {
@@ -23,34 +25,39 @@ namespace Web_News.Services.Account
             }
 
             var user = _context.Users
-                .SingleOrDefault(u => (u.UserName == usernameOrEmail || u.Email == usernameOrEmail) && u.Password == password);
+                .SingleOrDefault(u => (u.UserName == usernameOrEmail || u.Email == usernameOrEmail));
 
             if (user != null)
             {
-                // Lấy vai trò của người dùng
-                var roles = _context.UserRoles
-                    .Where(ur => ur.UserId == user.UserID)
-                    .Select(ur => _context.Roles.FirstOrDefault(r => r.RoleID == ur.RoleId).NameRole)
-                    .ToList();
-
-                var claims = new List<Claim>
+                    // Kiểm tra mật khẩu
+                if (PasswordHasher.VerifyPassword(user.Password, password))
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),  
-                    new Claim(ClaimTypes.Email, user.Email)
-                };
-                claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+                    // Lấy vai trò của người dùng
+                    var roles = _context.UserRoles
+                        .Where(ur => ur.UserId == user.UserID)
+                        .Select(ur => _context.Roles.FirstOrDefault(r => r.RoleID == ur.RoleId).NameRole)
+                        .ToList();
 
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var principal = new ClaimsPrincipal(identity);
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.Email, user.Email)
+                    };
+                    claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-                // Đăng nhập vào hệ thống
-                await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
 
-                return (user, roles);
+                    // Đăng nhập vào hệ thống
+                    await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                    return (user, roles);
+                }
             }
 
             return (null, new List<string>());
         }
+
 
 
 
@@ -62,6 +69,16 @@ namespace Web_News.Services.Account
             {
                 return false;
             }
+
+            // Kiểm tra độ mạnh của mật khẩu
+            if (!IsValidPassword(user.Password))
+            {
+                // Nếu mật khẩu không đạt yêu cầu, trả về false hoặc thông báo lỗi
+                return false;
+            }
+
+            // Mã hóa mật khẩu
+            user.Password = PasswordHasher.HashPassword(user.Password);
 
             // Thêm người dùng mới
             _context.Users.Add(user);
@@ -76,12 +93,18 @@ namespace Web_News.Services.Account
             _context.UserRoles.Add(userRole);
             await _context.SaveChangesAsync();
 
-       
-
             return true;
         }
 
+        private bool IsValidPassword(string password)
+        {
+            // Biểu thức chính quy kiểm tra mật khẩu có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số
+            var regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$");
+            return regex.IsMatch(password);
+        }
 
+
+        // Đăng xuất , xóa đi phần Session Cookie
         public async Task Logout()
         {
             if (_httpContextAccessor != null)

@@ -5,6 +5,7 @@ namespace Web_News.ViewModels
     public class LoginViewModel
     {
         [Required]
+        [EmailAddress]
         [Display(Name = "Username or Email")]
         public string UsernameOrEmail { get; set; }
 
