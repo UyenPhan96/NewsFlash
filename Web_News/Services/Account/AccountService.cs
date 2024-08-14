@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Web_News.Models;
 using Web_News.Services.PasswordH;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web_News.Services.Account
 {
@@ -17,6 +18,30 @@ namespace Web_News.Services.Account
             _httpContextAccessor = httpContextAccessor;
         }
 
+
+
+        // Kiểm tra Tên đăng nhập có tồn tại chưa
+        public async Task<bool> UserNameExistsAsync(string username)
+        {
+            return await _context.Users.AnyAsync(u => u.UserName == username);
+        }
+
+        // Kiểm tra Email đã tồn tại chưa
+        public async Task<bool> EmailExistsAsync(string email)
+        {
+            return await _context.Users.AnyAsync(u => u.Email == email);
+        }
+        // Phần Kiểm tra mật khẩu
+        private bool IsValidPassword(string password)
+        {
+           
+            var regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$");
+            return regex.IsMatch(password);
+        }
+
+
+
+        // Phần đăng Nhập
         public async Task<(User? user, List<string> roles)> LoginAsync(string usernameOrEmail, string password)
         {
             if (string.IsNullOrEmpty(usernameOrEmail) || string.IsNullOrEmpty(password))
@@ -62,18 +87,25 @@ namespace Web_News.Services.Account
 
 
 
-
+        // Phần đăng Ký
         public async Task<bool> RegisterAsync(User user, string role)
         {
+            // Kiểm tra xem tên người dùng đã tồn tại chưa
             if (_context.Users.Any(u => u.UserName == user.UserName))
             {
-                return false;
+                return false; 
+            }
+
+            // Kiểm tra xem email đã tồn tại chưa
+            if (_context.Users.Any(u => u.Email == user.Email))
+            {
+                return false; 
             }
 
             // Kiểm tra độ mạnh của mật khẩu
             if (!IsValidPassword(user.Password))
             {
-                // Nếu mật khẩu không đạt yêu cầu, trả về false hoặc thông báo lỗi
+               
                 return false;
             }
 
@@ -96,12 +128,7 @@ namespace Web_News.Services.Account
             return true;
         }
 
-        private bool IsValidPassword(string password)
-        {
-            // Biểu thức chính quy kiểm tra mật khẩu có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số
-            var regex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$");
-            return regex.IsMatch(password);
-        }
+      
 
 
         // Đăng xuất , xóa đi phần Session Cookie
