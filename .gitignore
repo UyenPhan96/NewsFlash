@@ -6,3 +6,6 @@
 .vs/
 obj/
 bin/
+/Web_News/obj/
+/Web_News/bin/
+/.vs/
