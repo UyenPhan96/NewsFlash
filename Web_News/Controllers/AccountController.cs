@@ -21,7 +21,7 @@ namespace Web_News.Controllers
             return View();
         }
 
-        // POST: Account/Login
+
         [HttpPost]
    
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -75,26 +75,40 @@ namespace Web_News.Controllers
             // Kiểm tra xem email có hợp lệ không
             if (!IsValidEmail(model.Email))
             {
-                ModelState.AddModelError(nameof(model.Email), "Invalid email format.");
+                ModelState.AddModelError(nameof(model.Email), "Định dạng mail không hợp lệ.");
                 return View(model);
             }
-
+            // Kiểm tra xem mật khẩu và mật khẩu xác nhận có khớp không
+            if (model.Password != model.ConfirmPassword)
+            {
+                ModelState.AddModelError(nameof(model.ConfirmPassword), "Mật khẩu  không khớp.");
+                return View(model);
+            }
             var user = new User
             {
-                Name = model.Name,
-                Address = model.Address,
+                Name = model.Name,        
                 Email = model.Email,
-                Phone = model.Phone,
                 UserName = model.Username,
                 Password = model.Password,
                 RegistrationDate = DateTime.Now
             };
 
             var success = await _accountSV.RegisterAsync(user, "User");
+            if (await _accountSV.UserNameExistsAsync(user.UserName))
+            {
+                ModelState.AddModelError(nameof(model.Username), "Tên người dùng đã tồn tại.");
+                return View(model);
+            }
+
+            if (await _accountSV.EmailExistsAsync(user.Email))
+            {
+                ModelState.AddModelError(nameof(model.Email), "Email đã tồn tại.");
+                return View(model);
+            }
 
             if (!success)
             {
-                ModelState.AddModelError(string.Empty, "Mật khẩu phải có ít nhất 8 chữ cái, bao gồm chữ hoa, chữ thường, số");
+                ModelState.AddModelError(nameof(model.Password), "Mật khẩu phải có ít nhất 8 chữ cái, bao gồm chữ hoa, chữ thường, số");
                 return View(model);
             }
 
@@ -103,7 +117,7 @@ namespace Web_News.Controllers
 
 
 
-        // Hỗ trợ kiểm tra định dạng email
+        // kiểm tra định dạng email
         private bool IsValidEmail(string email)
         {
             try
