@@ -5,6 +5,8 @@ using Web_News.Models;
 using Web_News.Services.PasswordH;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
+using Web_News.Services.EmailService;
+using System.Net.Mail;
 
 namespace Web_News.Services.Account
 {
@@ -12,10 +14,12 @@ namespace Web_News.Services.Account
     {
         private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public AccountService(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+        private readonly IEmailService _emailService;
+        public AccountService(AppDbContext context, IHttpContextAccessor httpContextAccessor, IEmailService emailService)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _emailService = emailService;
         }
 
 
@@ -143,5 +147,76 @@ namespace Web_News.Services.Account
                 }
             }
         }
+
+
+        public async Task<bool> SendPasswordResetCodeAsync(string email)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+            {
+                return false; 
+            }
+
+            var resetCode = GenerateResetCode();
+            user.PasswordResetCode = resetCode;
+            user.ResetCodeExpiration = DateTime.UtcNow.AddMinutes(1); // 1 phút
+            await _context.SaveChangesAsync();
+
+            var subject = "Yêu cầu đặt lại mật khẩu";
+            var message = $@"
+            <p>Xin chào {user.Name},</p>
+            <p>Bạn đã yêu cầu đặt lại mật khẩu cho tài khoản của mình.</p>
+            <p>Mã xác nhận của bạn là:</p>
+            <div style='border: 2px solid #000; padding: 10px; text-align: center; display: inline-block; font-size: 24px; font-weight: bold;'>
+                {resetCode}
+            </div>
+            <p>Mã sẽ hết hạn sau 1 giờ.</p>
+            <p>Nếu bạn không yêu cầu điều này, hãy bỏ qua email này và mật khẩu của bạn sẽ không thay đổi.</p>
+            <p>Trân trọng,<br/>Đội ngũ hỗ trợ</p>";
+
+            try
+            {
+                await _emailService.SendEmailAsync(email, subject, message);
+                return true; // Email được gửi thành công
+            }
+            catch (SmtpFailedRecipientException)
+            {
+                return false; // Trường hợp email không hợp lệ
+            }
+            catch (Exception)
+            {
+                return false; // Các lỗi khác 
+            }
+        }
+
+
+        private string GenerateResetCode()
+        {
+            
+            return Guid.NewGuid().ToString("N").Substring(0, 6);
+        }
+
+        // Phương thức xác thực mã và đổi mật khẩu
+        public async Task<bool> ResetPasswordAsync(string resetCode, string newPassword)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.PasswordResetCode == resetCode);
+            if (user == null || user.ResetCodeExpiration < DateTime.UtcNow)
+            {
+                return false;
+            }
+
+            if (!IsValidPassword(newPassword))
+            {
+                return false;
+            }
+
+            user.Password = PasswordHasher.HashPassword(newPassword);
+            user.PasswordResetCode = null;
+            user.ResetCodeExpiration = null;
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
     }
 }

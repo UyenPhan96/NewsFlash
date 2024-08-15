@@ -35,6 +35,8 @@ namespace Web_News.Models
 
         [Required]
         public DateTime RegistrationDate { get; set; }
+        public string? PasswordResetCode { get; set; }
+        public DateTime? ResetCodeExpiration { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; }
     }

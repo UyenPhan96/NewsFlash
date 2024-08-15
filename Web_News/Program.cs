@@ -2,11 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Web_News.Models;
 using Web_News.Services.Account;
+using Web_News.Services.EmailService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddScoped<IAccountService, AccountService>();
+
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -26,6 +29,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Account/Login";               // Đường dẫn đến trang đăng nhập
         options.AccessDeniedPath = "/Account/AccessDenied"; // Đường dẫn đến trang từ chối truy cập
     });
+
 
 
 // Add services to the container.
