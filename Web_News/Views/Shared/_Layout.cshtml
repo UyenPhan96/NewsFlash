@@ -1,53 +1,199 @@
-﻿<!DOCTYPE html>
+﻿﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Web_News</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Web_News.styles.css" asp-append-version="true" />
-    <link href="~/css/stylelogin.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link href="~/layoutpage/styles.css" rel="stylesheet" />
 
+    <title>@ViewBag.title</title>
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Web_News</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+        <!-- Thanh Logo, Tìm kiếm và Đăng nhập -->
+        <header>
+            <div class="header-top">
+                <a href="/Views/trang-chu/index.html" id="logo-link">
+                    <div id="logo">
+                        <img src="~/images/logo.jpg" alt="NewFlash">
+                    </div>
+				</a>
+                <div id="date" class="date-time"></div> <!-- Phần tử để hiển thị ngày tháng -->
+                <span class="separator"></span> <!-- Phần tử phân cách -->
+
+                <div class="search-container">
+                    <form class="search-form" id="searchForm" onsubmit="performSearch(event)">
+                        <input type="text" class="search-input" id="searchInput" placeholder="Tìm kiếm...">
+                        <button type="submit" class="search-button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
                 </div>
-                <partial name="_PartialLogin" />
+                <span class="separator">|</span> <!-- Phần tử phân cách -->
+                <a href="../../Account/Login.cshtml" class="login-button">
+                    <i class="fas fa-user"></i> Đăng Nhập
+                </a>
             </div>
+        </header>
+        <!-- Thanh Menu -->
+        <nav>
+            <ul class="menu">
+                <li><a href="/Views/trang-chu/index.html"><i class="fas fa-home"></i></a></li>
+                <li class="dropdown">
+                    <a href="/Views/kinh-te/kinh-te.html" class="dropbtn">Kinh tế</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views/kinh-te/bao-hiem.html">Bảo hiểm</a></li>
+                        <li><a href="/Views/kinh-te/bat-dong-san.html">Bất động sản</a></li>
+                        <li><a href="/Views/kinh-te/doanh-nghiep.html">Doanh nghiệp</a></li>
+                        <li><a href="/Views/kinh-te/tai-chinh.html">Tài chính</a></li>
+                        <li><a href="/Views/kinh-te/thi-truong.html">Thị trường</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="/Views/the-gioi//the-gioi.html" class="dropbtn">Thế giới</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views/the-gioi/chinh-tri.html">Chính Trị</a></li>
+                        <li><a href="/Views/the-gioi/quan-su.html">Quân Sự</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="/Views/van-hoa/van-hoa.html" class="dropbtn">Văn hóa</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views/van-hoa/di-san.html">Di sản</a></li>
+                        <li><a href="/Views/van-hoa/sach.html">Sách</a></li>
+                        <li><a href="/Views/van-hoa/my-thuat-san-khau.html">Mỹ thuật - Sân khấu</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="/Views/phap-luat/phap-luat.html" class="dropbtn">Pháp luật</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views//phap-luat/an-ninh-hinh-su.html">An ninh hình sự</a></li>
+                        <li><a href="/Views/phap-luat/dieu-tra.html">Điều tra</a></li>
+                        <li><a href="/Views/phap-luat/phap-dinh.html">Pháp đình</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="/Views//giao-duc/giao-duc.html" class="dropbtn">Giáo dục</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views/giao-duc/giao-duc-4.0.html">Giáo dục 4.0</a></li>
+                        <li><a href="/Views/giao-duc/du-học.html">Du học</a></li>
+                        <li><a href="/Views/giao-duc/tuyen-sinh.html">Tuyển sinh</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="/Views/doi-song/doi-song.html" class="dropbtn">Đời sống</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views/doi-song/am-thuc.html">Ẩm thực</a></li>
+                        <li><a href="/Views/doi-song/chuyen-la.html">Chuyện lạ</a></li>
+                        <li><a href="/Views/doi-song/gia-dinh.html">Gia đình</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="/Views/giai-tri/giai-tri.html" class="dropbtn">Giải trí</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views/giai-tri/the-gioi-sao.html">Thế giới sao</a></li>
+                        <li><a href="/Views/giai-tri/thoi-trang.html">Thời trang</a></li>
+                        <li><a href="/Views/giai-tri/truyen-hinh.html">Truyền hình</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="/Views/the-thao/the-thao.html" class="dropbtn">Thể thao</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views/the-thao/bong-da.html">Bóng đá</a></li>
+                        <li><a href="/Views/the-thao/hau-truong-sao.html">Hậu trường sao</a></li>
+                        <li><a href="/Views/the-thao/the-thao-360.html">Thể thao 360</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="/Views/suc-khoe/suc-khoe.html" class="dropbtn">Sức khỏe</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views/suc-khoe/lam-dep.html">Làm đẹp</a></li>
+                        <li><a href="/Views/suc-khoe/tu-van-suc-khoe.html">Tư vấn sức khỏe</a></li>
+                        <li><a href="/Views/suc-khoe/cac-loai-benh.html">Các loại bệnh</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="/Views/cong-nghe/cong-nghe.html" class="dropbtn">Công nghệ</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views/cong-nghe/cong-nghe-moi.html">Công nghệ mới</a></li>
+                        <li><a href="/Views/cong-nghe/san-pham-moi.htm">Sản phẩm mới</a></li>
+                        <li><a href="/Views/cong-nghe/an-toan-thong-tin.html">An toàn thông tin</a></li>
+                        <li><a href="/Views/cong-nghe/chuyen-doi-so.html">Chuyển đổi số</a></li>
+                        <li><a href="/Views/cong-nghe/ha-tang-so.html">Hạ tầng số</a></li>
+                        <li><a href="/Views/cong-nghe/kinh-te-so.html">Kinh tế số</a></li>
+
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="/Views/giao-thong/giao-thong.html" class="dropbtn">Giao thông</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views/giao-thong/dang-kiem.html">Đăng kiểm</a></li>
+                        <li><a href="/Views/giao-thong/do-thi.html">Đô thị</a></li>
+                        <li><a href="/Views/giao-thong/duong-bo.html">Đường bộ</a></li>
+                        <li><a href="/Views/giao-thong/duong-sat.html">Đường sắt</a></li>
+                        <li><a href="/Views//giao-thong/duong-thuy.html">Đường thủy</a></li>
+                        <li><a href="/Views/giao-thong/hang-khong.html">Hàng không</a></li>
+                        <li><a href="/Views/giao-thong/nha-thau.html">Nhà thầu</a></li>
+                        <li><a href="/Views/giao-thong/quan-li.html">Quản lí</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="/Views/xe/xe.html" class="dropbtn">Xe</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views/xe/dien-dan.html">Diễn đàn</a></li>
+                        <li><a href="/Views/xe/tu-van.html">Tư vấn</a></li>
+                        <li><a href="/Views/xe/xe-moi.html">Xe mới</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="/Views/kham-pha/kham-pha.html" class="dropbtn">Khám phá</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Views/kham-pha/du-lich.html">Du lịch</a></li>
+                        <li><a href="/Views/kham-pha/loi-song.html">Lối sống</a></li>
+                    </ul>
+                </li>
+            </ul>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Web_News - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-main">
+                <p>&copy; 2003-2024. Toàn bộ bản quyền thuộc NewFlash</p>
+                <div class="footer-links">
+                    <a href="#">Chính sách bảo mật</a> | <a href="#">Điều khoản sử dụng</a>
+                </div>
+            </div>
+            <div class="footer-contact">
+                <h3><i class="fas fa-phone-alt"></i> Hợp tác truyền thông</h3>
+                <p><i class="fas fa-envelope"></i> Liên hệ: <a href="mailto:contact@newflash.com">contact@newflash.com</a></p>
+                <p><i class="fas fa-phone"></i> Số điện thoại: 070 376 2255</p>
+                <p><i class="fab fa-facebook"></i> Facebook: <a href="https://www.facebook.com/NguyenLuccc/" target="_blank">NewFlash</a></p>
+            </div>
+            <div class="footer-advertising">
+                <h3><i class="fas fa-bullhorn"></i> Liên hệ quảng cáo</h3>
+                <p><i class="fas fa-envelope"></i> Liên hệ: <a href="mailto:ads@newflash.com">ads@newflash.com</a></p>
+                <p><i class="fas fa-phone"></i> Số điện thoại: 070 376 2255</p>
+                <p><i class="fab fa-facebook"></i> Facebook: <a href="https://www.facebook.com/NguyenLuccc/" target="_blank">NewFlash Ads</a></p>
+            </div>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+	<script src="~/layoutpage/scripts.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
