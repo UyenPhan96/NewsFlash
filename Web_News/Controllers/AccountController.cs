@@ -70,6 +70,12 @@ namespace Web_News.Controllers
             {
                 return View(model);
             }
+               // Kiểm tra xem định dạng email có hợp lệ không
+    if (!IsValidEmail(model.Email))
+    {
+        ModelState.AddModelError(nameof(model.Email), "Định dạng email không hợp lệ.");
+        return View(model);
+    }
 
             // Kiểm tra xem tên người dùng đã tồn tại chưa
             if (await _accountSV.UserNameExistsAsync(model.Username))
@@ -127,6 +133,59 @@ namespace Web_News.Controllers
             {
                 return false;
             }
+        }
+        // GET: Account/ForgotPassword
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        // POST: Account/ForgotPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await _accountSV.SendPasswordResetCodeAsync(model.Email);
+            if (result)
+            {
+                // Thông báo thành công hoặc chuyển hướng đến trang khác
+                return RedirectToAction("ResetPassword");
+            }
+
+            ModelState.AddModelError("", "Email không hợp lệ hoặc không tồn tại.");
+            return View(model);
+        }
+
+        // GET: Account/ResetPassword
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        // POST: Account/ResetPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await _accountSV.ResetPasswordAsync( model.ResetCode, model.NewPassword);
+            if (result)
+            {
+                // Thông báo thành công hoặc chuyển hướng đến trang đăng nhập
+                return RedirectToAction("Login");
+            }
+
+            ModelState.AddModelError("", "Mã xác nhận không hợp lệ hoặc đã hết hạn.");
+            return View(model);
         }
 
     }
