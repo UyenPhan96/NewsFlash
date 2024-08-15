@@ -62,7 +62,6 @@ namespace Web_News.Controllers
         {
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -72,39 +71,38 @@ namespace Web_News.Controllers
                 return View(model);
             }
 
-            // Kiểm tra xem email có hợp lệ không
-            if (!IsValidEmail(model.Email))
+            // Kiểm tra xem tên người dùng đã tồn tại chưa
+            if (await _accountSV.UserNameExistsAsync(model.Username))
             {
-                ModelState.AddModelError(nameof(model.Email), "Định dạng mail không hợp lệ.");
+                ModelState.AddModelError(nameof(model.Username), "Tên người dùng đã tồn tại.");
                 return View(model);
             }
+
+            // Kiểm tra xem email đã tồn tại chưa
+            if (await _accountSV.EmailExistsAsync(model.Email))
+            {
+                ModelState.AddModelError(nameof(model.Email), "Email đã tồn tại.");
+                return View(model);
+            }
+
             // Kiểm tra xem mật khẩu và mật khẩu xác nhận có khớp không
             if (model.Password != model.ConfirmPassword)
             {
-                ModelState.AddModelError(nameof(model.ConfirmPassword), "Mật khẩu  không khớp.");
+                ModelState.AddModelError(nameof(model.ConfirmPassword), "Mật khẩu không khớp.");
                 return View(model);
             }
+
             var user = new User
             {
-                Name = model.Name,        
+                Name = model.Name,
                 Email = model.Email,
                 UserName = model.Username,
                 Password = model.Password,
                 RegistrationDate = DateTime.Now
             };
 
+            // Đăng ký người dùng mới
             var success = await _accountSV.RegisterAsync(user, "User");
-            if (await _accountSV.UserNameExistsAsync(user.UserName))
-            {
-                ModelState.AddModelError(nameof(model.Username), "Tên người dùng đã tồn tại.");
-                return View(model);
-            }
-
-            if (await _accountSV.EmailExistsAsync(user.Email))
-            {
-                ModelState.AddModelError(nameof(model.Email), "Email đã tồn tại.");
-                return View(model);
-            }
 
             if (!success)
             {
