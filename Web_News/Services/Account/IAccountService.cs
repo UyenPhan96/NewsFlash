@@ -9,5 +9,9 @@ namespace Web_News.Services.Account
         Task Logout();
         Task<bool> UserNameExistsAsync(string username);
         Task<bool> EmailExistsAsync(string email);
+
+        // Thêm các phương thức cho tính năng quên mật khẩu
+        Task<bool> SendPasswordResetCodeAsync(string email);
+        Task<bool> ResetPasswordAsync( string resetCode, string newPassword);
     }
 }
