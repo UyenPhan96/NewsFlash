@@ -1,4 +1,36 @@
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using Web_News.Models;
+using Web_News.Services.Account;
+using Web_News.Services.EmailService;
+
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddScoped<IAccountService, AccountService>();
+
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContextConnection")));
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// Đăng ký các dịch vụ xác thực và quyền hạn
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";               // Đường dẫn đến trang đăng nhập
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Đường dẫn đến trang từ chối truy cập
+    });
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -13,11 +45,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapControllerRoute(
