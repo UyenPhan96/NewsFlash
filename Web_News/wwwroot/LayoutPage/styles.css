@@ -1,147 +1,84 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    
     margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-.container {
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
+    font-size: 18px; /* K�ch th??c font ch? */
 }
 
 header {
-    background: #ffffff; /* Màu nền của header */
-    color: #040000; /* Màu chữ trong header */
-    padding: 10px 20px; /* Khoảng cách padding trong header */
-    border-bottom: #050608 3px solid; /* Đường viền dưới của header */
-    display: flex; /* Sử dụng Flexbox để căn chỉnh nội dung */
-    align-items: center; /* Căn chỉnh các mục dọc theo trục ngang */
-    justify-content: space-between; /* Phân phối không gian đều giữa các mục */
+    background: #ffffff; /* M�u n?n c?a header */
+    color: #040000; /* M�u ch? trong header */
+    border-bottom: #050608 1px solid; /* ???ng vi?n d??i c?a header */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    position: sticky; /* Giữ header cố định khi cuộn */
-    top: 0; /* Đặt vị trí cố định ở trên cùng */
-    z-index: 1000; /* Đảm bảo header luôn hiển thị trên các phần tử khác */
-    transition: background 0.3s ease, padding 0.3s ease; /* Thêm hiệu ứng chuyển tiếp */
 }
 
-header.fixed-header {
-    padding: 5px 20px; /* Thay đổi padding khi cố định */
+/* C?u h�nh cho thanh header-top */
+.header-top {
+    position: fixed; /* ??t v? tr� c? ??nh ?? gi? header ? tr�n c�ng khi cu?n trang */
+    top: 0; /* ??t ? ??nh c?a trang */
+    left: 0; /* ??t t? b�n tr�i c?a trang */
+    width: 100%; /* ??m b?o header chi?m to�n b? chi?u r?ng */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    z-index: 1000; /* ??m b?o header n?m tr�n c�c ph?n t? kh�c */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Th�m b�ng nh? ?? t?o chi?u s�u */
 }
 
-header #branding {
-    display: flex; /* Sử dụng Flexbox cho phần branding */
-    align-items: center; /* Căn chỉnh nội dung dọc theo trục ngang */
-}
+    /* C?u h�nh cho g?ch d??i c?a header-top */
+    .header-top::after {
+        content: "";
+        position: absolute;
+        bottom: 0; /* ??t g?ch d??i ? d??i c�ng c?a header */
+        left: 0%; /* Kho?ng c�ch t? b�n tr�i */
+        width: 100%; /* ?? d�i c?a g?ch d??i */
+        height: 1px; /* ?? d�y c?a g?ch d??i */
+        background: #080808; /* M�u c?a g?ch d??i */
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); /* T?o hi?u ?ng n?i cho g?ch d??i */
+    }
 
-header #branding h1 {
-    margin: 0; /* Loại bỏ margin */
-    font-size: 25px; /* Kích thước font chữ của tiêu đề */
-    letter-spacing: 1px; /* Khoảng cách giữa các chữ cái */
-    font-family: inherit; /* Kế thừa font-family từ phần tử cha (header) */
-}
 
-nav {
-    display: flex; /* Sử dụng Flexbox cho phần điều hướng */
-    align-items: center; /* Căn chỉnh các mục dọc theo trục ngang */
-    font-family: inherit; /* Kế thừa font-family từ phần tử cha (header) */
-}
-
-nav ul {
-    margin: 0; /* Loại bỏ margin */
-    padding: 0; /* Loại bỏ padding */
-    list-style: none; /* Loại bỏ dấu chấm của danh sách */
-    display: flex; /* Sử dụng Flexbox để sắp xếp các mục trong danh sách */
-}
-
-nav ul li {
-    margin: 0 10px; /* Khoảng cách giữa các mục trong danh sách */
- 
-}
-
-nav ul li a {
-    color: #060404; /* Màu chữ của liên kết trong menu */
-    text-decoration: none; /* Loại bỏ gạch chân của liên kết */
-    text-transform: uppercase; /* Chuyển đổi chữ thành chữ hoa */
-    font-size: 18px; /* Kích thước font chữ của liên kết */
-    font-family: inherit; /* Kế thừa font-family từ phần tử cha (nav) */
-    transition: color 0.3s ease, transform 0.3s ease; /* Thêm hiệu ứng chuyển tiếp cho màu chữ và hiệu ứng phóng to */
-}
-
-header a:hover {
-    text-decoration: underline; /* Gạch chân liên kết khi di chuột qua */
-    color: #000000; /* Màu chữ khi di chuột qua */
-    transform: scale(1.1); /* Hiệu ứng phóng to khi di chuột qua */
-}
-
-nav ul li .dropdown-menu {
-    display: none; /* Ẩn menu con */
-    position: absolute; /* Định vị tuyệt đối so với mục chính */
-    top: 100%; /* Đặt menu con dưới mục chính */
-    left: 100; /* Canh trái so với mục chính */
-    background: #fff; /* Màu nền của menu con */
-    padding: 0; /* Loại bỏ padding */
-    list-style: none; /* Loại bỏ dấu chấm của danh sách */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Thêm hiệu ứng bóng cho menu con */
-    z-index: 1000; /* Đảm bảo menu con hiển thị trên các phần tử khác */
-}
-
-nav ul li .dropdown-menu a {
-    padding: 10px 20px; /* Thêm padding cho các mục trong menu con */
-    display: block; /* Hiển thị dưới dạng khối */
-    color: #333; /* Màu chữ của liên kết trong menu con */
-    text-transform: none; /* Không chuyển đổi chữ thành chữ hoa */
-    font-size: 16px; /* Kích thước font chữ của liên kết trong menu con */
-    text-decoration: none; /* Loại bỏ gạch chân của liên kết */
-}
-
-nav ul li:hover .dropdown-menu,
-nav ul li .dropdown-m.economic-menu {
-    display: block; /* Hiển thị menu con */
+#logo {
+    transform: translate(255px, 10px); /* Di chuy?n logo 20px sang ph?i v� 10px xu?ng d??i */
 }
 
 
+#logo {
+    display: flex;
+    align-items: center; /* C?n gi?a logo theo chi?u d?c */
+}
+
+    #logo img {
+        max-width: 200px; /* ??t k�ch th??c t?i ?a chi?u r?ng */
+        max-height: 50px; /* ??t k�ch th??c t?i ?a chi?u cao */
+        width: auto; /* T? ??ng ?i?u ch?nh chi?u r?ng ?? gi? t? l? khung h�nh */
+        height: auto; /* T? ??ng ?i?u ch?nh chi?u cao ?? gi? t? l? khung h�nh */
+    }
 
 .search-container {
-    text-align: center;
-    margin: 20px 0;
+    display: flex;
+    align-items: center; /* C?n gi?a c�c ph?n t? d?c theo tr?c ngang */
+    margin-left: 1600px; /* ??y ph?n t? v? ph�a b�n ph?i */
 }
 
 .search-form {
     display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .search-input {
     padding: 8px;
-    border: none;
+    border: 1px solid #ccc;
     border-radius: 4px 0 0 4px;
-    width: 200px;
-    font-size: 16px;
 }
 
 .search-button {
     padding: 8px 16px;
-    border: none;
-    border-radius: 0 4px 4px 0;
+    border: 1px solid #0779e4;
+    border-left: none;
     background: #0779e4;
     color: #fff;
-    font-size: 16px;
     cursor: pointer;
-}
-
-.search-button:hover {
-    background: #065aa1;
-}
-
-.login-container {
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
+    border-radius: 0 4px 4px 0;
 }
 
 .login-button {
@@ -153,12 +90,134 @@ nav ul li .dropdown-m.economic-menu {
     font-size: 16px;
     cursor: pointer;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin-right: 25px;
 }
 
-.login-button:hover {
-    background: #e01313;
-    color: #fff;
-    border: 1px solid #e01313;
+    .login-button:hover {
+        background: #e01313;
+        color: #fff;
+    }
+
+nav {
+    background: #ffffff; /* M�u n?n c?a thanh ?i?u h??ng */
+}
+
+.menu {
+    font-family: 'Times New Roman', serif;
+    display: flex;
+    margin: 10px;
+    padding: 6px;
+    list-style: none;
+    justify-content: center;
+    font-weight: bold;
+    position: fixed; /* ??t v? tr� c? ??nh cho menu */
+    top: 60px; /* ??t menu ngay d??i header-top */
+    left: 0; /* ??t t? b�n tr�i c?a trang */
+    width: 100%; /* ??m b?o menu chi?m to�n b? chi?u r?ng */
+    background-color: #ffffff; /* M�u n?n c?a menu */
+    z-index: 999; /* ??m b?o menu n?m d??i header-top */
+    border-bottom: 1px solid #ccc; /* ??t vi?n d??i cho menu */
+}
+
+    .menu::after {
+        content: "";
+        position: absolute;
+        bottom: 0; /* ??t g?ch d??i ? d??i c�ng c?a header */
+        left: 0%; /* Kho?ng c�ch t? b�n tr�i */
+        width: 100%; /* ?? d�i c?a g?ch d??i */
+        height: 1px; /* ?? d�y c?a g?ch d??i */
+        background: #080808; /* M�u c?a g?ch d??i */
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); /* T?o hi?u ?ng n?i cho g?ch d??i */
+    }
+    /* C?u h�nh cho c�c m?c menu */
+    .menu > li {
+        position: relative; /* ?? menu con c� th? ???c ??t ch�nh x�c */
+        margin-right: 0px;
+    }
+
+        .menu > li > a {
+            display: block;
+            padding: 15px 20px;
+            color: #000000;
+            text-decoration: none;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+            .menu > li > a::after {
+                content: '';
+                display: block;
+                width: 0;
+                height: 2px; /* ?? d�y c?a g?ch ch�n */
+                background: rgb(255, 2, 2); /* M�u c?a g?ch ch�n */
+                transition: width 0.3s ease;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+            }
+
+            .menu > li > a:hover::after {
+                width: 100%;
+            }
+
+    /* C?u h�nh cho menu con */
+    .menu ul {
+        display: none; /* ?n menu con */
+        position: absolute;
+        top: 100%; /* ??t menu con ngay d??i m?c cha */
+        left: 0;
+        background: #fffdfd;
+        min-width: 150px; /* ??t chi?u r?ng t?i thi?u c?a menu con */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Th�m b�ng nh? cho menu con */
+        z-index: 1000; /* ??m b?o menu con n?m tr�n c�c ph?n t? kh�c */
+    }
+
+    .menu li:hover > ul {
+        display: block; /* Hi?n menu con khi di chu?t qua m?c cha */
+    }
+
+    .menu ul li {
+        padding: 5px 0;
+        border-bottom: 1px solid #ffffff;
+    }
+
+        .menu ul li a {
+            color: #000;
+            text-decoration: none;
+            display: block;
+            padding: 5px 15px;
+            position: relative;
+        }
+
+            .menu ul li a::after {
+                content: '';
+                display: block;
+                width: 0;
+                height: 2px; /* ?? d�y c?a g?ch ch�n */
+                background: rgb(255, 2, 2); /* M�u c?a g?ch ch�n */
+                transition: width 0.3s ease;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+            }
+
+            .menu ul li a:hover::after {
+                width: 100%;
+            }
+
+            .menu ul li a:hover {
+                background: #ffffff;
+                color: rgb(255, 0, 0);
+            }
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
 }
 
 .main-content {
@@ -167,34 +226,36 @@ nav ul li .dropdown-m.economic-menu {
     display: flex;
     flex-direction: column;
 }
+/* Ti�u ?i?m tu?n */
 .tieudiemtuan {
-    color: #007bff; /* Màu xanh cho tiêu đề */
-    margin-bottom: 10px; /* Khoảng cách dưới tiêu đề */
+    color: #007bff;
+    margin-top: 150px;
 }
 
-/* Lưới với 1 bài viết trên cùng và 3 bài viết dưới cùng */
+
+/* L??i v?i 1 b�i vi?t tr�n c�ng v� 3 b�i vi?t d??i c�ng */
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 cột với chiều rộng bằng nhau */
-    grid-template-rows: auto auto auto; /* 3 hàng với chiều cao tự động */
-    gap: 15px; /* Khoảng cách giữa các ô lưới */
+    grid-template-columns: repeat(3, 1fr); /* 3 c?t v?i chi?u r?ng b?ng nhau */
+    grid-template-rows: auto auto auto; /* 3 h�ng v?i chi?u cao t? ??ng */
+    gap: 5px; /* Kho?ng c�ch gi?a c�c � l??i */
 }
 
-/* Bài viết lớn chiếm toàn bộ chiều rộng của hàng đầu tiên */
+/* B�i vi?t l?n chi?m to�n b? chi?u r?ng c?a h�ng ??u ti�n */
 .grid-item-large {
-    grid-column: 1 / -1; /* Chiếm toàn bộ chiều rộng của lưới */
-    grid-row: 1 / span 2; /* Chiếm 2 hàng */
+    grid-column: 1 / -1; /* Chi?m to�n b? chi?u r?ng c?a l??i */
+    grid-row: 1 / span 2; /* Chi?m 2 h�ng */
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex; /* Sử dụng flexbox để căn chỉnh các phần tử */
-    flex-direction: column; /* Sắp xếp các phần tử theo chiều dọc */
+    display: flex; /* S? d?ng flexbox ?? c?n ch?nh c�c ph?n t? */
+    flex-direction: column; /* S?p x?p c�c ph?n t? theo chi?u d?c */
 }
 
-/* Bài viết nhỏ chiếm một ô lưới */
+/* B�i vi?t nh? chi?m m?t � l??i */
 .grid-item-small {
     background: #fff;
     border: 1px solid #ddd;
@@ -204,28 +265,28 @@ nav ul li .dropdown-m.economic-menu {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-
-
-/* Phần bai viết lớn */
+/* Ph?n bai vi?t l?n */
 .article-headers img {
-    width: 50%; /* Điều chỉnh chiều rộng hình ảnh */
-    height: 500px; /* Chiều cao hình ảnh */
-    object-fit: cover; /* Đảm bảo hình ảnh không bị biến dạng */
-    margin-right: 10px; /* Khoảng cách giữa hình ảnh và nội dung tiêu đề */
+    width: 50%; /* ?i?u ch?nh chi?u r?ng h�nh ?nh */
+    height: 500px; /* Chi?u cao h�nh ?nh */
+    object-fit: cover; /* ??m b?o h�nh ?nh kh�ng b? bi?n d?ng */
+    margin-right: 10px; /* Kho?ng c�ch gi?a h�nh ?nh v� n?i dung ti�u ?? */
     border-radius: 4px;
 }
+
 .article-headers {
     display: flex;
     align-items: center;
     padding: 10px;
     background-color: #f8f9fa;
-    border-bottom: 1px solid #ddd; /* Thêm đường viền dưới phần tiêu đề */
+    border-bottom: 1px solid #ddd; /* Th�m ???ng vi?n d??i ph?n ti�u ?? */
 }
+
 .article-contents {
-    flex: 1; /* Chiếm không gian còn lại của phần tiêu đề */
-    display: flex; /* Sử dụng flexbox để căn chỉnh tiêu đề và thông tin */
-    flex-direction: column; /* Sắp xếp tiêu đề và thông tin theo chiều dọc */
-    justify-content: center; /* Căn giữa các phần tử theo chiều dọc */
+    flex: 1; /* Chi?m kh�ng gian c�n l?i c?a ph?n ti�u ?? */
+    display: flex; /* S? d?ng flexbox ?? c?n ch?nh ti�u ?? v� th�ng tin */
+    flex-direction: column; /* S?p x?p ti�u ?? v� th�ng tin theo chi?u d?c */
+    justify-content: center; /* C?n gi?a c�c ph?n t? theo chi?u d?c */
 }
 
 .article-content h3 a {
@@ -238,608 +299,518 @@ nav ul li .dropdown-m.economic-menu {
     color: #007bff;
 }
 
-/* Phần tiêu đề bài viết và hình ảnh */
+/* Ti�u ?? l?n cho b�i vi?t trong .grid-item-large */
+.grid-item-large .article-headers h3 {
+    font-size: 35px;
+}
+/* T�m t?t b�i vi?t trong .grid-item-large */
+.grid-item-large .article-summary {
+    font-size: 18px;
+    /
+}
+
+/* Ph?n ti�u ?? b�i vi?t v� h�nh ?nh */
 .article-header {
     display: flex;
-    align-items: flex-start; /* Căn chỉnh các phần tử lên trên cùng */
+    align-items: flex-start; /* C?n ch?nh c�c ph?n t? l�n tr�n c�ng */
     padding: 10px;
     background-color: #f8f9fa;
-    border-bottom: 1px solid #ddd; /* Thêm đường viền dưới phần tiêu đề */
+    border-bottom: 1px solid #ddd; /* Th�m ???ng vi?n d??i ph?n ti�u ?? */
 }
 
-.article-header img {
-    width: 50%; /* Điều chỉnh chiều rộng hình ảnh */
-    height: 200px; /* Chiều cao hình ảnh */
-    object-fit: cover; /* Đảm bảo hình ảnh không bị biến dạng */
-    margin-right: 10px; /* Khoảng cách giữa hình ảnh và nội dung tiêu đề */
-    border-radius: 4px;
-}
+    .article-header img {
+        width: 50%; /* ?i?u ch?nh chi?u r?ng h�nh ?nh */
+        height: 200px; /* Chi?u cao h�nh ?nh */
+        object-fit: cover; /* ??m b?o h�nh ?nh kh�ng b? bi?n d?ng */
+        margin-right: 10px; /* Kho?ng c�ch gi?a h�nh ?nh v� n?i dung ti�u ?? */
+        border-radius: 4px;
+    }
 
 .article-content {
-    flex: 1; /* Chiếm không gian còn lại của phần tiêu đề */
-    display: flex; /* Sử dụng flexbox để căn chỉnh tiêu đề và thông tin */
-    flex-direction: column; /* Sắp xếp tiêu đề và thông tin theo chiều dọc */
-    justify-content: center; /* Căn giữa các phần tử theo chiều dọc */
+    flex: 1; /* Chi?m kh�ng gian c�n l?i c?a ph?n ti�u ?? */
+    display: flex; /* S? d?ng flexbox ?? c?n ch?nh ti�u ?? v� th�ng tin */
+    flex-direction: column; /* S?p x?p ti�u ?? v� th�ng tin theo chi?u d?c */
+    justify-content: center; /* C?n gi?a c�c ph?n t? theo chi?u d?c */
 }
 
-.article-content h3 a {
-    color: #333;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
+    .article-content h3 a {
+        color: #333;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
 
-.article-content h3 a:hover {
-    color: #007bff;
-}
+        .article-content h3 a:hover {
+            color: #007bff;
+        }
 
 .article-meta {
     color: #777;
     font-size: 14px;
 }
 
-.date-time {
-    margin: 5px 0;
-}
-
 .article-summary {
     padding: 10px;
     color: #333;
     font-size: 16px;
-    flex: 1; /* Chiếm không gian còn lại trong phần bài viết lớn */
-}
-
-
-.comments, .tags {
-    margin-top: 20px;
-    padding: 10px;
-    background: #fff;
-}
-
-.comments h3, .tags h3 {
-    margin-top: 0;
+    flex: 1; /* Chi?m kh�ng gian c�n l?i trong ph?n b�i vi?t l?n */
 }
 
 .sidebar {
     flex: 1;
-    margin-top: 115px;
+    margin-top: 159px;
     margin-left: 30px;
     display: flex;
     flex-direction: column;
-    
 }
 
 .sidebar-section {
-    flex: center; /* Sidebar chiếm 1 phần không gian có sẵn */
+    flex: center; /* Sidebar chi?m 1 ph?n kh�ng gian c� s?n */
     padding: 20px;
     background: #fff;
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
+    transition: all 0.3s ease; /* Hi?u ?ng chuy?n ??i m??t m� */
 }
 
 
-.sidebar-section img {
-    width: 100%;
-    height: auto;
-    transition: transform 0.3s ease; /* Hiệu ứng chuyển đổi cho hình ảnh */
-}
+    .sidebar-section img {
+        width: 100%;
+        height: auto;
+        transition: transform 0.3s ease; /* Hi?u ?ng chuy?n ??i cho h�nh ?nh */
+    }
 
-.sidebar-section h2 {
-    margin-top: 0;
-    font-size: 18px;
-    color: #333;
-}
-.sidebar-section:hover {
-    background: #f0f8ff; /* Màu nền khi di chuột qua */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.8); /* Bóng đổ khi di chuột qua */
-}
-.sidebar-section:hover h2 a {
-    color: #007bff; /* Màu chữ khi di chuột qua */
-}
+    .sidebar-section h2 {
+        margin-top: 0;
+        font-size: 18px;
+        color: #333;
+    }
 
-.sidebar-section p {
-    color: #666; /* Màu văn bản nội dung */
-    transition: color 0.3s ease; /* Hiệu ứng chuyển đổi cho màu văn bản */
-}
+    .sidebar-section:hover {
+        background: #f0f8ff; /* M�u n?n khi di chu?t qua */
+        box-shadow: 0 4px 16px rgba(0,0,0,0.8); /* B�ng ?? khi di chu?t qua */
+    }
 
-.sidebar-section:hover p {
-    color: #333; /* Màu văn bản khi di chuột qua */
-}
-/* Hiệu ứng gạch chân khi di chuột qua liên kết trong tất cả các mục */
-.article a, .sidebar-section a,.news-item a {
-    color: #333;
-    text-decoration: none; /* Không gạch chân mặc định */
-}
+        .sidebar-section:hover h2 a {
+            color: #007bff; /* M�u ch? khi di chu?t qua */
+        }
 
-.article a:hover, .sidebar-section a:hover, .economic-news a:hover, .culture-news a:hover, .news-item a:hover {
-    text-decoration: underline; /* Thêm gạch chân khi di chuột qua */
-}
+    .sidebar-section p {
+        color: #666; /* M�u v?n b?n n?i dung */
+        transition: color 0.3s ease; /* Hi?u ?ng chuy?n ??i cho m�u v?n b?n */
+    }
 
-/* Nếu bạn muốn thêm hiệu ứng cho các tiêu đề của các mục trong sidebar */
-.sidebar-section h2 a {
-    color: #333;
-    text-decoration: none;
-}
+    .sidebar-section:hover p {
+        color: #333; /* M�u v?n b?n khi di chu?t qua */
+    }
+    /* Hi?u ?ng g?ch ch�n khi di chu?t qua li�n k?t trong t?t c? c�c m?c */
+    .article a, .sidebar-section a, .news-item a {
+        color: #333;
+        text-decoration: none; /* Kh�ng g?ch ch�n m?c ??nh */
+    }
 
-.sidebar-section h2 a:hover {
-    text-decoration: underline;
-}
+        .article a:hover, .sidebar-section a:hover, .economic-news a:hover, .culture-news a:hover, .news-item a:hover {
+            text-decoration: underline; /* Th�m g?ch ch�n khi di chu?t qua */
+        }
 
-/* Style cho banner dọc */
+    /* N?u b?n mu?n th�m hi?u ?ng cho c�c ti�u ?? c?a c�c m?c trong sidebar */
+    .sidebar-section h2 a {
+        color: #333;
+        text-decoration: none;
+    }
+
+        .sidebar-section h2 a:hover {
+            text-decoration: underline;
+        }
+
+/* Style cho banner d?c */
 .vertical-banner {
-    width: 100%; /* Chiều rộng banner dọc */
-    height: 600px; /* Chiều cao của banner dọc, có thể điều chỉnh */
-    background: #f4f4f4; /* Màu nền của banner */
+    width: 100%; /* Chi?u r?ng banner d?c */
+    height: 600px; /* Chi?u cao c?a banner d?c, c� th? ?i?u ch?nh */
+    background: #f4f4f4; /* M�u n?n c?a banner */
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-    border: 1px solid #ddd; /* Đường viền cho banner */
+    border: 1px solid #ddd; /* ???ng vi?n cho banner */
     position: relative;
     overflow: hidden;
 }
 
-.vertical-banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease-in-out; /* Hiệu ứng chuyển động */
-}
+    .vertical-banner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease-in-out; /* Hi?u ?ng chuy?n ??ng */
+    }
 
-.vertical-banner:hover img {
-    transform: scale(1.1); /* Hiệu ứng phóng to khi hover */
-}
+    .vertical-banner:hover img {
+        transform: scale(1.1); /* Hi?u ?ng ph�ng to khi hover */
+    }
+
+
 footer {
-    background: #333;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
+    background-color: #ffffff; /* M�u n?n c?a footer */
+    color: #000000; /* M�u ch? trong footer */
+    padding: 20px;
+    border-top: 1px solid #ddd; /* ???ng vi?n ph�a tr�n footer */
 }
 
-footer p {
-    margin: 0;
+.footer-content {
+    display: flex; /* S? d?ng Flexbox ?? chia ph?n footer */
+    justify-content: space-between; /* C?n l? ??u c�c ph?n t? trong footer */
+    align-items: flex-start; /* C?n l? c�c ph?n t? theo chi?u d?c */
+    max-width: 1200px;
+    margin: 0 auto; /* C?n gi?a n?i dung footer */
 }
 
-footer a {
-    color: #fff;
-    text-decoration: none;
+.footer-main, .footer-contact, .footer-advertising {
+    flex: 1; /* ??m b?o c�c ph?n t? chi?m b?ng nhau kh�ng gian */
+    margin: 0 10px; /* Kho?ng c�ch gi?a c�c ph?n t? */
 }
 
-footer a:hover {
-    text-decoration: underline;
-}
+    .footer-main p, .footer-contact p, .footer-advertising p {
+        margin: 5px 0;
+        font-size: 16px; /* K�ch th??c font ch? cho v?n b?n */
+    }
 
-/* Khoảng cách giữa các mục chính */
+    .footer-links a, .footer-contact a, .footer-advertising a {
+        color: #007bff; /* M�u li�n k?t */
+        text-decoration: none;
+    }
+
+        .footer-links a:hover, .footer-contact a:hover, .footer-advertising a:hover {
+            text-decoration: underline;
+        }
+
+    .footer-main h3, .footer-contact h3, .footer-advertising h3 {
+        margin-top: 0;
+        font-size: 18px; /* K�ch th??c font ch? cho ti�u ?? */
+        color: #000000; /* M�u ti�u ?? trong footer */
+    }
+
+    .footer-contact i, .footer-advertising i {
+        margin-right: 8px;
+        color: #007bff; /* M�u c?a c�c bi?u t??ng */
+    }
+
+    .footer-contact p, .footer-advertising p {
+        font-size: 14px; /* K�ch th??c font ch? cho v?n b?n trong ph?n li�n h? v� qu?ng c�o */
+    }
+
+/* Kho?ng c�ch gi?a c�c m?c ch�nh */
 h2 {
     font-size: 24px;
-    margin: 40px 0 20px; /* Khoảng cách phía trên và dưới tiêu đề */
+    margin: 20px 0 40px; /* Kho?ng c�ch ph�a tr�n v� d??i ti�u ?? */
     padding: 0;
-    border-bottom: 2px solid #ccc; /* Đường gạch chân dưới tiêu đề */
-    padding-bottom: 10px; /* Khoảng cách giữa tiêu đề và đường gạch chân */
+    border-bottom: 2px solid #ccc; /* ???ng g?ch ch�n d??i ti�u ?? */
+    padding-bottom: 10px; /* Kho?ng c�ch gi?a ti�u ?? v� ???ng g?ch ch�n */
     color: #333;
+    font-size: 18;
 }
 
+
+
+/* C� th? b?n quan t�m */
 .recommendations, .news-summary {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; /* Khoảng cách giữa các mục */
-    margin: 20px 0; /* Khoảng cách phía trên và dưới */
-    transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
+    gap: 10px; /* Kho?ng c�ch gi?a c�c m?c */
+    margin: 100px 10; /* Kho?ng c�ch ph�a tr�n v� d??i */
+    transition: all 0.3s ease; /* Hi?u ?ng chuy?n ??i m??t m� */
 }
 
 .recommendation-item, .news-summary-item {
-    flex: 1 1 calc(33.333% - 30px); /* Chiều rộng của mỗi mục (3 cột với khoảng cách) */
+    flex: 1 1 calc(33.333% - 30px); /* Chi?u r?ng c?a m?i m?c (3 c?t v?i kho?ng c�ch) */
     background: #fff;
     padding: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 8px; /* Bo tròn các góc của mục */
-    box-sizing: border-box; /* Bao gồm padding và border trong tổng chiều rộng */
+    border-radius: 8px; /* Bo tr�n c�c g�c c?a m?c */
+    box-sizing: border-box; /* Bao g?m padding v� border trong t?ng chi?u r?ng */
 }
 
-.recommendation-item img, .news-summary-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px; /* Bo tròn các góc của hình ảnh */
-    margin-bottom: 10px; /* Khoảng cách giữa hình ảnh và tiêu đề */
-    transition: transform 0.3s ease; /* Hiệu ứng chuyển đổi cho hình ảnh */
+    .recommendation-item img, .news-summary-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px; /* Bo tr�n c�c g�c c?a h�nh ?nh */
+        margin-bottom: 10px; /* Kho?ng c�ch gi?a h�nh ?nh v� ti�u ?? */
+        transition: transform 0.3s ease; /* Hi?u ?ng chuy?n ??i cho h�nh ?nh */
+    }
 
-}
+    .recommendation-item h3, .news-summary-item h3 {
+        font-size: 20px;
+        margin: 0; /* Lo?i b? margin b�n tr�n v� d??i */
+        color: #333;
+    }
 
-.recommendation-item h3, .news-summary-item h3 {
-    font-size: 16px;
-    margin: 0; /* Loại bỏ margin bên trên và dưới */
-    color: #333;
-}
+    .recommendation-item a, .news-summary-item a {
+        color: #333;
+        text-decoration: none;
+    }
 
-.recommendation-item a, .news-summary-item a {
-    color: #333;
-    text-decoration: none;
-}
+        .recommendation-item a:hover, .news-summary-item a:hover {
+            text-decoration: underline;
+            background: #f0f8ff; /* M�u n?n khi di chu?t qua */
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2); /* B�ng ?? khi di chu?t qua */
+            border-color: #007bff; /* M�u vi?n khi di chu?t qua */
+        }
 
-.recommendation-item a:hover, .news-summary-item a:hover {
-    text-decoration: underline;
-    background: #f0f8ff; /* Màu nền khi di chuột qua */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2); /* Bóng đổ khi di chuột qua */
-    border-color: #007bff; /* Màu viền khi di chuột qua */
-}
-.recommendation-item:hover img {
-    transform: scale(1.05); /* Phóng to hình ảnh khi di chuột qua */
-}
+    .recommendation-item:hover img {
+        transform: scale(1.05); /* Ph�ng to h�nh ?nh khi di chu?t qua */
+    }
 
 .recommendation-content h3 a {
-    transition: color 0.3s ease; /* Hiệu ứng chuyển đổi cho màu liên kết */
+    transition: color 0.3s ease; /* Hi?u ?ng chuy?n ??i cho m�u li�n k?t */
 }
 
 .recommendation-item:hover .recommendation-content h3 a {
-    color: #007bff; /* Màu chữ khi di chuột qua */
+    color: #007bff; /* M�u ch? khi di chu?t qua */
 }
 
 .recommendation-content p {
-    transition: color 0.3s ease; /* Hiệu ứng chuyển đổi cho màu văn bản */
+    transition: color 0.3s ease; /* Hi?u ?ng chuy?n ??i cho m�u v?n b?n */
 }
 
 .recommendation-item:hover .recommendation-content p {
-    color: #333; /* Màu văn bản khi di chuột qua */
+    color: #333; /* M�u v?n b?n khi di chu?t qua */
 }
+
+
+/*Kinh t?*/
 .economic-news {
     margin-top: 20px;
 }
 
-.economic-news .news-article {
-    margin-bottom: 20px;
-}
+    .economic-news .news-article {
+        margin-bottom: 20px;
+    }
 
-.economic-news .news-article-header img {
-    width: 100px;
-    height: auto;
-    margin-right: 15px;
-}
+    .economic-news .news-article-header img {
+        width: 100px;
+        height: auto;
+        margin-right: 15px;
+    }
 
-.economic-news .news-article-content h3 a {
-    color: #333;
-    text-decoration: none;
-}
+    .economic-news .news-article-content h3 a {
+        color: #333;
+        text-decoration: none;
+    }
 
-.economic-news .news-article-content h3 a:hover {
-    text-decoration: underline;
-}
+        .economic-news .news-article-content h3 a:hover {
+            text-decoration: underline;
+        }
+
 .culture-news {
     margin-top: 20px;
 }
 
-.culture-news .news-article {
-    margin-bottom: 10px;
+    .culture-news .news-article {
+        margin-bottom: 10px;
+    }
+
+    .culture-news .news-article-header img {
+        width: 100px;
+        height: auto;
+        margin-right: 15px;
+    }
+
+    .culture-news .news-article-content h3 a {
+        color: #333;
+        text-decoration: none;
+    }
+
+        .culture-news .news-article-content h3 a:hover {
+            text-decoration: underline;
+        }
+
+/* Tin nhanh 360 */
+.news-item {
+    max-width: 100%;
 }
 
-.culture-news .news-article-header img {
-    width: 100px;
-    height: auto;
-    margin-right: 15px;
-}
-
-.culture-news .news-article-content h3 a {
-    color: #333;
-    text-decoration: none;
-}
-
-.culture-news .news-article-content h3 a:hover {
-    text-decoration: underline;
-}
-
+    .news-item img {
+        max-height: 280px;
+        object-fit: cover;
+    }
 
 .news-360 .news-item h3 {
-    font-size: 20px; /* Tăng cỡ chữ cho tiêu đề bài viết */
+    font-size: 20px; /* T?ng c? ch? cho ti�u ?? b�i vi?t */
 }
 
 .news-360 .news-item p {
-    font-size: 18px; /* Tăng cỡ chữ cho đoạn văn bản */
+    font-size: 18px; /* T?ng c? ch? cho ?o?n v?n b?n */
 }
 
 .news-360 .news-item a {
-    font-size: 25px; /* Tăng cỡ chữ cho liên kết */
+    font-size: 25px; /* T?ng c? ch? cho li�n k?t */
 }
 
-
-
+/*FONT ?NH CHO T?T C? C�C B�I VI?T ? c�c m?c tin trong n??c > h?t*/
 .news-item {
-    flex: 1 1 calc(33.333% - 20px); /* Chiều rộng của mỗi mục (3 cột với khoảng cách) */
+    flex: 1 1 calc(33.333% - 20px); /* Chi?u r?ng c?a m?i m?c (3 c?t v?i kho?ng c�ch) */
     background: #fff;
     padding: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 8px; /* Bo tròn các góc của mục */
-    box-sizing: border-box; /* Bao gồm padding và border trong tổng chiều rộng */
-    transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
+    border-radius: 8px; /* Bo tr�n c�c g�c c?a m?c */
+    box-sizing: border-box; /* Bao g?m padding v� border trong t?ng chi?u r?ng */
+    transition: all 0.3s ease; /* Hi?u ?ng chuy?n ??i m??t m� */
 }
 
-.news-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px; /* Bo tròn các góc của hình ảnh */
-    margin-bottom: 10px; /* Khoảng cách giữa hình ảnh và tiêu đề */
-    transition: transform 0.3s ease; /* Hiệu ứng chuyển đổi cho hình ảnh */
-    max-width: 300px; /* Đặt kích thước tối đa của ảnh */
-}
+    .news-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px; /* Bo tr�n c�c g�c c?a h�nh ?nh */
+        margin-bottom: 10px; /* Kho?ng c�ch gi?a h�nh ?nh v� ti�u ?? */
+        transition: transform 0.3s ease; /* Hi?u ?ng chuy?n ??i cho h�nh ?nh */
+        max-width: 300px; /* ??t k�ch th??c t?i ?a c?a ?nh */
+    }
 
-.news-item h3 {
-    font-size: 16px;
-    margin: 0; /* Loại bỏ margin bên trên và dưới */
-    color: #333;
-}
 
-.news-item a {
-    color: #333;
-    text-decoration: none;
-}
-.news-item:hover {
-    background: #f0f8ff; /* Màu nền khi di chuột qua */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2); /* Bóng đổ khi di chuột qua */
-}
 
-.news-item:hover img {
-    transform: scale(1.05); /* Phóng to hình ảnh khi di chuột qua */
-}
+    .news-item a {
+        color: #333;
+        text-decoration: none;
+    }
+
+    .news-item:hover {
+        background: #f0f8ff; /* M�u n?n khi di chu?t qua */
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2); /* B�ng ?? khi di chu?t qua */
+    }
+
+        .news-item:hover img {
+            transform: scale(1.05); /* Ph�ng to h�nh ?nh khi di chu?t qua */
+        }
 
 .news-details h3 a {
-    transition: color 0.3s ease; /* Hiệu ứng chuyển đổi cho màu liên kết */
+    transition: color 0.3s ease; /* Hi?u ?ng chuy?n ??i cho m�u li�n k?t */
 }
 
 .news-item:hover .news-details h3 a {
-    color: #007bff; /* Màu chữ khi di chuột qua */
+    color: #007bff; /* M�u ch? khi di chu?t qua */
 }
 
 .news-details p {
-    transition: color 0.3s ease; /* Hiệu ứng chuyển đổi cho màu văn bản */
+    transition: color 0.3s ease; /* Hi?u ?ng chuy?n ??i cho m�u v?n b?n */
 }
 
 .news-item:hover .news-details p {
-    color: #333; /* Màu văn bản khi di chuột qua */
+    color: #333; /* M�u v?n b?n khi di chu?t qua */
 }
+
 .content-wrapper {
     display: flex;
     flex: 1;
-    gap: 20px; /* Điều chỉnh khoảng cách giữa nội dung chính và sidebar */
+    gap: 20px; /* ?i?u ch?nh kho?ng c�ch gi?a n?i dung ch�nh v� sidebar */
 }
-
-
-
-
-
-
-
-
-
-/* Hiệu ứng khi di chuột qua tất cả các bài viết tin */
+/* Hi?u ?ng khi di chu?t qua t?t c? c�c b�i vi?t tin */
 .news-item:hover {
-    background: #f9f9f9; /* Màu nền khi di chuột qua */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Hiệu ứng đổ bóng */
-    transform: translateY(-5px); /* Hiệu ứng nâng lên nhẹ */
-    transition: all 0.3s ease; /* Hiệu ứng chuyển tiếp */
+    background: #f9f9f9; /* M�u n?n khi di chu?t qua */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Hi?u ?ng ?? b�ng */
+    transform: translateY(-5px); /* Hi?u ?ng n�ng l�n nh? */
+    transition: all 0.3s ease; /* Hi?u ?ng chuy?n ti?p */
 }
-/* Màu sắc của liên kết trong các bài viết */
-.article a, .sidebar-section a{
-    text-decoration: none; /* Không gạch chân mặc định */
+/* M�u s?c c?a li�n k?t trong c�c b�i vi?t */
+.article a, .sidebar-section a {
+    text-decoration: none; /* Kh�ng g?ch ch�n m?c ??nh */
 }
 
-
-
-
-
-
-/* Hiệu ứng cho các tiêu đề của các bài viết trong mục tin tức kinh tế và văn hóa */
+/* Hi?u ?ng cho c�c ti�u ?? c?a c�c b�i vi?t trong m?c tin t?c kinh t? v� v?n h�a */
 .economic-news .news-article-content h3 a, .culture-news .news-article-content h3 a {
     color: #333;
     text-decoration: none;
 }
 
-.economic-news .news-article-content h3 a:hover, .culture-news .news-article-content h3 a:hover {
-    text-decoration: underline;
-}
-   /* Style cho banner quảng cáo */
-   .advertisement-banner {
-    background-color: #f8f8f8;
-    text-align: center;
-    padding: 10px 0;
-    border-bottom: 2px solid #ddd; /* Đường viền dưới banner */
-    overflow: hidden; /* Ẩn phần hình ảnh bị tràn ra ngoài */
-}
+    .economic-news .news-article-content h3 a:hover, .culture-news .news-article-content h3 a:hover {
+        text-decoration: underline;
+    }
 
-.advertisement-banner img {
-    width: 1775px; /* Đặt chiều rộng cố định cho banner */
-    height: 300px; /* Đặt chiều cao cố định cho banner */
-    object-fit: cover; /* Đảm bảo hình ảnh không bị kéo dãn */
-    transition: transform 0.5s ease-in-out; /* Thay đổi thuộc tính transform với hiệu ứng chuyển động */
-}
-
-.advertisement-banner:hover img {
-    transform: scale(1.1); /* Phóng to hình ảnh */
-}
-
-.tieudiemtuan,.recommendations,.news-360,.national-news,.international-news,.economic-news,.culture-news,.sports-news,.health-news,.tech-news,.press-news{
+/*??nh d?ng m�u ch? v� ki?u hi?n th? c?a c�c ti�u ?? v� li�n k?t trong c�c ph?n tin t?c*/
+.tieudiemtuan, .recommendations, .news-360, .national-news, .international-news, .economic-news, .culture-news, .sports-news, .health-news, .tech-news, .press-news {
     color: #000000;
-    margin-bottom: 10px; /* Khoảng cách dưới tiêu đề */
+    margin-bottom: 10px; /* Kho?ng c�ch d??i ti�u ?? */
 }
 
-
-.news-item{
+.news-item {
     color: #000000;
 }
 
 h2 a {
     color: black;
-    text-decoration: none; /* Loại bỏ gạch chân nếu cần */
+    text-decoration: none; /* Lo?i b? g?ch ch�n n?u c?n */
 }
 
-h2 a:hover {
-    text-decoration: underline; /* Tùy chọn: Thêm gạch chân khi hover nếu muốn */
-}
+    h2 a:hover {
+        text-decoration: underline; /* T�y ch?n: Th�m g?ch ch�n khi hover n?u mu?n */
+    }
 
-/* Tiêu đề các bài viết */
-.economic-news-item h2 a {
-    font-size: 20px; /* Tăng kích thước font cho tiêu đề bài viết */
-}
+/* ??t kho?ng c�ch tr�n cho ph?n tin t?c */
 
-/* Nội dung các bài viết */
-.economic-news-item p {
-    font-size: 16px; /* Tăng kích thước font cho đoạn văn bản nội dung */
-}
-
-/* Ngày đăng bài viết */
-.economic-news-item .date-time {
-    font-size: 18px; /* Tăng kích thước font cho ngày đăng */
-}
-
-/* Tiêu đề thanh menu */
-.economic-menu ul li a {
-    font-size: 18px; /* Tăng kích thước font cho tiêu đề menu */
-}
-
-/* Tiêu đề lớn cho bài viết trong .grid-item-large */
-.grid-item-large .article-headers h3 {
-    font-size: 35px; /* Tăng kích thước font cho tiêu đề bài viết lớn */
-}
-/* Tóm tắt bài viết trong .grid-item-large */
-.grid-item-large .article-summary {
-    font-size: 18px; /* Tăng kích thước font cho tóm tắt bài viết lớn */
-}
-
-
-
-
-
-
-
-/* Tin nhanh 360 */
-.news-360 {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin: 20px 0;
-}
-.news-item {
-    flex: 1 1 calc(33.333% - 20px);
-    background: #fff;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    box-sizing: border-box;
-}
-.news-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-.news-item h3 {
-    font-size: 16px;
-    margin: 0 0 10px;
-    color: #333;
-}
-.news-summary {
-    font-size: 14px;
-}
-.news-summary .date-time {
-    color: #777;
-}
-.news-summary p {
-    margin: 0;
-}
-.news-item a {
-    color: #333;
-    text-decoration: none;
-}
-.news-item a:hover {
-    text-decoration: underline;
-}
-
-/* Tin trong nước */
-/* Đặt khoảng cách trên cho phần tin tức quốc gia */
-.national-news , .international-news,.economic-news,.culture-news,.sports-news,.health-news,.tech-news,.press-news {
+.national-news, .international-news, .economic-news, .culture-news, .sports-news, .health-news, .tech-news, .press-news {
     margin-top: 20px;
 }
 
-/* Sử dụng flexbox để tạo bố cục hàng ngang với khoảng cách giữa các cột */
+/* S? d?ng flexbox ?? t?o b? c?c h�ng ngang v?i kho?ng c�ch gi?a c�c c?t */
 .news-list {
     display: flex;
     gap: 20px;
 }
 
-/* Mỗi cột tin tức là một flexbox cột với khoảng cách giữa các mục tin tức */
+/* M?i c?t tin t?c l� m?t flexbox c?t v?i kho?ng c�ch gi?a c�c m?c tin t?c */
 .news-column {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-
-/* Thiết lập các mục tin tức với nền trắng, padding và shadow */
-.news-item {
-    background: #fff;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-}
-
-
-
-
-/* Thiết lập chi tiết tin tức với font-size và flexbox cột */
+/* Thi?t l?p chi ti?t tin t?c v?i font-size v� flexbox c?t */
 .news-details {
-    font-size: 14px;
+    font-size: 18px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 }
 
-/* Định dạng tiêu đề tin tức với font-size, margin và màu sắc */
-.news-details h3 {
-    font-size: 16px;
-    margin: 0 0 10px;
-    color: #333;
+    /* ??nh d?ng ti�u ?? tin t?c v?i font-size, margin v� m�u s?c */
+    .news-details h3 {
+        font-size: 21px;
+        margin: 0 0 10px;
+        color: #333;
+    }
+
+    /* ??nh d?ng ng�y gi? ??ng tin v?i m�u s?c v� margin */
+    .news-details .date-time {
+        color: #777;
+        margin-bottom: 10px;
+    }
+
+#date {
+    font-size: 17px;
+    color: #040000; /* M�u ch? cho ng�y th�ng */
+    position: absolute; /* Cho ph�p di chuy?n t? do */
+    cursor: move; /* Con tr? chu?t khi k�o */
+    right: 450px; /* Kho?ng c�ch t? b�n tr�i c?a header */
 }
 
-/* Định dạng ngày giờ đăng tin với màu sắc và margin */
-.news-details .date-time {
-    color: #777;
-    margin-bottom: 10px;
-}
-
-/* Định dạng đoạn văn bản tóm tắt nội dung tin tức */
+/* ??nh d?ng ?o?n v?n b?n t�m t?t n?i dung tin t?c */
 .news-details p {
     margin: 0;
     flex-grow: 1;
 }
 
-/* Định dạng liên kết trong chi tiết tin tức với màu sắc và loại bỏ gạch chân */
+/* ??nh d?ng li�n k?t trong chi ti?t tin t?c v?i m�u s?c v� lo?i b? g?ch ch�n */
 .news-details a {
     color: #333;
     text-decoration: none;
 }
 
-/* Hiệu ứng hover cho liên kết để gạch chân */
-.news-details a:hover {
-    text-decoration: underline;
-}
+    /* Hi?u ?ng hover cho li�n k?t ?? g?ch ch�n */
+    .news-details a:hover {
+        text-decoration: underline;
+    }
 
-/* Kích thước cụ thể cho ảnh trong bài viết */
+/* K�ch th??c c? th? cho ?nh trong b�i vi?t */
 .news-item img {
-    max-width: 150%; /* Đảm bảo ảnh không vượt quá chiều rộng khối */
-    height: auto; /* Giữ tỷ lệ ảnh */
-    display: block; /* Loại bỏ khoảng trắng phía dưới ảnh */
+    max-width: 95%;
+    height: auto;
+    display: block;
 }
-/* Điều chỉnh kích thước ảnh cho các bài viết trong mục tin nhanh 360 */
-.news-item {
-    max-width: 100%; /* Giữ cho khối tin nhanh không vượt quá chiều rộng của cột */
-}
-
-.news-item img {
-    max-height: 280px; /* Giới hạn chiều cao ảnh */
-    object-fit: cover; /* Cắt bớt hoặc kéo dãn ảnh để phù hợp với kích thước */
-}
-
-
-
-
