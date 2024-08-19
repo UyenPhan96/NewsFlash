@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Web_News.Models;
 using Web_News.Services.Account;
 using Web_News.ViewModels;
@@ -186,6 +190,46 @@ namespace Web_News.Controllers
 
             ModelState.AddModelError("", "Mã xác nhận không hợp lệ hoặc đã hết hạn.");
             return View(model);
+        }
+
+
+        // Phần đăng nhập bằng Facebook
+        [HttpGet]
+        public IActionResult SiginFB(string returnUrl = null)
+        {
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action("FacebookLoginCallback", new { ReturnUrl = returnUrl })
+            };
+            return Challenge(properties, FacebookDefaults.AuthenticationScheme);
+        }
+
+        // Callback sau khi Facebook xác thực
+        public async Task<IActionResult> FacebookLoginCallback(string returnUrl = null)
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            if (result.Succeeded)
+            {
+                var claims = result.Principal.Claims;
+                var facebookId = claims.FirstOrDefault(c => c.Type == "urn:facebook:id")?.Value;
+                var name = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+                var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+                var user = await _accountSV.FacebookLoginAsync(facebookId, name, email);
+
+                // Tạo các claims cho người dùng
+                var claimsIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, user.Name));
+                claimsIdentity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+
+                // Đăng nhập người dùng vào hệ thống
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+                return Redirect(returnUrl ?? "/");
+            }
+
+            return RedirectToAction("Login");
         }
 
     }

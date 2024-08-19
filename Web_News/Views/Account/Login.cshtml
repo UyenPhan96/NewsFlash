@@ -35,10 +35,11 @@
         <a asp-controller="Account" asp-action="ForgotPassword" class="auth-link text-black">Forgot password?</a>
     </div>
     <div class="mb-2">
-        <button type="button" class="btn btn-block btn-facebook auth-form-btn">
+        <button type="button" class="btn btn-block btn-facebook auth-form-btn" onclick="window.location.href='@Url.Action("SiginFB", "Account")'">
             <i class="mdi mdi-facebook me-2"></i>Connect using Facebook
         </button>
     </div>
+
     <div class="text-center mt-4 font-weight-light">
         Don't have an account? <a asp-controller="Account" asp-action="Register" class="text-primary">Create</a>
     </div>

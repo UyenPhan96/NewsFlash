@@ -23,10 +23,7 @@ namespace Web_News.Controllers
         {
             return View();
         }
-        public IActionResult HomeP()
-        {
-            return View();
-        }
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
