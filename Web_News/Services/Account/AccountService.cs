@@ -46,22 +46,21 @@ namespace Web_News.Services.Account
 
 
         // Phần đăng Nhập
-        public async Task<(User? user, List<string> roles)> LoginAsync(string usernameOrEmail, string password)
+        public async Task<(User? user, List<string> roles)> LoginAsync(string usernameOrEmail, string password,bool rememberMe)
         {
             if (string.IsNullOrEmpty(usernameOrEmail) || string.IsNullOrEmpty(password))
             {
                 return (null, new List<string>());
             }
 
-            var user = _context.Users
-                .SingleOrDefault(u => (u.UserName == usernameOrEmail || u.Email == usernameOrEmail));
+            var user = _context.Users.SingleOrDefault(u => (u.UserName == usernameOrEmail || u.Email == usernameOrEmail));
 
             if (user != null)
             {
                     // Kiểm tra mật khẩu
                 if (PasswordHasher.VerifyPassword(user.Password, password))
                 {
-                    // Lấy vai trò của người dùng
+               
                     var roles = _context.UserRoles
                         .Where(ur => ur.UserId == user.UserID)
                         .Select(ur => _context.Roles.FirstOrDefault(r => r.RoleID == ur.RoleId).NameRole)
@@ -76,7 +75,11 @@ namespace Web_News.Services.Account
 
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
-
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = rememberMe,  
+                        ExpiresUtc = rememberMe ? DateTime.UtcNow.AddDays(14) : DateTime.UtcNow.AddMinutes(20)
+                    };
                     // Đăng nhập vào hệ thống
                     await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
@@ -230,7 +233,9 @@ namespace Web_News.Services.Account
                     Email = email,
                     UserName = email,  
                     Password = "",  
-                    RegistrationDate = DateTime.Now
+                    RegistrationDate = DateTime.Now,
+                    Optional = facebookId
+                    
                 };
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
@@ -240,6 +245,11 @@ namespace Web_News.Services.Account
             }
             else
             {
+                // Cập nhật FacebookId nếu chưa có
+                if (string.IsNullOrEmpty(user.Optional))
+                {
+                    user.Optional = facebookId;
+                }
                 // Nếu người dùng đã tồn tại, cập nhật thông tin
                 user.Name = name;
                 _context.Users.Update(user);

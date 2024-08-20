@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.EntityFrameworkCore;
 using Web_News.Models;
 using Web_News.Services.Account;
@@ -36,6 +38,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.AppId = builder.Configuration["Authentication:Facebook:AppId"] ?? throw new InvalidOperationException("Facebook AppId is not configured.");
     options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"] ?? throw new InvalidOperationException("Facebook AppSecret is not configured.");
+    options.ClaimActions.MapJsonKey("urn:facebook:id", "id");
 });
 
 

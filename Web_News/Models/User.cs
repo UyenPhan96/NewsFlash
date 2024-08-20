@@ -38,6 +38,9 @@ namespace Web_News.Models
         public string? PasswordResetCode { get; set; }
         public DateTime? ResetCodeExpiration { get; set; }
 
+        [MaxLength(50)]
+        public string? Optional { get; set; }
+
         public ICollection<UserRole> UserRoles { get; set; }
     }
 }
