@@ -32,7 +32,7 @@ namespace Web_News.Controllers
         {
             if (ModelState.IsValid)
             {
-                var (user, roles) = await _accountSV.LoginAsync(model.UsernameOrEmail, model.Password);
+                var (user, roles) = await _accountSV.LoginAsync(model.UsernameOrEmail, model.Password,model.RememberMe);
                 if (user != null)
                 {
                     // Kiểm tra vai trò và chuyển hướng dựa trên vai trò
