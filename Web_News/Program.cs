@@ -39,9 +39,13 @@ builder.Services.AddAuthentication(options =>
     options.AppId = builder.Configuration["Authentication:Facebook:AppId"] ?? throw new InvalidOperationException("Facebook AppId is not configured.");
     options.AppSecret = builder.Configuration["Authentication:Facebook:AppSecret"] ?? throw new InvalidOperationException("Facebook AppSecret is not configured.");
     options.ClaimActions.MapJsonKey("urn:facebook:id", "id");
+})
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? throw new InvalidOperationException("Google ClientId is not configured.");
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? throw new InvalidOperationException("Google ClientSecret is not configured.");
+    options.ClaimActions.MapJsonKey("urn:google:id", "sub");
 });
-
-
 
 
 // Add services to the container.

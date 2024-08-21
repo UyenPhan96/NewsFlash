@@ -68,7 +68,7 @@ namespace Web_News.Services.Account
 
                     var claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.Name, user.Name),
                         new Claim(ClaimTypes.Email, user.Email)
                     };
                     claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
@@ -222,7 +222,7 @@ namespace Web_News.Services.Account
         }
 
         public async Task<User> FacebookLoginAsync(string facebookId, string name, string email)
-        { 
+        {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
 
             if (user == null)
@@ -231,31 +231,63 @@ namespace Web_News.Services.Account
                 {
                     Name = name,
                     Email = email,
-                    UserName = email,  
-                    Password = "",  
+                    UserName = email,
+                    Password = "",
                     RegistrationDate = DateTime.Now,
-                    Optional = facebookId
-                    
+                    IdFacebook = facebookId
+
                 };
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
-                var userRole = new UserRole { UserId = user.UserID, RoleId = 2 }; 
+                var userRole = new UserRole { UserId = user.UserID, RoleId = 2 };
                 _context.UserRoles.Add(userRole);
                 await _context.SaveChangesAsync();
             }
             else
             {
-                // Cập nhật FacebookId nếu chưa có
-                if (string.IsNullOrEmpty(user.Optional))
+                if (!string.IsNullOrEmpty(user.Password) || !string.IsNullOrEmpty(user.IdGoogle))
                 {
-                    user.Optional = facebookId;
+                    throw new Exception("Email này đã được đăng ký. Vui lòng sử dụng phương thức đăng nhập thông thường.");
                 }
-                // Nếu người dùng đã tồn tại, cập nhật thông tin
                 user.Name = name;
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();
             }
+            return user;
+        }
 
+        public async Task<User> GoogleLoginAsync(string googleId, string name, string email)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+
+            if (user == null)
+            {
+                user = new User
+                {
+                    Name = name,
+                    Email = email,
+                    UserName = email,
+                    Password = "",
+                    RegistrationDate = DateTime.Now,
+                    IdGoogle = googleId
+
+                };
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+                var userRole = new UserRole { UserId = user.UserID, RoleId = 2 };
+                _context.UserRoles.Add(userRole);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(user.Password) || !string.IsNullOrEmpty(user.IdFacebook))
+                {
+                    throw new Exception("Email này đã được đăng ký. Vui lòng sử dụng phương thức đăng nhập khác.");
+                }
+                user.Name = name;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+            }
             return user;
         }
     }
