@@ -39,7 +39,9 @@ namespace Web_News.Models
         public DateTime? ResetCodeExpiration { get; set; }
 
         [MaxLength(50)]
-        public string? Optional { get; set; }
+        public string? IdFacebook { get; set; }
+        [MaxLength(50)]
+        public string? IdGoogle { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; }
     }

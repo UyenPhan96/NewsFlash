@@ -1,5 +1,6 @@
 ﻿@model Web_News.ViewModels.LoginViewModel
 @{
+    ViewData["Title"] = "Login";
     ViewBag.Title = "Login";
     Layout = "_LayoutLogin";
 }
@@ -40,7 +41,11 @@
             <i class="mdi mdi-facebook me-2"></i>Connect using Facebook
         </button>
     </div>
-
+    <div class="mb-2">
+        <button type="button" class="btn btn-block btn-google auth-form-btn" onclick="window.location.href='@Url.Action("SiginGG", "Account")'">
+            <i class="mdi mdi-google me-2"></i>Connect using Google
+        </button>
+    </div>
     <div class="text-center mt-4 font-weight-light">
         Don't have an account? <a asp-controller="Account" asp-action="Register" class="text-primary">Create</a>
     </div>
