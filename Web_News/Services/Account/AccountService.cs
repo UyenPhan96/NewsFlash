@@ -68,6 +68,7 @@ namespace Web_News.Services.Account
 
                     var claims = new List<Claim>
                     {
+                         new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                         new Claim(ClaimTypes.Name, user.Name),
                         new Claim(ClaimTypes.Email, user.Email)
                     };

@@ -7,10 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Data\" />
-    <Folder Include="Models\" />
+    <Compile Remove="Areas\Admin\Data\**" />
+    <Compile Remove="Data\**" />
+    <Content Remove="Areas\Admin\Data\**" />
+    <Content Remove="Data\**" />
+    <EmbeddedResource Remove="Areas\Admin\Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Areas\Admin\Data\**" />
+    <None Remove="Data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />

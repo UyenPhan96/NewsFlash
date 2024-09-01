@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Web_News.Models.Category>
+
+@{
+    ViewData["Title"] = "Category List";
+}
+
+<h1>Category List</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Category</a>
+</p>
+
+<div class="col-lg-12 stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Category Table</h4>
+   
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="table-info">
+                        <th>Category ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="table-info">
+                            <td>@item.CategoryId</td>
+                            <td>@item.NameCategory</td>
+                            <td>@item.Describe</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-warning">Edit</a> |
+                                <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

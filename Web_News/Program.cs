@@ -5,13 +5,24 @@ using Microsoft.EntityFrameworkCore;
 using Web_News.Models;
 using Web_News.Services.Account;
 using Web_News.Services.EmailService;
+using Web_News.Areas.Admin.ServiceAd;
+using Web_News.Areas.Admin.ServiceAd.CategorySV;
+using Web_News.Areas.Admin.ServiceAd.NewsSV;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Các Dịch vụ đăng ký Trang chủ NewsFlash
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
+
+// Các Dịch vụ đăng ký Trang Chủ Admin
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddScoped<INewsService, NewsService>();
+
+
+
 
 builder.Services.AddHttpContextAccessor();
 
