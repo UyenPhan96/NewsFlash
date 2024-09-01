@@ -1,0 +1,53 @@
+﻿@model Web_News.Areas.Admin.ViewModels.NewsViewModel
+
+@{
+    ViewData["Title"] = "Edit News";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@using (Html.BeginForm("Edit", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title)
+        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Content)
+        @Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows = 5 })
+        @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Image)
+        <input type="file" name="Image" class="form-control" />
+        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Status)
+        @Html.TextBoxFor(model => model.Status, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Categories")
+        @foreach (var category in Model.Categories)
+        {
+            <div class="form-check">
+                <input type="checkbox" name="SelectedCategories" value="@category.CategoryId"
+                @(Model.SelectedCategories.Contains(category.CategoryId) ? "checked" : "") />
+                <label class="form-check-label">@category.NameCategory</label>
+            </div>
+        }
+    </div>
+
+    <input type="hidden" name="NewsId" value="@Model.NewsId" />
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="@Url.Action("Index", "News")" class="btn btn-secondary">Cancel</a>
+}

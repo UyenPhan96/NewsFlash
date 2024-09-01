@@ -23,6 +23,19 @@ namespace Web_News.Models
                 .HasOne(ur => ur.Role)
                 .WithMany(r => r.UserRoles)
                 .HasForeignKey(ur => ur.RoleId);
+            // Thiết Lập khóa cho Bảng            Category - News
+            modelBuilder.Entity<NewsCategory>()
+                .HasKey(nc => new { nc.NewsId, nc.CategoryId });
+
+            modelBuilder.Entity<NewsCategory>()
+                .HasOne(nc => nc.News)
+                .WithMany(n => n.NewsCategories)
+                .HasForeignKey(nc => nc.NewsId);
+
+            modelBuilder.Entity<NewsCategory>()
+                .HasOne(nc => nc.Category)
+                .WithMany(c => c.NewsCategories)
+                .HasForeignKey(nc => nc.CategoryId);
 
             // Sử dụng để thêm dữ liệu cho Bảng     ROLE - USER - USERROLE
             // Seed dữ liệu cho bảng Role
@@ -55,6 +68,8 @@ namespace Web_News.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
-
+        public DbSet<News> News { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<NewsCategory> NewsCategories { get; set; }
     }
 }
