@@ -5,35 +5,47 @@
 }
 
 <div class="container">
-    <h1>@ViewData["Title"]</h1>
     <p>
         <a asp-action="Create" class="btn btn-success">Create News</a>
     </p>
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered  table-responsive">
         <thead class="thead-dark">
             <tr>
-                <th>Image</th>
-                <th>Title</th>
-                <th>Publish Date</th>
-                <th>Created By</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th style="font-weight: bold; ">Image</th>
+                <th style="font-weight: bold; ">Title</th>
+                <th style="font-weight: bold; ">Publish Date</th>
+                <th style="font-weight: bold; ">Created By</th>
+                <th style="font-weight: bold; ">Categories</th>
+                <th style="font-weight: bold; ">Status</th>
+                <th style="font-weight: bold; ">Actions</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
+              
                 <tr>
                     <td>
-                        <img src="@item.Image" alt="@item.Image" style="max-width: 120px; height: auto; border-radius: 5px;" />
+                        <img src="/Images/@item.Image" style="max-width: 150px; height: auto; border-radius: 5px;" />
                     </td>
                     <td>@item.Title</td>
-                    <td>@item.PublishDate.ToString("dd MMM yyyy")</td>
+                    <td>@item.PublishDate</td>
                     <td>@item.CreatedByUserName</td>
                     <td>
-                        <span class="badge @(item.Status == "Published" ? "bg-success" : "bg-warning")">
-                            @item.Status
-                        </span>
+                        @foreach (var category in item.ListCategories)
+                        {
+                            <span class="badge bg-secondary">@category.NameCategory</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.Status)
+                        {
+                            <span class="badge bg-danger">On</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-dark">Off</span>
+                        }
                     </td>
                     <td>
                         <a asp-action="Details" asp-route-id="@item.NewsId" class="btn btn-info btn-sm">Details</a>
