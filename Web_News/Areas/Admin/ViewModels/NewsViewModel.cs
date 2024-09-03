@@ -16,8 +16,9 @@ namespace Web_News.Areas.Admin.ViewModels
         public DateTime PublishDate { get; set; }
         public string CreatedByUserName { get; set; }
         [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
 
+        public List<Category> ListCategories { get; set; }
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<int> SelectedCategories { get; set; }
     }

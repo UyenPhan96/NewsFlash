@@ -10,5 +10,7 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
         Task DeleteNewsAsync(int newsId);
         Task<NewsViewModel> GetNewsByIdAsync(int newsId);
         Task<IEnumerable<NewsViewModel>> GetAllNewsAsync();
+        Task<List<News>> GetTop4News();
+
     }
 }

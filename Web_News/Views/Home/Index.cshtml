@@ -1,7 +1,9 @@
-﻿@{
+﻿@model List<Web_News.Models.News>
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.title = "Trang chủ";
 }
+
 <div class="results" id="results"></div>
 <div class="container">
     <div class="main-content">
@@ -9,52 +11,34 @@
         <div class="grid-container">
             <!-- Bài viết lớn trên cùng -->
             <article class="grid-item-large article">
-                <div class="article-headers">
-
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/648_405/603483875699699712/2024/7/30/anhviber2024-07-3020-17-19-026-1722345778615181861368-17223477346292057045385-48-0-1048-1600-crop-17223478496082098828461.jpg" alt="Ảnh bài viết lớn">
-
-                    <div class="article-contents">
-                        <h3><a href="chi-tiet-bai-viet-1.html">"Thủ tướng Phạm Minh Chính lên đường thăm cấp Nhà nước tới Ấn Độ</a></h3>
-                        <div class="article-meta">
+                <a class="article-link" href="@Url.Action("Privacy", "Home", new { id = Model[0].NewsId })">
+                    <div class="article-headers">
+                        <img src="/Images/@Model[0].Image" alt="Ảnh bài viết lớn">
+                        <div class="article-contents">
+                            <h3>@Model[0].Title</h3>
+                            <p class="article-summary">@Html.Raw(Model[0].Content.Substring(0, Math.Min(Model[0].Content.Length, 600)))...</p>
                         </div>
-                        <p class="article-summary">Tối 30/7, Thủ tướng Chính phủ Phạm Minh Chính cùng Đoàn đại biểu Việt Nam đã rời Thủ đô Hà Nội, lên đường thăm cấp Nhà nước tới Ấn Độ.</p>
                     </div>
+                
+                </a>
             </article>
 
             <!-- Các bài viết nhỏ dưới cùng -->
-            <article class="article grid-item-small">
-                <div class="article-header">
-                    <img src="https://cdnphoto.dantri.com.vn/Kj11NVwVH_FV-iX2AmbefcvYHs4=/zoom/240_160/2024/07/31/pin-du-phong-cua-hanh-khach-boc-chay-o-san-bay-tan-son-nhat-1-edited-1722397371029.jpeg" alt="Ảnh bài viết 2">
-                    <div class="article-content">
-                        <h3><a href="chi-tiet-bai-viet-1.html">Pin dự phòng của hành khách bốc cháy ở sân bay Tân Sơn Nhất.</a></h3>
-                        <div class="article-meta">
+            @for (int i = 1; i < Model.Count && i < 4; i++)
+            {
+                <article class="article grid-item-small">
+                    <a class="article-link" href="@Url.Action("Privacy", "Home", new { id = Model[i].NewsId })">
+                        <div class="article-header">
+                            <img src="/Images/@Model[i].Image" alt="Ảnh bài viết @i">
+                            <div class="article-content">
+                                <h3>@Model[i].Title</h3>
+                               
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <p>Cục pin dự phòng trong kiện hàng ký gửi của hành khách bị lực lượng an ninh sân bay yêu cầu bỏ lại, sau đó pin này bất ngờ phát nổ.</p>
-            </article>
-            <article class="article grid-item-small">
-                <div class="article-header">
-                    <img src="https://cdnphoto.dantri.com.vn/2Sx7ho_qQu3sYKKViORU1y1M1jw=/zoom/240_160/2024/07/31/3-1722393135563.jpg" alt="Ảnh bài viết 3">
-                    <div class="article-content">
-                        <h3><a href="chi-tiet-bai-viet-1.html">Thành phố Hội An "chiều" dư luận, sơn lại Chùa Cầu… cho cũ?</a></h3>
-                        <div class="article-meta">
-                        </div>
-                    </div>
-                </div>
-                <p>Hình ảnh thợ quét vôi phần dưới lan can Chùa Cầu, hướng về sông Hoài khiến nhiều người cho rằng chính quyền Hội An đã chỉ đạo thay đổi màu sơn.</p>
-            </article>
-            <article class="article grid-item-small">
-                <div class="article-header">
-                    <img src="https://cdnphoto.dantri.com.vn/vrQXHBtaIaNgqvQyp_3K4JZOcVA=/zoom/240_160/2024/06/05/8stcja-1717554703039.gif" alt="Ảnh bài viết 4">
-                    <div class="article-content">
-                        <h3><a href="chi-tiet-bai-viet-2.html">Chiến sự Ukraine 31/7: Phòng tuyến của Kiev sụp đổ, Toretsk gặp nguy hiểm</a></h3>
-                        <div class="article-meta">
-                        </div>
-                    </div>
-                </div>
-                <p>Theo hướng Toretsk, Nga đã cải thiện vị trí của mình và chiếm phần lớn làng Zalizne, cũng như kiểm soát hoàn toàn làng Pivdinne. Ukraine sẽ gặp khó nếu 2 khu mỏ với các vị trí kiên cố thất thủ.</p>
-            </article>
+                        <p>@Html.Raw(Model[i].Content.Substring(0, Math.Min(Model[i].Content.Length, 100)))...</p>
+                    </a>
+                </article>
+            }
         </div>
 
 
@@ -959,8 +943,8 @@
             <a href="https://thepizzacompany.vn/" target="_blank">
                 <img src="https://i.pinimg.com/564x/86/6d/24/866d24d7592145b6a1c10c04a03a4e2c.jpg" alt="Quảng Cáo Dọc Thứ Hai">
             </a>
-
-        </div>
     </aside>
+ </div>
+   
 
 

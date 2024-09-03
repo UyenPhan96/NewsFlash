@@ -27,9 +27,10 @@ namespace Web_News.Models
         public User CreatedByUser { get; set; }
 
         [Required]
-        public string Status { get; set; }
+        public bool Status { get; set; }
 
         // Mối quan hệ nhiều-nhiều với Category thông qua bảng trung gian NewsCategory
         public ICollection<NewsCategory> NewsCategories { get; set; }
+
     }
 }

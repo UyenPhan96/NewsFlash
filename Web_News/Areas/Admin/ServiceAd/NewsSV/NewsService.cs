@@ -98,18 +98,32 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
         }
 
 
+
+        
         public async Task<IEnumerable<NewsViewModel>> GetAllNewsAsync()
         {
+
             return await _context.News
-                .Select(n => new NewsViewModel
-                {
-                    NewsId = n.NewsId,
-                    Title = n.Title,
-                    Image = n.Image,
-                    PublishDate = n.PublishDate,
-                    Status = n.Status,
-                    CreatedByUserName = _context.Users.FirstOrDefault(u => u.UserID == n.CreatedByUserId).Name
-                })
+         .Include(n => n.NewsCategories) // Bao gồm liên kết tới bảng NewsCategories
+         .ThenInclude(nc => nc.Category) // Bao gồm thông tin danh mục từ bảng Category
+         .Select(n => new NewsViewModel
+         {
+             NewsId = n.NewsId,
+             Title = n.Title,
+             Image = n.Image,
+             PublishDate = n.PublishDate,
+             Status = n.Status,
+             CreatedByUserName = _context.Users.FirstOrDefault(u => u.UserID == n.CreatedByUserId).Name,
+             ListCategories = n.NewsCategories.Select(nc => nc.Category).ToList() // Lấy danh sách các danh mục
+         })
+         .ToListAsync();
+        }
+        public async Task<List<News>> GetTop4News()
+        {
+            return await _context.News
+                .Where(n => n.Status) // Chỉ lấy bài viết có Status = true
+                .OrderByDescending(n => n.PublishDate)
+                .Take(4)
                 .ToListAsync();
         }
 
