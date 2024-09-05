@@ -4,7 +4,7 @@ namespace Web_News.ViewModels
 {
     public class ForgotPasswordViewModel
     {
-        [Required(ErrorMessage = "Nhập Vào Email")]
+        [Required(ErrorMessage = "Vui lòng nhập đầy đủ email.")]
         [EmailAddress]
         public string Email { get; set; }
     }

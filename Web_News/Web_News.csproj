@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\css\" />
-    <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\lib\bootstrap\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\js\" />
@@ -284,6 +283,9 @@
     <None Include="wwwroot\Ck\ckeditor\skins\moono-lisa\readme.md" />
     <None Include="wwwroot\Ck\ckeditor\styles.js" />
     <None Include="wwwroot\LayoutAdmin\.DS_Store" />
+    <None Include="wwwroot\LayoutLogin\checklogin.js" />
+    <None Include="wwwroot\LayoutLogin\layoutforgotpassword\check.js" />
+    <None Include="wwwroot\LayoutLogin\layoutforgotpassword\notification.js" />
   </ItemGroup>
 
   <ItemGroup>

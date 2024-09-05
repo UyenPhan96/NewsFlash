@@ -1,139 +1,158 @@
 body {
     margin: 0;
-    font-size: 18px; /* Kích th??c font ch? */
+    font-size: 10px;
+    font-family: system-ui, "Segoe UI";
 }
 
 header {
-    background: #ffffff; /* Màu n?n c?a header */
-    color: #040000; /* Màu ch? trong header */
-    border-bottom: #050608 1px solid; /* ???ng vi?n d??i c?a header */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #ffffff;
+    color: #040000;
+    border-bottom: #050608 1px solid;
 }
 
-/* C?u hình cho thanh header-top */
+#date {
+    font-size: 12px;
+    color: #000000;
+    position: absolute;
+    cursor: pointer;
+    right: 28%;
+    top: 14px;
+    padding: 5px 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-bottom: 50px;
+}
+
+    #date:hover {
+        background-color: #e0e0e0;
+        color: #000;
+    }
+
 .header-top {
-    position: fixed; /* ??t v? trí c? ??nh ?? gi? header ? trên cùng khi cu?n trang */
-    top: 0; /* ??t ? ??nh c?a trang */
-    left: 0; /* ??t t? bên trái c?a trang */
-    width: 100%; /* ??m b?o header chi?m toàn b? chi?u r?ng */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
     background-color: #ffffff;
-    z-index: 1000; /* ??m b?o header n?m trên các ph?n t? khác */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thêm bóng nh? ?? t?o chi?u sâu */
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-    /* C?u hình cho g?ch d??i c?a header-top */
     .header-top::after {
         content: "";
         position: absolute;
-        bottom: 0; /* ??t g?ch d??i ? d??i cùng c?a header */
-        left: 0%; /* Kho?ng cách t? bên trái */
-        width: 100%; /* ?? dài c?a g?ch d??i */
-        height: 1px; /* ?? dày c?a g?ch d??i */
-        background: #080808; /* Màu c?a g?ch d??i */
-        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); /* T?o hi?u ?ng n?i cho g?ch d??i */
+        bottom: 0;
+        left: 0%;
+        width: 100%;
+        height: 1px;
+        background: #080808;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
     }
 
-
 #logo {
-    transform: translate(255px, 10px); /* Di chuy?n logo 20px sang ph?i và 10px xu?ng d??i */
-}
-
-
-#logo {
+    transform: translate(10rem, 0rem);
     display: flex;
-    align-items: center; /* C?n gi?a logo theo chi?u d?c */
+    align-items: center;
 }
 
     #logo img {
-        max-width: 200px; /* ??t kích th??c t?i ?a chi?u r?ng */
-        max-height: 50px; /* ??t kích th??c t?i ?a chi?u cao */
-        width: auto; /* T? ??ng ?i?u ch?nh chi?u r?ng ?? gi? t? l? khung hình */
-        height: auto; /* T? ??ng ?i?u ch?nh chi?u cao ?? gi? t? l? khung hình */
+        max-width: 7rem;
+        max-height: 7rem;
+        width: auto;
+        height: auto;
     }
 
 .search-container {
     display: flex;
-    align-items: center; /* C?n gi?a các ph?n t? d?c theo tr?c ngang */
-    margin-left: 1600px; /* ??y ph?n t? v? phía bên ph?i */
+    justify-content: flex-end;
+    margin-left: 65%;
+    margin-top: 10px;
 }
 
 .search-form {
     display: flex;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
 }
 
-.search-input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px 0 0 4px;
-}
-
-.search-button {
-    padding: 8px 16px;
-    border: 1px solid #0779e4;
-    border-left: none;
-    background: #0779e4;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 0 4px 4px 0;
-}
-
-.login-button {
-    background: #fff;
-    color: #e01313;
-    border: 1px solid #e01313;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    margin-right: 25px;
-}
-
-    .login-button:hover {
-        background: #e01313;
-        color: #fff;
+    .search-form:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
+.search-input {
+    flex: 1;
+    padding: 6px 1px;
+    border: none;
+    font-size: 10px;
+    border-radius: 25px 0 0 25px;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+
+    .search-input:focus {
+        background-color: #f0f0f0;
+    }
+
+.search-button {
+    padding: 5px 10px;
+    border: none;
+    background: #000000;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 0 25px 25px 0;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+    .search-button:hover {
+        background-color: #000000;
+    }
+
+
 nav {
-    background: #ffffff; /* Màu n?n c?a thanh ?i?u h??ng */
+    background: #ffffff;
 }
 
 .menu {
-    font-family: 'Times New Roman', serif;
+    font-family: system-ui, "Segoe UI";
     display: flex;
-    margin: 10px;
-    padding: 6px;
+    margin: 14px;
+    padding: 0px;
     list-style: none;
     justify-content: center;
     font-weight: bold;
-    position: fixed; /* ??t v? trí c? ??nh cho menu */
-    top: 60px; /* ??t menu ngay d??i header-top */
-    left: 0; /* ??t t? bên trái c?a trang */
-    width: 100%; /* ??m b?o menu chi?m toàn b? chi?u r?ng */
-    background-color: #ffffff; /* Màu n?n c?a menu */
-    z-index: 999; /* ??m b?o menu n?m d??i header-top */
-    border-bottom: 1px solid #ccc; /* ??t vi?n d??i cho menu */
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    z-index: 999;
+    border-bottom: 1px solid #ccc;
 }
 
     .menu::after {
         content: "";
         position: absolute;
-        bottom: 0; /* ??t g?ch d??i ? d??i cùng c?a header */
-        left: 0%; /* Kho?ng cách t? bên trái */
-        width: 100%; /* ?? dài c?a g?ch d??i */
-        height: 1px; /* ?? dày c?a g?ch d??i */
-        background: #080808; /* Màu c?a g?ch d??i */
-        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); /* T?o hi?u ?ng n?i cho g?ch d??i */
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 0.5px;
+        background: #080808;
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
     }
-    /* C?u hình cho các m?c menu */
+
     .menu > li {
-        position: relative; /* ?? menu con có th? ???c ??t chính xác */
+        position: relative;
         margin-right: 0px;
     }
 
@@ -150,8 +169,8 @@ nav {
                 content: '';
                 display: block;
                 width: 0;
-                height: 2px; /* ?? dày c?a g?ch chân */
-                background: rgb(255, 2, 2); /* Màu c?a g?ch chân */
+                height: 3.5px;
+                background: rgb(255, 2, 2);
                 transition: width 0.3s ease;
                 position: absolute;
                 bottom: 0;
@@ -162,20 +181,21 @@ nav {
                 width: 100%;
             }
 
+
     /* C?u hình cho menu con */
     .menu ul {
-        display: none; /* ?n menu con */
+        display: none;
         position: absolute;
-        top: 100%; /* ??t menu con ngay d??i m?c cha */
+        top: 100%;
         left: 0;
         background: #fffdfd;
-        min-width: 150px; /* ??t chi?u r?ng t?i thi?u c?a menu con */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm bóng nh? cho menu con */
-        z-index: 1000; /* ??m b?o menu con n?m trên các ph?n t? khác */
+        min-width: 150px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
     }
 
     .menu li:hover > ul {
-        display: block; /* Hi?n menu con khi di chu?t qua m?c cha */
+        display: block;
     }
 
     .menu ul li {
@@ -195,8 +215,8 @@ nav {
                 content: '';
                 display: block;
                 width: 0;
-                height: 2px; /* ?? dày c?a g?ch chân */
-                background: rgb(255, 2, 2); /* Màu c?a g?ch chân */
+                height: 2px;
+                background: rgb(255, 2, 2);
                 transition: width 0.3s ease;
                 position: absolute;
                 bottom: 0;
@@ -215,7 +235,7 @@ nav {
 .container {
     display: flex;
     justify-content: space-between;
-    width: 80%;
+    width: 72rem;
     margin: auto;
     overflow: hidden;
 }
@@ -226,51 +246,47 @@ nav {
     display: flex;
     flex-direction: column;
 }
-/* Tiêu ?i?m tu?n */
+
 .tieudiemtuan {
-    color: #007bff;
-    margin-top: 150px;
+    font-size: 17px;
+    margin-top: 100px;
+    margin-bottom: 20px;
 }
 
-
-/* L??i v?i 1 bài vi?t trên cùng và 3 bài vi?t d??i cùng */
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 c?t v?i chi?u r?ng b?ng nhau */
-    grid-template-rows: auto auto auto; /* 3 hàng v?i chi?u cao t? ??ng */
-    gap: 5px; /* Kho?ng cách gi?a các ô l??i */
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: 5px;
 }
 
-/* Bài vi?t l?n chi?m toàn b? chi?u r?ng c?a hàng ??u tiên */
 .grid-item-large {
-    grid-column: 1 / -1; /* Chi?m toàn b? chi?u r?ng c?a l??i */
-    grid-row: 1 / span 2; /* Chi?m 2 hàng */
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    grid-column: 1 / -1;
+    grid-row: 1 / span 2;
+    background: #ffffff;
+    border-radius: 3px;
     overflow: hidden;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex; /* S? d?ng flexbox ?? c?n ch?nh các ph?n t? */
-    flex-direction: column; /* S?p x?p các ph?n t? theo chi?u d?c */
+    display: flex;
+    flex-direction: column;
 }
 
-/* Bài vi?t nh? chi?m m?t ô l??i */
 .grid-item-small {
+    font-size: 12px;
     background: #fff;
     border: 1px solid #ddd;
-    border-radius: 8px;
+
     overflow: hidden;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Ph?n bai vi?t l?n */
 .article-headers img {
-    width: 50%; /* ?i?u ch?nh chi?u r?ng hình ?nh */
-    height: 500px; /* Chi?u cao hình ?nh */
-    object-fit: cover; /* ??m b?o hình ?nh không b? bi?n d?ng */
-    margin-right: 10px; /* Kho?ng cách gi?a hình ?nh và n?i dung tiêu ?? */
+    width: 50%;
+    height: 500px;
+    object-fit: cover;
+    margin-right: 10px;
     border-radius: 4px;
 }
 
@@ -279,14 +295,14 @@ nav {
     align-items: center;
     padding: 10px;
     background-color: #f8f9fa;
-    border-bottom: 1px solid #ddd; /* Thêm ???ng vi?n d??i ph?n tiêu ?? */
+    border-bottom: 1px solid #ddd;
 }
 
 .article-contents {
-    flex: 1; /* Chi?m không gian còn l?i c?a ph?n tiêu ?? */
-    display: flex; /* S? d?ng flexbox ?? c?n ch?nh tiêu ?? và thông tin */
-    flex-direction: column; /* S?p x?p tiêu ?? và thông tin theo chi?u d?c */
-    justify-content: center; /* C?n gi?a các ph?n t? theo chi?u d?c */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .article-content h3 a {
@@ -299,38 +315,35 @@ nav {
     color: #007bff;
 }
 
-/* Tiêu ?? l?n cho bài vi?t trong .grid-item-large */
 .grid-item-large .article-headers h3 {
-    font-size: 35px;
-}
-/* Tóm t?t bài vi?t trong .grid-item-large */
-.grid-item-large .article-summary {
-    font-size: 18px;
-    /
+    font-size: 22px;
 }
 
-/* Ph?n tiêu ?? bài vi?t và hình ?nh */
+.grid-item-large .article-summary {
+    font-size: 14px;
+}
+
 .article-header {
     display: flex;
-    align-items: flex-start; /* C?n ch?nh các ph?n t? lên trên cùng */
+    align-items: flex-start;
     padding: 10px;
     background-color: #f8f9fa;
-    border-bottom: 1px solid #ddd; /* Thêm ???ng vi?n d??i ph?n tiêu ?? */
+    border-bottom: 1px solid #ddd;
 }
 
     .article-header img {
-        width: 50%; /* ?i?u ch?nh chi?u r?ng hình ?nh */
-        height: 200px; /* Chi?u cao hình ?nh */
-        object-fit: cover; /* ??m b?o hình ?nh không b? bi?n d?ng */
-        margin-right: 10px; /* Kho?ng cách gi?a hình ?nh và n?i dung tiêu ?? */
+        width: 50%;
+        height: 150px;
+        object-fit: cover;
+        margin-right: 10px;
         border-radius: 4px;
     }
 
 .article-content {
-    flex: 1; /* Chi?m không gian còn l?i c?a ph?n tiêu ?? */
-    display: flex; /* S? d?ng flexbox ?? c?n ch?nh tiêu ?? và thông tin */
-    flex-direction: column; /* S?p x?p tiêu ?? và thông tin theo chi?u d?c */
-    justify-content: center; /* C?n gi?a các ph?n t? theo chi?u d?c */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
     .article-content h3 a {
@@ -351,88 +364,57 @@ nav {
 .article-summary {
     padding: 10px;
     color: #333;
-    font-size: 16px;
-    flex: 1; /* Chi?m không gian còn l?i trong ph?n bài vi?t l?n */
+    font-size: 13px;
+    flex: 1;
 }
 
 .sidebar {
-    flex: 1;
-    margin-top: 159px;
+    flex: 0.8;
+    margin-top: 123px;
     margin-left: 30px;
     display: flex;
     flex-direction: column;
 }
 
 .sidebar-section {
-    flex: center; /* Sidebar chi?m 1 ph?n không gian có s?n */
-    padding: 20px;
+    flex: center;
+    padding: 0px;
     background: #fff;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease; /* Hi?u ?ng chuy?n ??i m??t mà */
 }
-
 
     .sidebar-section img {
         width: 100%;
         height: auto;
-        transition: transform 0.3s ease; /* Hi?u ?ng chuy?n ??i cho hình ?nh */
+        transition: transform 0.3s ease;
     }
 
     .sidebar-section h2 {
         margin-top: 0;
-        font-size: 18px;
+        font-size: 16px;
         color: #333;
     }
 
-    .sidebar-section:hover {
-        background: #f0f8ff; /* Màu n?n khi di chu?t qua */
-        box-shadow: 0 4px 16px rgba(0,0,0,0.8); /* Bóng ?? khi di chu?t qua */
-    }
-
-        .sidebar-section:hover h2 a {
-            color: #007bff; /* Màu ch? khi di chu?t qua */
-        }
-
-    .sidebar-section p {
-        color: #666; /* Màu v?n b?n n?i dung */
-        transition: color 0.3s ease; /* Hi?u ?ng chuy?n ??i cho màu v?n b?n */
-    }
-
-    .sidebar-section:hover p {
-        color: #333; /* Màu v?n b?n khi di chu?t qua */
-    }
-    /* Hi?u ?ng g?ch chân khi di chu?t qua liên k?t trong t?t c? các m?c */
     .article a, .sidebar-section a, .news-item a {
-        color: #333;
-        text-decoration: none; /* Không g?ch chân m?c ??nh */
-    }
-
-        .article a:hover, .sidebar-section a:hover, .economic-news a:hover, .culture-news a:hover, .news-item a:hover {
-            text-decoration: underline; /* Thêm g?ch chân khi di chu?t qua */
-        }
-
-    /* N?u b?n mu?n thêm hi?u ?ng cho các tiêu ?? c?a các m?c trong sidebar */
-    .sidebar-section h2 a {
         color: #333;
         text-decoration: none;
     }
 
-        .sidebar-section h2 a:hover {
+        .article a:hover, .sidebar-section a:hover, .economic-news a:hover, .culture-news a:hover, .news-item a:hover {
             text-decoration: underline;
         }
 
-/* Style cho banner d?c */
 .vertical-banner {
-    width: 100%; /* Chi?u r?ng banner d?c */
-    height: 600px; /* Chi?u cao c?a banner d?c, có th? ?i?u ch?nh */
-    background: #f4f4f4; /* Màu n?n c?a banner */
+    width: 100%;
+    height: 350px;
+    background: #f4f4f4;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-    border: 1px solid #ddd; /* ???ng vi?n cho banner */
+    border: 1px solid #ddd;
     position: relative;
     overflow: hidden;
 }
@@ -441,43 +423,44 @@ nav {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.5s ease-in-out; /* Hi?u ?ng chuy?n ??ng */
+        transition: transform 0.5s ease-in-out;
     }
 
     .vertical-banner:hover img {
-        transform: scale(1.1); /* Hi?u ?ng phóng to khi hover */
+        transform: scale(1.1);
     }
 
-
 footer {
-    background-color: #ffffff; /* Màu n?n c?a footer */
-    color: #000000; /* Màu ch? trong footer */
+    background-color: #ffffff;
+    color: #000000;
     padding: 20px;
-    border-top: 1px solid #ddd; /* ???ng vi?n phía trên footer */
+    border-top: 1px solid #ddd;
 }
 
 .footer-content {
-    display: flex; /* S? d?ng Flexbox ?? chia ph?n footer */
-    justify-content: space-between; /* C?n l? ??u các ph?n t? trong footer */
-    align-items: flex-start; /* C?n l? các ph?n t? theo chi?u d?c */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     max-width: 1200px;
-    margin: 0 auto; /* C?n gi?a n?i dung footer */
+    margin: 0 auto;
 }
 
 .footer-main, .footer-contact, .footer-advertising {
-    flex: 1; /* ??m b?o các ph?n t? chi?m b?ng nhau không gian */
-    margin: 0 10px; /* Kho?ng cách gi?a các ph?n t? */
+    flex: 1;
+    margin: 0 10px;
 }
 
     .footer-main p, .footer-contact p, .footer-advertising p {
         margin: 5px 0;
-        font-size: 16px; /* Kích th??c font ch? cho v?n b?n */
+        font-size: 16px;
     }
 
     .footer-links a, .footer-contact a, .footer-advertising a {
-        color: #007bff; /* Màu liên k?t */
+        color: #007bff;
         text-decoration: none;
     }
+
+
 
         .footer-links a:hover, .footer-contact a:hover, .footer-advertising a:hover {
             text-decoration: underline;
@@ -485,330 +468,192 @@ footer {
 
     .footer-main h3, .footer-contact h3, .footer-advertising h3 {
         margin-top: 0;
-        font-size: 18px; /* Kích th??c font ch? cho tiêu ?? */
-        color: #000000; /* Màu tiêu ?? trong footer */
+        font-size: 17px;
+        color: #000000;
     }
 
     .footer-contact i, .footer-advertising i {
         margin-right: 8px;
-        color: #007bff; /* Màu c?a các bi?u t??ng */
+        color: #007bff;
     }
 
     .footer-contact p, .footer-advertising p {
-        font-size: 14px; /* Kích th??c font ch? cho v?n b?n trong ph?n liên h? và qu?ng cáo */
+        font-size: 14px;
     }
 
 /* Kho?ng cách gi?a các m?c chính */
 h2 {
-    font-size: 24px;
-    margin: 20px 0 40px; /* Kho?ng cách phía trên và d??i tiêu ?? */
+    font-size: 17px;
+    margin: 35px 0 10px;
     padding: 0;
-    border-bottom: 2px solid #ccc; /* ???ng g?ch chân d??i tiêu ?? */
-    padding-bottom: 10px; /* Kho?ng cách gi?a tiêu ?? và ???ng g?ch chân */
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 0px;
     color: #333;
-    font-size: 18;
+    font-size: 18px;
+    color: #000000;
 }
 
 
 
 /* Có th? b?n quan tâm */
-.recommendations, .news-summary {
+.recommendations {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px; /* Kho?ng cách gi?a các m?c */
-    margin: 100px 10; /* Kho?ng cách phía trên và d??i */
-    transition: all 0.3s ease; /* Hi?u ?ng chuy?n ??i m??t mà */
+    gap: 0px;
+    justify-content: center;
 }
 
-.recommendation-item, .news-summary-item {
-    flex: 1 1 calc(33.333% - 30px); /* Chi?u r?ng c?a m?i m?c (3 c?t v?i kho?ng cách) */
+/* Style cho t?ng item */
+.recommendation-item {
+    flex: 1 1 calc(33.333% - 30px);
+    max-width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
     background: #fff;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 8px; /* Bo tròn các góc c?a m?c */
-    box-sizing: border-box; /* Bao g?m padding và border trong t?ng chi?u r?ng */
+    margin: 6px;
 }
 
-    .recommendation-item img, .news-summary-item img {
+
+    .recommendation-item img {
         width: 100%;
         height: auto;
-        border-radius: 8px; /* Bo tròn các góc c?a hình ?nh */
-        margin-bottom: 10px; /* Kho?ng cách gi?a hình ?nh và tiêu ?? */
-        transition: transform 0.3s ease; /* Hi?u ?ng chuy?n ??i cho hình ?nh */
+        display: block;
     }
 
-    .recommendation-item h3, .news-summary-item h3 {
-        font-size: 20px;
-        margin: 0; /* Lo?i b? margin bên trên và d??i */
-        color: #333;
+
+.recommendation-content {
+    padding: 10px;
+}
+
+    .recommendation-content h3 {
+        margin: 0;
+        font-size: 16px;
+        font-family: system-ui, "Segoe UI";
     }
 
-    .recommendation-item a, .news-summary-item a {
-        color: #333;
-        text-decoration: none;
-    }
-
-        .recommendation-item a:hover, .news-summary-item a:hover {
-            text-decoration: underline;
-            background: #f0f8ff; /* Màu n?n khi di chu?t qua */
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2); /* Bóng ?? khi di chu?t qua */
-            border-color: #007bff; /* Màu vi?n khi di chu?t qua */
+        .recommendation-content h3 a {
+            text-decoration: none;
+            color: #000000;
         }
 
-    .recommendation-item:hover img {
-        transform: scale(1.05); /* Phóng to hình ?nh khi di chu?t qua */
-    }
-
-.recommendation-content h3 a {
-    transition: color 0.3s ease; /* Hi?u ?ng chuy?n ??i cho màu liên k?t */
-}
-
-.recommendation-item:hover .recommendation-content h3 a {
-    color: #007bff; /* Màu ch? khi di chu?t qua */
-}
-
-.recommendation-content p {
-    transition: color 0.3s ease; /* Hi?u ?ng chuy?n ??i cho màu v?n b?n */
-}
-
-.recommendation-item:hover .recommendation-content p {
-    color: #333; /* Màu v?n b?n khi di chu?t qua */
-}
+            .recommendation-content h3 a:hover {
+                text-decoration: underline;
+            }
 
 
-/*Kinh t?*/
-.economic-news {
-    margin-top: 20px;
-}
-
-    .economic-news .news-article {
-        margin-bottom: 20px;
-    }
-
-    .economic-news .news-article-header img {
-        width: 100px;
-        height: auto;
-        margin-right: 15px;
-    }
-
-    .economic-news .news-article-content h3 a {
-        color: #333;
-        text-decoration: none;
-    }
-
-        .economic-news .news-article-content h3 a:hover {
-            text-decoration: underline;
-        }
-
-.culture-news {
-    margin-top: 20px;
-}
-
-    .culture-news .news-article {
-        margin-bottom: 10px;
-    }
-
-    .culture-news .news-article-header img {
-        width: 100px;
-        height: auto;
-        margin-right: 15px;
-    }
-
-    .culture-news .news-article-content h3 a {
-        color: #333;
-        text-decoration: none;
-    }
-
-        .culture-news .news-article-content h3 a:hover {
-            text-decoration: underline;
-        }
-
-/* Tin nhanh 360 */
-.news-item {
-    max-width: 100%;
-}
-
-    .news-item img {
-        max-height: 280px;
-        object-fit: cover;
-    }
-
-.news-360 .news-item h3 {
-    font-size: 20px; /* T?ng c? ch? cho tiêu ?? bài vi?t */
-}
-
-.news-360 .news-item p {
-    font-size: 18px; /* T?ng c? ch? cho ?o?n v?n b?n */
-}
-
-.news-360 .news-item a {
-    font-size: 25px; /* T?ng c? ch? cho liên k?t */
+.date-time {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
 }
 
 /*FONT ?NH CHO T?T C? CÁC BÀI VI?T ? các m?c tin trong n??c > h?t*/
 .news-item {
-    flex: 1 1 calc(33.333% - 20px); /* Chi?u r?ng c?a m?i m?c (3 c?t v?i kho?ng cách) */
+    flex: 1 1 calc(33.333% - 20px);
     background: #fff;
     padding: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 8px; /* Bo tròn các góc c?a m?c */
-    box-sizing: border-box; /* Bao g?m padding và border trong t?ng chi?u r?ng */
-    transition: all 0.3s ease; /* Hi?u ?ng chuy?n ??i m??t mà */
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
     .news-item img {
         width: 100%;
         height: auto;
-        border-radius: 8px; /* Bo tròn các góc c?a hình ?nh */
-        margin-bottom: 10px; /* Kho?ng cách gi?a hình ?nh và tiêu ?? */
-        transition: transform 0.3s ease; /* Hi?u ?ng chuy?n ??i cho hình ?nh */
-        max-width: 300px; /* ??t kích th??c t?i ?a c?a ?nh */
+        border-radius: 8px;
+        margin-bottom: 10px;
+        transition: transform 0.3s ease;
+        max-width: 300px;
     }
-
-
 
     .news-item a {
         color: #333;
         text-decoration: none;
     }
 
-    .news-item:hover {
-        background: #f0f8ff; /* Màu n?n khi di chu?t qua */
-        box-shadow: 0 4px 16px rgba(0,0,0,0.2); /* Bóng ?? khi di chu?t qua */
-    }
-
-        .news-item:hover img {
-            transform: scale(1.05); /* Phóng to hình ?nh khi di chu?t qua */
-        }
 
 .news-details h3 a {
-    transition: color 0.3s ease; /* Hi?u ?ng chuy?n ??i cho màu liên k?t */
+    transition: color 0.3s ease;
 }
 
 .news-item:hover .news-details h3 a {
-    color: #007bff; /* Màu ch? khi di chu?t qua */
+    color: #007bff;
 }
 
 .news-details p {
-    transition: color 0.3s ease; /* Hi?u ?ng chuy?n ??i cho màu v?n b?n */
+    transition: color 0.3s ease;
 }
 
 .news-item:hover .news-details p {
-    color: #333; /* Màu v?n b?n khi di chu?t qua */
+    color: #333;
 }
 
 .content-wrapper {
     display: flex;
     flex: 1;
-    gap: 20px; /* ?i?u ch?nh kho?ng cách gi?a n?i dung chính và sidebar */
+    gap: 20px;
 }
-/* Hi?u ?ng khi di chu?t qua t?t c? các bài vi?t tin */
-.news-item:hover {
-    background: #f9f9f9; /* Màu n?n khi di chu?t qua */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Hi?u ?ng ?? bóng */
-    transform: translateY(-5px); /* Hi?u ?ng nâng lên nh? */
-    transition: all 0.3s ease; /* Hi?u ?ng chuy?n ti?p */
-}
-/* Màu s?c c?a liên k?t trong các bài vi?t */
-.article a, .sidebar-section a {
-    text-decoration: none; /* Không g?ch chân m?c ??nh */
-}
-
-/* Hi?u ?ng cho các tiêu ?? c?a các bài vi?t trong m?c tin t?c kinh t? và v?n hóa */
-.economic-news .news-article-content h3 a, .culture-news .news-article-content h3 a {
-    color: #333;
-    text-decoration: none;
-}
-
-    .economic-news .news-article-content h3 a:hover, .culture-news .news-article-content h3 a:hover {
-        text-decoration: underline;
-    }
-
-/*??nh d?ng màu ch? và ki?u hi?n th? c?a các tiêu ?? và liên k?t trong các ph?n tin t?c*/
-.tieudiemtuan, .recommendations, .news-360, .national-news, .international-news, .economic-news, .culture-news, .sports-news, .health-news, .tech-news, .press-news {
-    color: #000000;
-    margin-bottom: 10px; /* Kho?ng cách d??i tiêu ?? */
-}
-
 .news-item {
     color: #000000;
 }
 
 h2 a {
-    color: black;
-    text-decoration: none; /* Lo?i b? g?ch chân n?u c?n */
+    color: rgb(0, 0, 0);
+    text-decoration: none; 
 }
 
     h2 a:hover {
-        text-decoration: underline; /* Tùy ch?n: Thêm g?ch chân khi hover n?u mu?n */
+        text-decoration: underline;
     }
 
-/* ??t kho?ng cách trên cho ph?n tin t?c */
-
-.national-news, .international-news, .economic-news, .culture-news, .sports-news, .health-news, .tech-news, .press-news {
-    margin-top: 20px;
-}
-
-/* S? d?ng flexbox ?? t?o b? c?c hàng ngang v?i kho?ng cách gi?a các c?t */
 .news-list {
     display: flex;
     gap: 20px;
 }
 
-/* M?i c?t tin t?c là m?t flexbox c?t v?i kho?ng cách gi?a các m?c tin t?c */
 .news-column {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-/* Thi?t l?p chi ti?t tin t?c v?i font-size và flexbox c?t */
+
 .news-details {
-    font-size: 18px;
+    font-size: 13px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 }
-
-    /* ??nh d?ng tiêu ?? tin t?c v?i font-size, margin và màu s?c */
     .news-details h3 {
-        font-size: 21px;
+        font-size: 17px;
         margin: 0 0 10px;
         color: #333;
     }
 
-    /* ??nh d?ng ngày gi? ??ng tin v?i màu s?c và margin */
+
     .news-details .date-time {
         color: #777;
         margin-bottom: 10px;
     }
 
-#date {
-    font-size: 17px;
-    color: #040000; /* Màu ch? cho ngày tháng */
-    position: absolute; /* Cho phép di chuy?n t? do */
-    cursor: move; /* Con tr? chu?t khi kéo */
-    right: 450px; /* Kho?ng cách t? bên trái c?a header */
-}
 
-/* ??nh d?ng ?o?n v?n b?n tóm t?t n?i dung tin t?c */
-.news-details p {
-    margin: 0;
-    flex-grow: 1;
-}
 
-/* ??nh d?ng liên k?t trong chi ti?t tin t?c v?i màu s?c và lo?i b? g?ch chân */
-.news-details a {
-    color: #333;
-    text-decoration: none;
-}
-
-    /* Hi?u ?ng hover cho liên k?t ?? g?ch chân */
-    .news-details a:hover {
-        text-decoration: underline;
+    .news-details p {
+        margin: 0;
+        flex-grow: 1;
     }
 
-/* Kích th??c c? th? cho ?nh trong bài vi?t */
+
+    .news-details a {
+        color: #333;
+        text-decoration: none;
+    }
+
+        .news-details a:hover {
+            text-decoration: underline;
+        }
 .news-item img {
     max-width: 95%;
     height: auto;

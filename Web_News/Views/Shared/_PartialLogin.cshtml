@@ -1,19 +1,97 @@
 ﻿@using Microsoft.AspNetCore.Authentication.Cookies
 @using Microsoft.AspNetCore.Authorization
 
-<!-- Kiểm tra xem người dùng đã đăng nhập hay chưa -->
-@if (User.Identity.IsAuthenticated)
-{
-    <div class="profile-dropdown">
-        <p class="profile-name">Welcome, @User.Identity.Name!</p>
-        <div class="dropdown-content">
-            <a asp-controller="Account" asp-action="Logout">Logout</a>
+<!-- CSS trực tiếp -->
+<style>
+    .profile-container {
+        position: relative;
+        display: inline-block;
+        width: 200px; 
+        margin-left: 0px;
+    }
+
+    .profile-dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-name, .login-button {
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0; 
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .profile-dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+    .login-button {
+        background: #fff;
+        color: #000000;
+        border: 2px solid #000000;
+        padding: 0.3rem 1rem;
+        border-radius: 25px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10rem;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .login-button:hover {
+            background: #e01313;
+            color: #fff;
+            border-color: #e01313;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+</style>
+
+<div class="profile-container">
+    <!-- Kiểm tra xem người dùng đã đăng nhập hay chưa -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="profile-dropdown">
+            <p class="profile-name">Hi, @User.Identity.Name!</p>
+            <div class="dropdown-content">
+                <a asp-controller="Account" asp-action="Profile">Hồ sơ cá nhân</a>
+              
+                <a href="mailto:quangcao@example.com">Liên hệ quảng cáo</a>
+                <a asp-controller="Account" asp-action="Logout">Log out</a>
+            </div>
         </div>
-    </div>
-}
-else
-{
-    <a href="~/Account/Login" class="login-button">
-        <i class="fas fa-user"></i> Đăng Nhập
-    </a>
-}
+
+    }
+    else
+    {
+      <a href="~/Account/Login" class="login-button">
+    <i class="fas fa-user"></i>
+</a>
+
+    }
+</div>

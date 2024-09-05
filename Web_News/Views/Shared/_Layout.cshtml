@@ -1,4 +1,4 @@
-﻿﻿
+﻿﻿﻿
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,39 +8,35 @@
     <link rel="stylesheet" href="~/Web_News.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/layoutpage/styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <title>@ViewBag.title</title>
 </head>
-
 <body>
     <header>
-        <!-- Thanh Logo, Tìm kiếm và Đăng nhập -->
-        <header>
-            <div class="header-top">
-                <a href="/Views/trang-chu/index.html" id="logo-link">
-                    <div id="logo">
-                        <img src="~/images/logo.jpg" alt="NewFlash">
-                    </div>
-				</a>
-                <div id="date" class="date-time"></div> <!-- Phần tử để hiển thị ngày tháng -->
-                <span class="separator"></span> <!-- Phần tử phân cách -->
-
-                <div class="search-container">
-                    <form class="search-form" id="searchForm" onsubmit="performSearch(event)">
-                        <input type="text" class="search-input" id="searchInput" placeholder="Tìm kiếm...">
-                        <button type="submit" class="search-button">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
+        <div class="header-top">
+            <a href="/" id="logo-link">
+                <div id="logo">
+                    <img src="~/images/newlogo.jpg" alt="NewFlash">
                 </div>
-                <span class="separator">|</span> <!-- Phần tử phân cách -->
-               <partial name="_PartialLogin" />
+            </a>
+           
+            <div class="search-container">
+                <form class="search-form" id="searchForm" onsubmit="performSearch(event)">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Tìm kiếm...">
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
             </div>
-        </header>
+
+            <span class="separator">|</span>
+
+            <partial name="_PartialLogin" />
+        </div>
+    </header>
         <!-- Thanh Menu -->
         <nav>
             <ul class="menu">
-                <li><a href="/Views/trang-chu/index.html"><i class="fas fa-home"></i></a></li>
+                <li><a href="/"><i class="fas fa-home"></i></a></li>
                 <li class="dropdown">
                     <a href="/Views/kinh-te/kinh-te.html" class="dropbtn">Kinh tế</a>
                     <ul class="dropdown-menu">
@@ -192,7 +188,7 @@
             </div>
         </div>
     </footer>
-	<script src="~/layoutpage/scripts.js"></script>
+    <script src="~/layoutpage/scripts.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
