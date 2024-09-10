@@ -71,5 +71,6 @@ namespace Web_News.Models
         public DbSet<News> News { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<NewsCategory> NewsCategories { get; set; }
+        public DbSet<Advertisement> Advertisements { get; set; }
     }
 }

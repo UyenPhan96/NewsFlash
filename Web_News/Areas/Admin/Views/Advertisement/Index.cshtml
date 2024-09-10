@@ -1,0 +1,37 @@
+﻿@model List<Web_News.Models.Advertisement>
+@using Web_News.Areas.Admin.ServiceAd.AdvertisementSV
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>STT</th> <!-- Cột số thứ tự -->
+            <th>Contact Name</th>
+            <th>Content</th>
+            <th>Image</th>
+            <th>Link</th>
+            <th>Approval Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var ad = Model[i];
+            <tr>
+                <td>@(i + 1)</td> <!-- Hiển thị số thứ tự -->
+                <td>@ad.ContactName</td>
+                <td>@ad.Content</td>
+                <td><img src="/ImagesAdvertisement/@ad.Image" alt="Image" style="width: 100px; height: 50px;" /></td>
+                <td><a href="@ad.Link" target="_blank">@ad.Link</a></td>
+                <td>@ad.ApprovalStatus.GetDisplayName()</td>
+                <td>
+                    <a asp-action="Approve" asp-route-id="@ad.AdvertisementId" class="btn btn-info btn-sm">Duyệt</a>
+                    <form asp-action="Reject" asp-route-id="@ad.AdvertisementId" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger btn-sm">Từ chối</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

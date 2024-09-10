@@ -14,12 +14,30 @@ namespace Web_News.Areas.Admin.ServiceAd.CategorySV
 
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Categories
+                .Include(c => c.SubCategories)
+                .ToListAsync();
+        }
+        public async Task<List<Category>> GetCategoriessAsync()
+        {
+            return await _context.Categories
+                .Include(c => c.SubCategories)
+                .Where(c => c.ParentCategoryId == null)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<Category>> GetParentCategoriesAsync()
+        {
+            return await _context.Categories
+                .Where(c => c.ParentCategoryId == null)  // Chỉ lấy các chuyên mục mẹ
+                .ToListAsync();
         }
 
         public async Task<Category> GetCategoryByIdAsync(int id)
         {
-            return await _context.Categories.FindAsync(id);
+            return await _context.Categories
+                  .Include(c => c.ParentCategory)  // Bao gồm chuyên mục mẹ
+                  .Include(c => c.SubCategories)   // Bao gồm các chuyên mục con
+                  .FirstOrDefaultAsync(c => c.CategoryId == id);
         }
 
         public async Task AddCategoryAsync(Category category)
@@ -43,5 +61,7 @@ namespace Web_News.Areas.Admin.ServiceAd.CategorySV
                 await _context.SaveChangesAsync();
             }
         }
+
+
     }
 }

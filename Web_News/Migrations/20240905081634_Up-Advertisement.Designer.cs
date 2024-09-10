@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web_News.Models;
 
@@ -11,9 +12,11 @@ using Web_News.Models;
 namespace Web_News.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240905081634_Up-Advertisement")]
+    partial class UpAdvertisement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,12 +92,7 @@ namespace Web_News.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("ParentCategoryId")
-                        .HasColumnType("int");
-
                     b.HasKey("CategoryId");
-
-                    b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -251,7 +249,7 @@ namespace Web_News.Migrations
                             Email = "admin@gmail.com",
                             Name = "Administrator",
                             Password = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=",
-                            RegistrationDate = new DateTime(2024, 9, 9, 19, 46, 17, 248, DateTimeKind.Local).AddTicks(1019),
+                            RegistrationDate = new DateTime(2024, 9, 5, 15, 16, 32, 16, DateTimeKind.Local).AddTicks(8631),
                             UserName = "admin"
                         },
                         new
@@ -260,7 +258,7 @@ namespace Web_News.Migrations
                             Email = "hngoctro@gmail.com",
                             Name = "Huỳnh Ngọc Trợ",
                             Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
-                            RegistrationDate = new DateTime(2024, 9, 9, 19, 46, 17, 248, DateTimeKind.Local).AddTicks(1048),
+                            RegistrationDate = new DateTime(2024, 9, 5, 15, 16, 32, 16, DateTimeKind.Local).AddTicks(8658),
                             UserName = "NgocTro"
                         },
                         new
@@ -269,7 +267,7 @@ namespace Web_News.Migrations
                             Email = "phucbin366@gmail.com",
                             Name = "Trần Văn Phúc",
                             Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
-                            RegistrationDate = new DateTime(2024, 9, 9, 19, 46, 17, 248, DateTimeKind.Local).AddTicks(1063),
+                            RegistrationDate = new DateTime(2024, 9, 5, 15, 16, 32, 16, DateTimeKind.Local).AddTicks(8673),
                             UserName = "VanPhuc"
                         },
                         new
@@ -278,7 +276,7 @@ namespace Web_News.Migrations
                             Email = "caothiphuongvy27@gmail.com",
                             Name = "Cao Thị Phương Vy",
                             Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
-                            RegistrationDate = new DateTime(2024, 9, 9, 19, 46, 17, 248, DateTimeKind.Local).AddTicks(1076),
+                            RegistrationDate = new DateTime(2024, 9, 5, 15, 16, 32, 16, DateTimeKind.Local).AddTicks(8686),
                             UserName = "PhuongVy"
                         },
                         new
@@ -287,7 +285,7 @@ namespace Web_News.Migrations
                             Email = "nguyenngocquy182752@gmail.com",
                             Name = "Nguyễn Thị Ngọc Quý",
                             Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
-                            RegistrationDate = new DateTime(2024, 9, 9, 19, 46, 17, 248, DateTimeKind.Local).AddTicks(1090),
+                            RegistrationDate = new DateTime(2024, 9, 5, 15, 16, 32, 16, DateTimeKind.Local).AddTicks(8700),
                             UserName = "NgocQuy"
                         });
                 });
@@ -343,15 +341,6 @@ namespace Web_News.Migrations
                     b.Navigation("ApprovedByUser");
                 });
 
-            modelBuilder.Entity("Web_News.Models.Category", b =>
-                {
-                    b.HasOne("Web_News.Models.Category", "ParentCategory")
-                        .WithMany("SubCategories")
-                        .HasForeignKey("ParentCategoryId");
-
-                    b.Navigation("ParentCategory");
-                });
-
             modelBuilder.Entity("Web_News.Models.News", b =>
                 {
                     b.HasOne("Web_News.Models.User", "CreatedByUser")
@@ -404,8 +393,6 @@ namespace Web_News.Migrations
             modelBuilder.Entity("Web_News.Models.Category", b =>
                 {
                     b.Navigation("NewsCategories");
-
-                    b.Navigation("SubCategories");
                 });
 
             modelBuilder.Entity("Web_News.Models.News", b =>

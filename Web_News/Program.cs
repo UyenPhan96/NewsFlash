@@ -8,6 +8,8 @@ using Web_News.Services.EmailService;
 using Web_News.Areas.Admin.ServiceAd;
 using Web_News.Areas.Admin.ServiceAd.CategorySV;
 using Web_News.Areas.Admin.ServiceAd.NewsSV;
+using Web_News.Services.ContactSV;
+using Web_News.Areas.Admin.ServiceAd.AdvertisementSV;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,11 +18,14 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 
+builder.Services.AddScoped<IContactService, ContactService>();
+
 // Các Dịch vụ đăng ký Trang Chủ Admin
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddScoped<INewsService, NewsService>();
 
+builder.Services.AddScoped<IAdvertisementService, AdvertisementService>();
 
 
 

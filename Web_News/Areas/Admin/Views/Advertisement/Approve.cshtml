@@ -1,0 +1,73 @@
+﻿@model Web_News.Models.Advertisement
+
+<h2>Advertisement Details</h2>
+
+<form asp-action="Approve" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="Image">Image</label>
+        <!-- Trường tải lên file để chọn ảnh mới -->
+        <input type="file" class="form-control" id="Image" name="MediaFile" onchange="previewImage(event)" />
+
+        <!-- Hiển thị hình ảnh hiện tại nếu có -->
+        <div id="imagePreview" class="mt-2">
+            @if (!string.IsNullOrEmpty(Model.Image))
+            {
+                <img src="@Url.Content("~/imagesAdvertisement/" + Model.Image)" alt="Advertisement Image" id="currentImage" style="max-width: 100%; height: auto;" />
+            }
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="Link">Link</label>
+        <input type="text" class="form-control" id="Link" name="Link" value="@Model.Link" />
+    </div>
+
+    <div class="form-group">
+        <label for="StartDate">Start Date</label>
+        <input type="date" class="form-control" id="StartDate" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div class="form-group">
+        <label for="EndDate">End Date</label>
+        <input type="date" class="form-control" id="EndDate" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div class="form-group">
+        <label for="BannerPosition">Banner Position</label>
+        <select asp-for="BannerPosition" class="form-control" asp-items="@(new SelectList(Enum.GetValues(typeof(Web_News.Models.BannerPosition)).Cast<BannerPosition>().Select(bp => new SelectListItem { Value = bp.ToString(), Text = bp.ToString() }), "Value", "Text", Model.BannerPosition))">
+            <option value="">-- Select Position --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success" name="action" value="approve">Duyệt</button>
+</form>
+
+<script>
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        const imagePreview = document.getElementById('imagePreview');
+
+        reader.onload = function (e) {
+            // Xóa ảnh hiện tại nếu có
+            const currentImage = document.getElementById('currentImage');
+            if (currentImage) {
+                currentImage.remove();
+            }
+
+            // Tạo phần tử img mới và thêm vào
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.alt = 'New Advertisement Image';
+            img.style.maxWidth = '100%';
+            img.style.height = 'auto';
+            img.id = 'currentImage';
+
+            imagePreview.appendChild(img);
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+</script>

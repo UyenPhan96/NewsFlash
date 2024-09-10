@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.CodeAnalysis.Elfie.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Web_News.Areas.Admin.ViewModels;
 using Web_News.Models;
 
@@ -73,6 +74,25 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
             await _context.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<NewsViewModel>> GetAllNewsAsync()
+        {
+
+            return await _context.News
+         .Include(n => n.NewsCategories) // Bao gồm liên kết tới bảng NewsCategories
+         .ThenInclude(nc => nc.Category) // Bao gồm thông tin danh mục từ bảng Category
+         .Select(n => new NewsViewModel
+         {
+             NewsId = n.NewsId,
+             Title = n.Title,
+             Image = n.Image,
+             PublishDate = n.PublishDate,
+             Status = n.Status,
+             CreatedByUserName = _context.Users.FirstOrDefault(u => u.UserID == n.CreatedByUserId).Name,
+             ListCategories = n.NewsCategories.Select(nc => nc.Category).ToList() // Lấy danh sách các danh mục
+         })
+         .ToListAsync();
+        }
+
         public async Task<NewsViewModel> GetNewsByIdAsync(int newsId)
         {
             var news = await _context.News.Include(n => n.NewsCategories)
@@ -96,36 +116,113 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
                 Categories = news.NewsCategories.Select(nc => nc.Category).ToList() // Thay đổi ở đây
             };
         }
-
-
-
-        
-        public async Task<IEnumerable<NewsViewModel>> GetAllNewsAsync()
-        {
-
-            return await _context.News
-         .Include(n => n.NewsCategories) // Bao gồm liên kết tới bảng NewsCategories
-         .ThenInclude(nc => nc.Category) // Bao gồm thông tin danh mục từ bảng Category
-         .Select(n => new NewsViewModel
-         {
-             NewsId = n.NewsId,
-             Title = n.Title,
-             Image = n.Image,
-             PublishDate = n.PublishDate,
-             Status = n.Status,
-             CreatedByUserName = _context.Users.FirstOrDefault(u => u.UserID == n.CreatedByUserId).Name,
-             ListCategories = n.NewsCategories.Select(nc => nc.Category).ToList() // Lấy danh sách các danh mục
-         })
-         .ToListAsync();
-        }
         public async Task<List<News>> GetTop4News()
         {
             return await _context.News
-                .Where(n => n.Status) // Chỉ lấy bài viết có Status = true
+                .Where(n => n.Status) 
                 .OrderByDescending(n => n.PublishDate)
                 .Take(4)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<NewsViewModel>> GetNewsByCategoryAsync(int categoryId)
+        {
+            return await _context.News
+                .Include(n => n.NewsCategories)
+                .ThenInclude(nc => nc.Category)
+                .Where(n => n.NewsCategories.Any(nc => nc.CategoryId == categoryId)) // Lọc theo CategoryId
+                .Select(n => new NewsViewModel
+                {
+                    NewsId = n.NewsId,
+                    Title = n.Title,
+                    Image = n.Image,
+                    PublishDate = n.PublishDate,
+                    Status = n.Status,
+                    CreatedByUserName = _context.Users.FirstOrDefault(u => u.UserID == n.CreatedByUserId).Name,
+                    ListCategories = n.NewsCategories.Select(nc => nc.Category).ToList()
+                })
+                .ToListAsync();
+        }
+        public async Task<List<News>> GetNewsByCategoryList(int categoryId)
+        {
+            return await _context.News
+                .Include(n => n.NewsCategories)
+                .ThenInclude(nc => nc.Category)
+                .Where(n => n.NewsCategories.Any(nc => nc.CategoryId == categoryId)) // Lọc theo CategoryId
+                .ToListAsync();
+        }
+
+
+
+
+
+
+        public async Task<List<Advertisement>> GetActiveAdvertisementsAsync(BannerPosition position,int maxResults)
+        {
+            var currentDate = DateTime.Now;
+
+            // Lấy các quảng cáo dựa trên vị trí quảng cáo, trạng thái được hiển thị và còn hiệu lực
+            var advertisements = await _context.Advertisements
+                .Where(ad => ad.Status == Status.Displayed &&
+                             ad.ApprovalStatus == ApprovalStatus.Approved &&
+                             ad.BannerPosition == position && 
+                             ad.EndDate > currentDate) 
+                .Take (maxResults)
+                .ToListAsync();
+
+            
+            // Cập nhật trạng thái của các quảng cáo đã hết hạn
+            var expiredAdvertisements = await _context.Advertisements
+                .Where(ad => ad.Status == Status.Displayed && ad.EndDate <= currentDate)
+                .ToListAsync();
+            // Lấy ra danh sách hết hạn và cập nhật trạng thái hiển thị 
+            foreach (var ad in expiredAdvertisements)
+            {
+                ad.Status = Status.Expired;
+            }
+
+          
+            if (expiredAdvertisements.Any())
+            {
+                await _context.SaveChangesAsync();
+            }
+
+            return advertisements;
+        }
+
+
+        // Lấy danh sách bài viết theo thể loại và quảng cáo 
+        public async Task<ListViewModel> GetNewsByCategoryWithAdsAsync(int categoryId)
+        {
+            // Lấy danh sách bài viết theo thể loại (CategoryId)
+            var newsList = await _context.News
+                .Include(n => n.NewsCategories)
+                .ThenInclude(nc => nc.Category)
+                .Where(n => n.NewsCategories.Any(nc => nc.CategoryId == categoryId) && n.Status) // Lọc theo CategoryId và trạng thái hiển thị
+                .OrderByDescending(n => n.PublishDate)
+                .ToListAsync();
+
+            // Lấy quảng cáo cho Sidebar (5 quảng cáo)
+            var sidebarAds = await GetActiveAdvertisementsAsync(BannerPosition.Sidebar, 5);
+
+            // Lấy quảng cáo cho Header (1 quảng cáo)
+            var headerAds = await GetActiveAdvertisementsAsync(BannerPosition.Header, 1);
+
+            // Lấy quảng cáo cho Footer (1 quảng cáo)
+            var footerAds = await GetActiveAdvertisementsAsync(BannerPosition.Footer, 1);
+
+            // Tạo ListViewModel chứa bài viết và quảng cáo
+            var viewModel = new ListViewModel
+            {
+                LatestNews = newsList,
+                SidebarAdvertisements = sidebarAds,
+                HeaderAdvertisements = headerAds,
+                FooterAdvertisements = footerAds
+            };
+
+            return viewModel;
+        }
+
 
     }
 }

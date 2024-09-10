@@ -9,5 +9,7 @@ namespace Web_News.Areas.Admin.ServiceAd.CategorySV
         Task AddCategoryAsync(Category category);
         Task UpdateCategoryAsync(Category category);
         Task DeleteCategoryAsync(int id);
+        Task<IEnumerable<Category>> GetParentCategoriesAsync();
+        Task<List<Category>> GetCategoriessAsync();
     }
 }

@@ -81,7 +81,7 @@
             <div class="dropdown-content">
                 <a asp-controller="Account" asp-action="Profile">Hồ sơ cá nhân</a>
               
-                <a href="mailto:quangcao@example.com">Liên hệ quảng cáo</a>
+                <a asp-action="Create" asp-controller="Contact">Liên hệ quảng cáo</a>
                 <a asp-controller="Account" asp-action="Logout">Log out</a>
             </div>
         </div>
@@ -90,8 +90,7 @@
     else
     {
       <a href="~/Account/Login" class="login-button">
-    <i class="fas fa-user"></i>
-</a>
-
+        <i class="fas fa-user"></i>
+      </a>
     }
 </div>
