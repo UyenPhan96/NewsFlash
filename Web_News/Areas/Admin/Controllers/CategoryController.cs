@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Web_News.Areas.Admin.ServiceAd.CategorySV;
 using Web_News.Models;
 
@@ -34,6 +35,9 @@ namespace Web_News.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
+            // Lấy danh sách chuyên mục mẹ từ service để hiển thị trong dropdown
+            var parentCategories = _categoryService.GetParentCategoriesAsync().Result;
+            ViewData["ParentCategories"] = new SelectList(parentCategories, "CategoryId", "NameCategory");
             return View();
         }
 
@@ -43,9 +47,15 @@ namespace Web_News.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                // Thêm chuyên mục mới khi dữ liệu hợp lệ
                 await _categoryService.AddCategoryAsync(category);
                 return RedirectToAction(nameof(GetAllCategory));
             }
+            
+            // Nếu ModelState không hợp lệ, trả về form với dữ liệu đã nhập để người dùng có thể sửa
+            var parentCategories = await _categoryService.GetParentCategoriesAsync();
+            ViewData["ParentCategories"] = new SelectList(parentCategories, "CategoryId", "NameCategory");
+
             return View(category);
         }
 
@@ -57,6 +67,10 @@ namespace Web_News.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            // Lấy danh sách chuyên mục mẹ và hiển thị trong dropdown
+            var parentCategories = await _categoryService.GetParentCategoriesAsync();
+            ViewData["ParentCategories"] = new SelectList(parentCategories, "CategoryId", "NameCategory", category.ParentCategoryId);
+
             return View(category);
         }
 
@@ -64,18 +78,30 @@ namespace Web_News.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Category category)
         {
-            if (id != category.CategoryId)
-            {
-                return NotFound();
-            }
+           
 
             if (!ModelState.IsValid)
             {
-                await _categoryService.UpdateCategoryAsync(category);
-                return RedirectToAction(nameof(GetAllCategory));
+                try
+                {
+                    // Cập nhật chuyên mục
+                    await _categoryService.UpdateCategoryAsync(category);
+                    return RedirectToAction(nameof(GetAllCategory));
+                }
+                catch (Exception ex)
+                {
+                    // Xử lý ngoại lệ (nếu có)
+                    ModelState.AddModelError("", "Có lỗi xảy ra khi cập nhật chuyên mục: " + ex.Message);
+                }
             }
+
+            // Nếu dữ liệu không hợp lệ, trả về trang Edit với dữ liệu và thông báo lỗi
+            var parentCategories = await _categoryService.GetParentCategoriesAsync();
+            ViewData["ParentCategories"] = new SelectList(parentCategories, "CategoryId", "NameCategory", category.ParentCategoryId);
+
             return View(category);
         }
+
 
         public async Task<IActionResult> Delete(int id)
         {

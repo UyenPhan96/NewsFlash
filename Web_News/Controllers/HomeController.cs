@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Web_News.Areas.Admin.ServiceAd.NewsSV;
+using Web_News.Areas.Admin.ViewModels;
 using Web_News.Models;
 
 namespace Web_News.Controllers
@@ -19,27 +20,35 @@ namespace Web_News.Controllers
         public async Task<IActionResult> Index()
         {
             var latestNews = await _newsService.GetTop4News();
+            var sidebarAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Sidebar,4);
+            var headerAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Header,1);
+            var footerAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Footer,1);
 
-            return View(latestNews);
+            var viewModel = new ListViewModel
+            {
+                LatestNews = latestNews,
+                SidebarAdvertisements = sidebarAds,
+                HeaderAdvertisements = headerAds,
+                FooterAdvertisements = footerAds
+            };
+
+            return View(viewModel);
         }
-        // Action ?? hi?n th? chi ti?t bài vi?t
+
+
+
         public async Task<IActionResult> Privacy(int id)
         {
             var newsDetails = await _newsService.GetNewsByIdAsync(id);
 
             if (newsDetails == null)
             {
-                return NotFound(); // Tr? v? trang 404 n?u bài vi?t không tìm th?y
+                return NotFound(); 
             }
 
-            return View(newsDetails); // Tr? v? view v?i d? li?u chi ti?t bài vi?t
+            return View(newsDetails); 
         }
 
-        //[Authorize(Roles = "Admin")]
-        //public IActionResult Privacy()
-        //{
-        //    return View();
-        //}
 
 
 

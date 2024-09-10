@@ -1,15 +1,16 @@
-﻿@model List<Web_News.Models.News>
+﻿@model Web_News.Areas.Admin.ViewModels.ListViewModel;
+
 @{
 
     ViewBag.title = "Trang chủ";
 }
 
-<!DOCTYPE html>
+@* <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
+</head> *@
 <body>
     <div class="results" id="results"></div>
     <div class="container">
@@ -21,29 +22,29 @@
             <div class="grid-container">
                 <!-- Bài viết lớn trên cùng -->
                 <article class="grid-item-large article">
-                    <a class="article-link" href="@Url.Action("Privacy", "Home", new { id = Model[0].NewsId })">
+                    <a class="article-link" href="@Url.Action("Privacy", "Home", new { id = Model.LatestNews[0].NewsId })">
                         <div class="article-headers">
-                            <img src="/Images/@Model[0].Image" alt="Ảnh bài viết lớn">
+                            <img src="/Images/@Model.LatestNews[0].Image" alt="Ảnh bài viết lớn">
                             <div class="article-contents">
-                                <h3>@Model[0].Title</h3>
-                                <p class="article-summary">@Html.Raw(Model[0].Content.Substring(0, Math.Min(Model[0].Content.Length, 600)))...</p>
+                                <h3>@Model.LatestNews[0].Title</h3>
+                                <p class="article-summary">@Html.Raw(Model.LatestNews[0].Content.Substring(0, Math.Min(Model.LatestNews[0].Content.Length, 600)))...</p>
                             </div>
                         </div>
                     </a>
                 </article>
 
                 <!-- Các bài viết nhỏ dưới cùng -->
-                @for (int i = 1; i < Model.Count && i < 4; i++)
+                @for (int i = 1; i < Model.LatestNews.Count && i < 4; i++)
                 {
                     <article class="article grid-item-small">
-                        <a class="article-link" href="@Url.Action("Privacy", "Home", new { id = Model[i].NewsId })">
+                        <a class="article-link" href="@Url.Action("Privacy", "Home", new { id = Model.LatestNews[i].NewsId })">
                             <div class="article-header">
-                                <img src="/Images/@Model[i].Image" alt="Ảnh bài viết @i">
+                                <img src="/Images/@Model.LatestNews[i].Image" alt="Ảnh bài viết @i">
                                 <div class="article-content">
-                                    <h3>@Model[i].Title</h3>
+                                    <h3>@Model.LatestNews[i].Title</h3>
                                 </div>
                             </div>
-                            <p>@Html.Raw(Model[i].Content.Substring(0, Math.Min(Model[i].Content.Length, 100)))...</p>
+                            <p>@Html.Raw(Model.LatestNews[i].Content.Substring(0, Math.Min(Model.LatestNews[i].Content.Length, 100)))...</p>
                         </a>
                     </article>
                 }
@@ -813,158 +814,16 @@
 
 
         <aside class="sidebar">
-            <div class="sidebar-section">
-                <h2 class="road-stories-title">
-                    <i class="fas fa-map-marker-alt"></i> CHUYỆN DỌC ĐƯỜNG
-                </h2>
-                <!-- Mục sidebar 1 -->
-                <a href="https://www.baogiaothong.vn/nguoi-dan-can-chuan-bi-gi-khi-ngoi-nha-dang-ky-xe-tu-ngay-1-8-192240731220137623.htm" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/300_188/603483875699699712/2024/7/31/z568598340167065757da5a2219fbfb0338d28d1c1b957-17224378587641926586432-85-0-1685-2560-crop-17224380259418516058.jpg" alt="Hình ảnh 1">
-                    <h2>Người dân cần chuẩn bị gì khi ngồi nhà đăng ký xe từ ngày 1/8?</h2>
-                </a>
-                <!-- Mục sidebar 2 -->
-                <a href="https://www.baogiaothong.vn/di-nguoc-chieu-do-xe-giua-duong-thi-gan-voi-o-to-di-dung-luat-19224073015331627.htm" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/300_188/603483875699699712/2024/7/30/thumb-00-17223282751391956543903-1722328276276274420093-149-280-738-1223-crop-1722328287786358439168.png" alt="Hình ảnh 2">
-                    <h2>Đi ngược chiều, đỗ xe giữa đường thi gan với ô tô đi đúng luật</h2>
-                </a>
-                <!-- Mục sidebar 3 -->
-                <a href="https://www.baogiaothong.vn/sap-dau-gia-lai-bien-so-vip-30k-99999-nhieu-lan-bi-bo-coc-192240801063237133.htm" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/300_188/603483875699699712/2024/7/31/edit-dau-gia-bien-so-17113417254-17224686839771960346220-0-0-946-1514-crop-1722468689043742948586.jpg" alt="Hình ảnh 3">
-                    <h2>Sắp đấu giá lại biển số VIP 30K-999.99 nhiều lần bị bỏ cọc</h2>
-                </a>
-                <div class="vertical-banner">
-                    <a href="https://thepizzacompany.vn/" target="_blank">
-                        <img src="https://i.pinimg.com/564x/5c/c2/25/5cc2257f4cdc1e65174a0f06ebbf79fc.jpg" alt="Quảng Cáo Dọc">
-                    </a>
+            @foreach (var ad in Model.SidebarAdvertisements)
+            {
+                <div class="sidebar-section">
+                    <div class="vertical-banner">
+                        <a href="@ad.Link" target="_blank">
+                            <img src="~/ImagesAdvertisement/@ad.Image" alt="Quảng Cáo Dọc">
+                        </a>
+                    </div>
                 </div>
-                <div class="vertical-banner">
-                    <a href="https://thepizzacompany.vn/" target="_blank">
-                        <img src="https://i.pinimg.com/564x/fd/10/dd/fd10ddd283008e79581d5cb932557f0e.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                    </a>
-                </div>
-                <div class="vertical-banner">
-                    <a href="https://thepizzacompany.vn/" target="_blank">
-                        <img src="https://i.pinimg.com/564x/b4/f1/65/b4f1657706054c68d982ba75c7de31a6.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                    </a>
-                </div>
-                <div class="vertical-banner">
-                    <a href="https://thepizzacompany.vn/" target="_blank">
-                        <img src="https://i.pinimg.com/564x/0b/38/75/0b387522397983d52752346a427e64bd.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                    </a>
-                </div>
-                <div class="vertical-banner">
-                    <a href="https://thepizzacompany.vn/" target="_blank">
-                        <img src="https://i.pinimg.com/736x/8a/b0/9b/8ab09b86d26a0a15c902ad6b69baf90d.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                    </a>
-                </div><div class="vertical-banner">
-                    <a href="https://thepizzacompany.vn/" target="_blank">
-                        <img src="https://i.pinimg.com/564x/03/7d/6f/037d6fb9fe70f77f3b71aba4e15b4553.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                    </a>
-                </div>
-
-                <!-- Mục sidebar 4 -->
-                <a href="link-to-article4.html" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/354_221/603483875699699712/2024/8/1/x-1722476132560526768933-85-0-1365-2048-crop-17224763923252088668174.jpeg" alt="Hình ảnh 4">
-                    <h2>Trì hoãn đăng ký xe để chờ giảm 50% lệ phí trước bạ có bị xử phạt?</h2>
-                </a>
-                <!-- Mục sidebar 5 -->
-                <a href="link-to-article5.html" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/354_221/603483875699699712/2024/7/31/1000000184-17224303552711508937762-182-0-1432-2000-crop-17224306938621853668613.jpg" alt="Hình ảnh 5">
-                    <h2>Nhận hối lộ, cựu chủ tịch, phó chủ tịch quận ở Đà Nẵng lĩnh án tù</h2>
-                </a>
-                <!-- Mục sidebar 6 -->
-                <a href="link-to-article6.html" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/354_221/603483875699699712/2024/7/31/quang-binh-7184-17224279752431712459970-0-87-446-800-crop-17224280698101323652932.jpg" alt="Hình ảnh 6">
-                    <h2>Quảng Bình: Khởi tố vụ lừa bán khống cổ phần chiếm đoạt 18 tỷ đồng</h2>
-                </a>
-                <!-- Mục sidebar 7 -->
-                <a href="link-to-article7.html" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/354_221/603483875699699712/2024/7/31/thumb-messengercreation65339d56-9811-43f9-bc47-714dcf78d149-17224209528891529910274-17224209557371404606635.jpeg" alt="Hình ảnh 7">
-                    <h2>Triệt phá nhóm đối tượng chuyên dàn cảnh, móc túi nơi đông người tại TP.HCM</h2>
-                </a>
-                <!-- Mục sidebar 8 -->
-                <a href="link-to-article8.html" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/354_221/603483875699699712/2024/7/31/z5685917668447-715a9862ca862c942d89315c8e58b0f6-172242079609931041403-174-0-1424-2000-crop-172242080161626798335.jpg" alt="Hình ảnh 8">
-                    <h2>Thanh niên lĩnh 8 năm tù sau khi gọi hội đánh người trêu ghẹo vợ</h2>
-                </a>
-                <!-- Mục sidebar 9 -->
-                <a href="link-to-article9.html" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/354_221/603483875699699712/2024/7/31/452257899-1020922929197302-4525088326495712658-n-17224151013751161245933-0-89-972-1644-crop-1722415117728621992999.jpg" alt="Hình ảnh 9">
-                    <h2>Đắk Lắk: Bắt nhóm đối tượng dương tính ma túy vác súng đi giải quyết mâu thuẫn</h2>
-                </a>
-                <!-- Mục sidebar 10 -->
-                <a href="link-to-article10.html" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/354_221/603483875699699712/2024/7/31/picture1-17224109714081626114804-0-0-823-1317-crop-17224109885551606756775.png" alt="Hình ảnh 10">
-                    <h2>Lĩnh 18 năm tù vì đâm chết bạn nhậu</h2>
-                </a>
-                <!-- Thêm các mục mới -->
-                <!-- Mục sidebar 11 -->
-                <a href="link-to-article11.html" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/354_221/603483875699699712/2024/7/31/z5684771077012-8f91530d6c920c57414df69f4b560573-17224062207761984009830-159-0-919-1216-crop-17224062264721326213500.jpg" alt="Hình ảnh 11">
-                    <h2>
-                        Bắt một công chứng viên trong vụ lừa hơn 3 tỷ đồng ở Lai Châu
-                    </h2>
-                </a>
-                <!-- Mục sidebar 12 -->
-                <a href="link-to-article12.html" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/354_221/603483875699699712/2024/7/31/1-1722403213714905521976-0-0-400-640-crop-1722403217898147930198.jpg" alt="Hình ảnh 12">
-                    <h2>Lời khai của nghi phạm chém tử vong con dâu ở Sóc Trăng</h2>
-                </a>
-                <!-- Mục sidebar 13 -->
-                <a href="link-to-article13.html" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/354_221/603483875699699712/2024/7/31/edit-z5684968486008d5b8f367f4ceb0ea11dfb171278eae64-1722402309937835649920-24-0-720-1114-crop-17224023568002133206434.jpeg" alt="Hình ảnh 13">
-                    <h2>Nam thanh niên vờ đi nhờ xe rồi ra tay sát hại nam công nhân, cướp tài sản</h2>
-                </a>
-                <!-- Mục sidebar 14 -->
-                <a href="link-to-article14.html" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/354_221/603483875699699712/2024/7/31/z5682571379697c802253da746f92d4a1bd832e9178976-17223322811451751204160-0-32-376-634-crop-1722396533694223824066.jpg" alt="Hình ảnh 14">
-                    <h2>Bắt khẩn cấp người đàn ông châm lửa đốt cây xăng ở Nha Trang</h2>
-                </a>
-                <!-- Mục sidebar 15 -->
-                <a href="link-to-article15.html" class="sidebar-section">
-                    <img src="https://baogiaothong.mediacdn.vn/zoom/354_221/603483875699699712/2024/7/31/a3-1722410330351217999098-84-0-1334-2000-crop-17224103386691924933721.jpg" alt="Hình ảnh 15">
-                    <h2>
-                        Cựu giám đốc CDC tỉnh Đắk Lắk phủ nhận việc nhận tiền hối lộ
-                    </h2>
-                </a>
-            </div>
-            <div class="vertical-banner">
-                <a href="https://thepizzacompany.vn/" target="_blank">
-                    <img src="https://i.pinimg.com/564x/fd/10/dd/fd10ddd283008e79581d5cb932557f0e.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                </a>
-            </div>
-            <div class="vertical-banner">
-                <a href="https://thepizzacompany.vn/" target="_blank">
-                    <img src="https://i.pinimg.com/564x/88/9b/df/889bdf2ca4a37a67a353ea767b9e4d6d.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                </a>
-            </div>
-            <div class="vertical-banner">
-                <a href="https://thepizzacompany.vn/" target="_blank">
-                    <img src="https://i.pinimg.com/564x/23/85/94/2385946d183fa73b07f3ef9777e782d5.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                </a>
-            </div>
-            <div class="vertical-banner">
-                <a href="https://thepizzacompany.vn/" target="_blank">
-                    <img src="https://i.pinimg.com/564x/70/5a/8b/705a8b6ec9f10b8be533f60bef701586.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                </a>
-            </div><div class="vertical-banner">
-                <a href="https://thepizzacompany.vn/" target="_blank">
-                    <img src="https://i.pinimg.com/564x/bd/91/0e/bd910eb02bfdbe93dcdc71c0d6ba862f.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                </a>
-            </div><div class="vertical-banner">
-                <a href="https://thepizzacompany.vn/" target="_blank">
-                    <img src="https://i.pinimg.com/564x/dc/37/2d/dc372d016062057c76b8112aff70aad7.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                </a>
-            </div><div class="vertical-banner">
-                <a href="https://thepizzacompany.vn/" target="_blank">
-                    <img src="https://i.pinimg.com/736x/75/bb/36/75bb36f4f0a70e2a1faac5fc524f5629.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                </a>
-            </div><div class="vertical-banner">
-                <a href="https://thepizzacompany.vn/" target="_blank">
-                    <img src="https://i.pinimg.com/564x/86/6d/24/866d24d7592145b6a1c10c04a03a4e2c.jpg" alt="Quảng Cáo Dọc Thứ Hai">
-                </a>
-
-            </div>
+            }
         </aside>
 
 </body>

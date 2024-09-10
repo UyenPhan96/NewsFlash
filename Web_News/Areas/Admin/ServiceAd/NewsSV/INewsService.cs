@@ -11,6 +11,8 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
         Task<NewsViewModel> GetNewsByIdAsync(int newsId);
         Task<IEnumerable<NewsViewModel>> GetAllNewsAsync();
         Task<List<News>> GetTop4News();
-
+        Task<List<Advertisement>> GetActiveAdvertisementsAsync(BannerPosition position , int maxResults);
+        Task<IEnumerable<NewsViewModel>> GetNewsByCategoryAsync(int categoryId);
+        Task<List<News>> GetNewsByCategoryList(int categoryId);
     }
 }
