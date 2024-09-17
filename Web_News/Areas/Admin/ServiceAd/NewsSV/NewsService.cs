@@ -143,13 +143,24 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
                 })
                 .ToListAsync();
         }
-        public async Task<List<News>> GetNewsByCategoryList(int categoryId)
+        public async Task<List<News>> GetNewsByCategoryList(int categoryId, int pageNumber, int pageSize)
+        {
+            // Lọc các bài viết thuộc danh mục
+            var query = _context.News
+                .Where(n => n.NewsCategories.Any(nc => nc.CategoryId == categoryId) && n.Status);
+
+            // Phân trang
+            return await query
+                .OrderByDescending(n => n.PublishDate) // Sắp xếp theo ngày đăng
+                .Skip((pageNumber - 1) * pageSize) // Bỏ qua các mục trước trang hiện tại
+                .Take(pageSize) // Lấy số mục theo kích thước trang
+                .ToListAsync();
+        }
+
+        public async Task<int> GetNewsCountByCategory(int categoryId)
         {
             return await _context.News
-                .Include(n => n.NewsCategories)
-                .ThenInclude(nc => nc.Category)
-                .Where(n => n.NewsCategories.Any(nc => nc.CategoryId == categoryId)) // Lọc theo CategoryId
-                .ToListAsync();
+                .CountAsync(n => n.NewsCategories.Any(nc => nc.CategoryId == categoryId) && n.Status);
         }
 
 
