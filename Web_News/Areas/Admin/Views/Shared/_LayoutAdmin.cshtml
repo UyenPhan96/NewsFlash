@@ -4,14 +4,13 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Web_News</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="~/LayoutAdmin/assets/css/style.css">
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Web_News.styles.css" asp-append-version="true" />
 
 
@@ -60,7 +59,7 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item preview-item">
                                 <div class="preview-thumbnail">
-                                    <img src="../../LayoutAdmin/assets/images/faces/face4.jpg" alt="image" class="profile-pic">
+                                    <img src="~/LayoutAdmin/assets/images/faces/face1.jpg" alt="image" class="profile-pic">
                                 </div>
                                 <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
                                     <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Mark send you a message</h6>
@@ -134,8 +133,8 @@
                         </a>
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="News" asp-action="Index">Danh Sách Tin Tức</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/typography.html">Typography</a></li>
+                                <li > <a class="nav-link" asp-area="Admin" asp-controller="News" asp-action="Index">Danh Sách Tin Tức</a></li>
+                                <li > <a class="nav-link" href="../../pages/ui-features/typography.html">Typography</a></li>
                             </ul>
                         </div>
                     </li>
@@ -147,10 +146,22 @@
                         </a>
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="GetAllCategory">Danh Sách Category</a></li>
-                                <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/typography.html">Typography</a></li>
+                                <li > <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="GetAllCategory">Danh Sách Category</a></li>
+                                <li > <a class="nav-link" href="../../pages/ui-features/typography.html">Typography</a></li>
                             </ul>
                         </div>
+                    </li>
+                         <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="Advertisement" asp-action="Index">
+                            <span class="menu-title">Danh Sách liên hệ</span>
+                            <i class="mdi mdi-contacts menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="Advertisement" asp-action="Index">
+                            <span class="menu-title">Danh Sách liên hệ</span>
+                            <i class="mdi mdi-contacts menu-icon"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-area="Admin" asp-controller="Advertisement" asp-action="Index">

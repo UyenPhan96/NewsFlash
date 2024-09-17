@@ -34,6 +34,10 @@
         font-weight: bold; /* Make active category text bold */
     }
 
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
 </style>
 <body>
     <div class="results" id="results"></div>
@@ -83,9 +87,8 @@
                 }
 
                 <!-- Hiển thị các bài viết nhỏ tiếp theo -->
-                @for (int i = 1; i < Model.LatestNews.Count; i++)
+                @foreach (var news in Model.LatestNews.Skip(1))
                 {
-                    var news = Model.LatestNews[i];
                     <article class="grid-item-small article">
                         <a class="article-link" href="@Url.Action("Privacy", "Home", new { id = news.NewsId })">
                             <div class="article-header">
@@ -97,10 +100,46 @@
                             <p>@Html.Raw(news.Content?.Substring(0, Math.Min(news.Content.Length, 100)))...</p>
                         </a>
                         <p>Ngày đăng: @news.PublishDate.ToString("dd/MM/yyyy")</p>
-                       
                     </article>
                 }
             </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    @if (Model.PageNumber > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { id = Model.SelectedCategoryId, page = Model.PageNumber - 1 })" tabindex="-1">Previous</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= (Model.TotalItems + Model.PageSize - 1) / Model.PageSize; i++)
+                    {
+                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { id = Model.SelectedCategoryId, page = i })">@i</a>
+                        </li>
+                    }
+
+                    @if (Model.PageNumber < (Model.TotalItems + Model.PageSize - 1) / Model.PageSize)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { id = Model.SelectedCategoryId, page = Model.PageNumber + 1 })">Next</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+
         </div>
 
         <aside class="sidebar">
