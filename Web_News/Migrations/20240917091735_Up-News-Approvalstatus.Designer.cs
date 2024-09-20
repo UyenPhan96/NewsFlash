@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web_News.Models;
 
@@ -11,9 +12,11 @@ using Web_News.Models;
 namespace Web_News.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240917091735_Up-News-Approvalstatus")]
+    partial class UpNewsApprovalstatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,20 +100,6 @@ namespace Web_News.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            CategoryId = 50,
-                            Describe = "Latest technology news",
-                            NameCategory = "Công nghệ"
-                        },
-                        new
-                        {
-                            CategoryId = 51,
-                            Describe = "Health and wellness tips",
-                            NameCategory = "Sức khỏe"
-                        });
                 });
 
             modelBuilder.Entity("Web_News.Models.News", b =>
@@ -153,30 +142,6 @@ namespace Web_News.Migrations
                     b.HasIndex("CreatedByUserId");
 
                     b.ToTable("News");
-
-                    b.HasData(
-                        new
-                        {
-                            NewsId = 50,
-                            ApprovalStatus = 1,
-                            Content = "Công nghệ mới đang được phát triển toàn cầu.",
-                            CreatedByUserId = 1,
-                            Image = "ct.jpeg",
-                            PublishDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(834),
-                            Status = true,
-                            Title = "Công nghệ mới"
-                        },
-                        new
-                        {
-                            NewsId = 51,
-                            ApprovalStatus = 1,
-                            Content = "Sức khỏe cộng đồng Sức khỏe cộng đồng.",
-                            CreatedByUserId = 1,
-                            Image = "ct.jpeg",
-                            PublishDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(837),
-                            Status = true,
-                            Title = "Sức khỏe cộng đồng"
-                        });
                 });
 
             modelBuilder.Entity("Web_News.Models.NewsCategory", b =>
@@ -295,7 +260,7 @@ namespace Web_News.Migrations
                             Email = "admin@gmail.com",
                             Name = "Administrator",
                             Password = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=",
-                            RegistrationDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(699),
+                            RegistrationDate = new DateTime(2024, 9, 17, 16, 17, 32, 972, DateTimeKind.Local).AddTicks(1208),
                             UserName = "admin"
                         },
                         new
@@ -304,7 +269,7 @@ namespace Web_News.Migrations
                             Email = "hngoctro@gmail.com",
                             Name = "Huỳnh Ngọc Trợ",
                             Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
-                            RegistrationDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(724),
+                            RegistrationDate = new DateTime(2024, 9, 17, 16, 17, 32, 972, DateTimeKind.Local).AddTicks(1239),
                             UserName = "NgocTro"
                         },
                         new
@@ -313,7 +278,7 @@ namespace Web_News.Migrations
                             Email = "phucbin366@gmail.com",
                             Name = "Trần Văn Phúc",
                             Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
-                            RegistrationDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(739),
+                            RegistrationDate = new DateTime(2024, 9, 17, 16, 17, 32, 972, DateTimeKind.Local).AddTicks(1254),
                             UserName = "VanPhuc"
                         },
                         new
@@ -322,7 +287,7 @@ namespace Web_News.Migrations
                             Email = "caothiphuongvy27@gmail.com",
                             Name = "Cao Thị Phương Vy",
                             Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
-                            RegistrationDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(753),
+                            RegistrationDate = new DateTime(2024, 9, 17, 16, 17, 32, 972, DateTimeKind.Local).AddTicks(1310),
                             UserName = "PhuongVy"
                         },
                         new
@@ -331,7 +296,7 @@ namespace Web_News.Migrations
                             Email = "nguyenngocquy182752@gmail.com",
                             Name = "Nguyễn Thị Ngọc Quý",
                             Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
-                            RegistrationDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(766),
+                            RegistrationDate = new DateTime(2024, 9, 17, 16, 17, 32, 972, DateTimeKind.Local).AddTicks(1326),
                             UserName = "NgocQuy"
                         });
                 });

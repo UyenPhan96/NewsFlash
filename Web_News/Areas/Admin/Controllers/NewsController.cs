@@ -8,7 +8,7 @@ using Web_News.Models;
 
 namespace Web_News.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Admin")]
+   
     [Area("Admin")]
     public class NewsController : Controller
     {
@@ -19,7 +19,7 @@ namespace Web_News.Areas.Admin.Controllers
             _newsService = newsService;
             _categoryService = categoryService;
         }
-
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         // GET: News/Details/5
         public async Task<IActionResult> Details(int id)
         {
@@ -33,7 +33,7 @@ namespace Web_News.Areas.Admin.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         // GET: News/Create
         public async Task<IActionResult> Create()
         {
@@ -44,7 +44,7 @@ namespace Web_News.Areas.Admin.Controllers
             };
             return View(viewModel);
         }
-
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         // POST: News/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -70,7 +70,7 @@ namespace Web_News.Areas.Admin.Controllers
                         Content = model.Content,
                         Image = model.Image,
                         CreatedByUserId = userId,
-                        Status = model.Status
+                        //Status = model.Status
                     };
 
                     // Lưu bản ghi News trước để có được NewsId
@@ -89,13 +89,13 @@ namespace Web_News.Areas.Admin.Controllers
             model.Categories = await _categoryService.GetAllCategoriesAsync();
             return View(model);
         }
-
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         // GET: News/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var news = await _newsService.GetNewsByIdAsync(id);
             if (news == null) return NotFound();
-
+     
             var categories = await _categoryService.GetAllCategoriesAsync();
             var selectedCategories = news.Categories.Select(c => c.CategoryId);
 
@@ -113,13 +113,13 @@ namespace Web_News.Areas.Admin.Controllers
             return View(viewModel);
         }
 
-
-
         // POST: News/Edit/5
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(NewsViewModel model)
         {
+
             if (!ModelState.IsValid)
             {
                 try
@@ -130,9 +130,10 @@ namespace Web_News.Areas.Admin.Controllers
                         Title = model.Title,
                         Content = model.Content,
                         Image = model.Image,
-                        Status = model.Status
+                        Status = model.Status,
+                        ApprovalStatus = ApprovalStatus.Pending
                     };
-
+         
                     await _newsService.UpdateNewsAsync(news, model.SelectedCategories);
                     return RedirectToAction(nameof(Index));
                 }
@@ -142,22 +143,28 @@ namespace Web_News.Areas.Admin.Controllers
                 }
             }
 
-            // Re-fetch categories if the model state is not valid
             model.Categories = await _categoryService.GetAllCategoriesAsync();
             return View(model);
         }
 
+
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         // GET: News/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
             var news = await _newsService.GetNewsByIdAsync(id);
             if (news == null) return NotFound();
+            var isReporter = User.IsInRole("Reporter");
 
+            if (isReporter && news.Status == true)
+            {
+                return Forbid(); // Hoặc chuyển hướng đến một trang thông báo lỗi nếu cần
+            }
             // Trả về mô hình News thay vì NewsViewModel
             return View(news);
         }
 
-
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         // POST: News/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -167,6 +174,7 @@ namespace Web_News.Areas.Admin.Controllers
             {
                 await _newsService.DeleteNewsAsync(id);
                 return RedirectToAction(nameof(Index));
+
             }
             catch (Exception ex)
             {
@@ -179,12 +187,75 @@ namespace Web_News.Areas.Admin.Controllers
         }
 
 
-
-        // GET: News/Index
-        public async Task<IActionResult> Index()
+        [Authorize(Roles = "Admin,Reporter")]
+        public async Task<IActionResult> Index(ApprovalStatus? statusFilter = ApprovalStatus.Pending)
         {
-            var newsList = await _newsService.GetAllNewsAsync();
-            return View(newsList);
+            int userId;
+            if (int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out userId)) // Giả sử bạn lưu user ID trong claim
+            {
+                var newsList = await _newsService.GetNewsByApprovalStatusAsync(statusFilter, userId);
+                ViewData["StatusFilter"] = statusFilter;
+                return View(newsList);
+            }
+            else
+            {
+                // Xử lý trường hợp không thể chuyển đổi userId
+                return BadRequest("Invalid user ID");
+            }
+        }
+
+        [Authorize(Roles = "Admin,Reporter")]
+        // GET: News/FilterByStatus
+        public IActionResult FilterByStatus(ApprovalStatus status)
+        {
+            return RedirectToAction("Index", new { statusFilter = status });
+        }
+
+
+
+        [Authorize(Roles = "Admin,Editor")]
+        // Hiển thị danh sách các bài viết chờ duyệt
+        public async Task<IActionResult> PendingNews()
+        {
+            var pendingNews = await _newsService.GetAllPendingNewsAsync();
+            return View(pendingNews);
+        }
+
+        // Duyệt bài viết
+        [Authorize(Roles = "Admin,Editor")]
+        [HttpPost]
+        public async Task<IActionResult> ApproveNews(int newsId)
+        {
+            var result = await _newsService.ApproveNewsAsync(newsId);
+            if (!result)
+            {
+                return BadRequest("Không thể duyệt bài viết này.");
+            }
+            return RedirectToAction("PendingNews");
+        }
+
+        // Từ chối bài viết nếu sử dụng 
+        [Authorize(Roles = "Admin,Editor")]
+        [HttpPost]
+        public async Task<IActionResult> RejectNews(int newsId, string rejectionReason)
+        {
+            var result = await _newsService.RejectNewsAsync(newsId, rejectionReason);
+            if (!result)
+            {
+                return BadRequest("Không thể từ chối bài viết này.");
+            }
+            return RedirectToAction("PendingNews");
+        }
+        [Authorize(Roles = "Admin,Editor")]
+        // Chi tiết bài viết đang chờ duyệt
+        public async Task<IActionResult> NewsDetail(int newsId)
+        {
+            var newsDetail = await _newsService.GetNewsByIdAsync(newsId);
+            if (newsDetail == null)
+            {
+                return NotFound();
+            }
+            return View(newsDetail);
         }
     }
 }

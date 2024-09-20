@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Web_News.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Reporter,Editor")]
     [Area("Admin")]
     public class HomeAdminController : Controller
     {

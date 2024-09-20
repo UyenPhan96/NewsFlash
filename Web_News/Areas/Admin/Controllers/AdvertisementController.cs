@@ -17,11 +17,18 @@ namespace Web_News.Areas.Admin.Controllers
         }
 
         // Hiển thị danh sách quảng cáo
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(ApprovalStatus? status)
         {
-            var advertisements = await _advertisementService.GetAdvertisementsAsync();
+            if (!status.HasValue)
+            {
+                status = ApprovalStatus.Pending;
+            }
+            // Lưu trạng thái lọc vào ViewData
+            ViewData["StatusFilter"] = status.ToString();
+            var advertisements = await _advertisementService.GetAdvertisementsByStatusAsync(status);
             return View(advertisements);
         }
+
 
         // Chi tiết quảng cáo
         public async Task<IActionResult> Approve(int id)

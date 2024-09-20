@@ -47,6 +47,7 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
             existingNews.Content = news.Content;
             existingNews.Image = news.Image;
             existingNews.Status = news.Status;
+            existingNews.ApprovalStatus = news.ApprovalStatus;
 
             // Remove existing categories
             _context.NewsCategories.RemoveRange(existingNews.NewsCategories);
@@ -73,25 +74,53 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
             _context.News.Remove(news);
             await _context.SaveChangesAsync();
         }
-
-        public async Task<IEnumerable<NewsViewModel>> GetAllNewsAsync()
+        
+        public async Task<IEnumerable<NewsViewModel>> GetAllNewsAsync(bool status)
         {
 
             return await _context.News
-         .Include(n => n.NewsCategories) // Bao gồm liên kết tới bảng NewsCategories
-         .ThenInclude(nc => nc.Category) // Bao gồm thông tin danh mục từ bảng Category
-         .Select(n => new NewsViewModel
-         {
-             NewsId = n.NewsId,
-             Title = n.Title,
-             Image = n.Image,
-             PublishDate = n.PublishDate,
-             Status = n.Status,
-             CreatedByUserName = _context.Users.FirstOrDefault(u => u.UserID == n.CreatedByUserId).Name,
-             ListCategories = n.NewsCategories.Select(nc => nc.Category).ToList() // Lấy danh sách các danh mục
-         })
-         .ToListAsync();
+             .Where(n => n.Status == status)
+             .Include(n => n.NewsCategories) // Bao gồm liên kết tới bảng NewsCategories
+             .ThenInclude(nc => nc.Category) // Bao gồm thông tin danh mục từ bảng Category
+             .Select(n => new NewsViewModel
+             {
+                 NewsId = n.NewsId,
+                 Title = n.Title,
+                 Image = n.Image,
+                 PublishDate = n.PublishDate,
+                 Status = n.Status,
+                 CreatedByUserName = _context.Users.FirstOrDefault(u => u.UserID == n.CreatedByUserId).Name,
+                 ListCategories = n.NewsCategories.Select(nc => nc.Category).ToList() // Lấy danh sách các danh mục
+             })
+             .ToListAsync();
         }
+        public async Task<IEnumerable<NewsViewModel>> GetNewsByApprovalStatusAsync(ApprovalStatus? statusFilter, int userId)
+        {
+            var query = _context.News.Include(n => n.NewsCategories)
+                                     .ThenInclude(nc => nc.Category)
+                                     .Include(n => n.CreatedByUser) // Nạp thông tin người dùng
+                                     .Where(n => n.CreatedByUserId == userId) // Lọc theo người tạo
+                                     .Select(n => new NewsViewModel
+                                     {
+                                         NewsId = n.NewsId,
+                                         Title = n.Title,
+                                         Image = n.Image,
+                                         PublishDate = n.PublishDate,
+                                         Status = n.Status,
+                                         ApprovalStatus = n.ApprovalStatus,
+                                         CreatedByUserName = n.CreatedByUser.Name, // Lấy tên người dùng
+                                         ListCategories = n.NewsCategories.Select(nc => nc.Category).ToList()
+                                     });
+
+            if (statusFilter.HasValue)
+            {
+                query = query.Where(n => n.ApprovalStatus == statusFilter.Value);
+            }
+
+            return await query.ToListAsync();
+        }
+
+
 
         public async Task<NewsViewModel> GetNewsByIdAsync(int newsId)
         {
@@ -234,6 +263,52 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
             return viewModel;
         }
 
+
+
+        // Đây là phần cho hiển thị danh sách bài viết đang chờ duyệt , gồm lấy danh sách , duyệt và từ chối
+        public async Task<List<NewsViewModel>> GetAllPendingNewsAsync()
+        {
+            return await _context.News
+                .Where(n => !n.Status && n.ApprovalStatus == ApprovalStatus.Pending)
+                .Include(n => n.NewsCategories)
+                .Select(n => new NewsViewModel
+                {
+                    NewsId = n.NewsId,
+                    Title = n.Title,
+                    PublishDate = n.PublishDate,
+                    CreatedByUserName = _context.Users.FirstOrDefault(u => u.UserID == n.CreatedByUserId).Name,
+                    ListCategories = n.NewsCategories.Select(nc => nc.Category).ToList()
+                })
+                .ToListAsync();
+        }
+
+        public async Task<bool> ApproveNewsAsync(int newsId)
+        {
+            var news = await _context.News.FindAsync(newsId);
+            if (news == null)
+            {
+                return false;
+            }
+
+            news.Status = true;
+            news.ApprovalStatus = ApprovalStatus.Approved;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RejectNewsAsync(int newsId, string rejectionReason)
+        {
+            var news = await _context.News.FindAsync(newsId);
+            if (news == null)
+            {
+                return false;
+            }
+
+            news.ApprovalStatus = ApprovalStatus.Rejected;
+            news.RejectionReason = rejectionReason;
+            await _context.SaveChangesAsync();
+            return true;
+        }
 
     }
 }

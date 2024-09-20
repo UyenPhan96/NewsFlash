@@ -29,6 +29,12 @@ namespace Web_News.Models
         [Required]
         public bool Status { get; set; }
 
+        [EnumDataType(typeof(ApprovalStatus))]
+        public ApprovalStatus ApprovalStatus { get; set; } 
+
+        // Lý do từ chối nếu bài viết bị từ chối
+        public string? RejectionReason { get; set; }
+
         // Mối quan hệ nhiều-nhiều với Category thông qua bảng trung gian NewsCategory
         public ICollection<NewsCategory> NewsCategories { get; set; }
 
