@@ -277,5 +277,10 @@ namespace Web_News.Controllers
         {
             return View();
         }
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
     }
 }

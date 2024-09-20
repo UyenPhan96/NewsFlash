@@ -7,6 +7,7 @@ namespace Web_News.Areas.Admin.ServiceAd.AdvertisementSV
         Task ApproveAdvertisementAsync(int advertisementId);
         Task<Advertisement?> GetAdvertisementByIdAsync(int id);
         Task<List<Advertisement>> GetAdvertisementsAsync();
+        Task<List<Advertisement>> GetAdvertisementsByStatusAsync(ApprovalStatus? status);
         Task RejectAdvertisementAsync(int advertisementId);
         Task SaveAdvertisementImageAsync(int advertisementId, IFormFile mediaFile);
        

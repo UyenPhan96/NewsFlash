@@ -62,6 +62,38 @@ namespace Web_News.Models
                 new UserRole {  UserId = 5, RoleId = 2 }
 
             );
+            // Seed dữ liệu cho bảng Category
+            modelBuilder.Entity<Category>().HasData(
+                new Category { CategoryId = 50, NameCategory = "Công nghệ", Describe = "Latest technology news", ParentCategoryId = null },
+                new Category { CategoryId = 51, NameCategory = "Sức khỏe", Describe = "Health and wellness tips", ParentCategoryId = null }
+            );
+            // Seed dữ liệu cho bảng News
+            modelBuilder.Entity<News>().HasData(
+                new News
+                {
+                    NewsId = 50,
+                    Title = "Công nghệ mới",
+                    PublishDate = DateTime.Now,
+                    Content = "Công nghệ mới đang được phát triển toàn cầu.",
+                    Image = "ct.jpeg",
+                    CreatedByUserId = 1, 
+                    Status = true,
+                    ApprovalStatus = ApprovalStatus.Approved,
+                    RejectionReason = null
+                },
+                new News
+                {
+                    NewsId = 51,
+                    Title = "Sức khỏe cộng đồng",
+                    PublishDate = DateTime.Now,
+                    Content = "Sức khỏe cộng đồng Sức khỏe cộng đồng.",
+                    Image = "ct.jpeg",
+                    CreatedByUserId = 1, 
+                    Status = true,
+                    ApprovalStatus = ApprovalStatus.Approved,
+                    RejectionReason = null
+                }
+            );
             // ----------------------------------------------------------------------
         }
 

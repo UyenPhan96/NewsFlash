@@ -6,7 +6,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Web_News</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  @*   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> *@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/css/vendor.bundle.base.css">
@@ -133,8 +133,15 @@
                         </a>
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
-                                <li > <a class="nav-link" asp-area="Admin" asp-controller="News" asp-action="Index">Danh Sách Tin Tức</a></li>
-                                <li > <a class="nav-link" href="../../pages/ui-features/typography.html">Typography</a></li>
+                                <li class="nav-item"> 
+                                    <a class="nav-link" asp-area="Admin" asp-controller="News" asp-action="Index">Soạn bài viết</a>
+                                </li>
+                                @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+                                {
+                                 <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="News" asp-action="PendingNews">Duyệt bài viết</a>
+                                 </li>
+                                }
                             </ul>
                         </div>
                     </li>
@@ -146,8 +153,8 @@
                         </a>
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
-                                <li > <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="GetAllCategory">Danh Sách Category</a></li>
-                                <li > <a class="nav-link" href="../../pages/ui-features/typography.html">Typography</a></li>
+                                <li class="nav-item"> <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="GetAllCategory">Danh Sách Category</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="../../pages/ui-features/typography.html">Typography</a></li>
                             </ul>
                         </div>
                     </li>
@@ -157,18 +164,7 @@
                             <i class="mdi mdi-contacts menu-icon"></i>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="Admin" asp-controller="Advertisement" asp-action="Index">
-                            <span class="menu-title">Danh Sách liên hệ</span>
-                            <i class="mdi mdi-contacts menu-icon"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="Admin" asp-controller="Advertisement" asp-action="Index">
-                            <span class="menu-title">Danh Sách liên hệ</span>
-                            <i class="mdi mdi-contacts menu-icon"></i>
-                        </a>
-                    </li>
+   
 
                   @*   <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false" aria-controls="general-pages">
@@ -211,6 +207,8 @@
     <script src="~/LayoutAdmin/assets/js/off-canvas.js"></script>
     <script src="~/LayoutAdmin/assets/js/hoverable-collapse.js"></script>
     <script src="~/LayoutAdmin/assets/js/misc.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -26,6 +26,17 @@ namespace Web_News.Areas.Admin.ServiceAd.AdvertisementSV
                 .Where(a => a.ApprovalStatus == ApprovalStatus.Pending)
                 .ToListAsync();
         }
+        public async Task<List<Advertisement>> GetAdvertisementsByStatusAsync(ApprovalStatus? status)
+        {
+            var query = _context.Advertisements.AsQueryable();
+
+            if (status.HasValue)
+            {
+                query = query.Where(a => a.ApprovalStatus == status);
+            }
+
+            return await query.ToListAsync();
+        }
 
         // Lấy chi tiết quảng cáo theo ID
         public async Task<Advertisement?> GetAdvertisementByIdAsync(int id)
