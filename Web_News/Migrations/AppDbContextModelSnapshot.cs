@@ -162,7 +162,7 @@ namespace Web_News.Migrations
                             Content = "Công nghệ mới đang được phát triển toàn cầu.",
                             CreatedByUserId = 1,
                             Image = "ct.jpeg",
-                            PublishDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(834),
+                            PublishDate = new DateTime(2024, 9, 21, 13, 11, 28, 557, DateTimeKind.Local).AddTicks(4504),
                             Status = true,
                             Title = "Công nghệ mới"
                         },
@@ -173,7 +173,7 @@ namespace Web_News.Migrations
                             Content = "Sức khỏe cộng đồng Sức khỏe cộng đồng.",
                             CreatedByUserId = 1,
                             Image = "ct.jpeg",
-                            PublishDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(837),
+                            PublishDate = new DateTime(2024, 9, 21, 13, 11, 28, 557, DateTimeKind.Local).AddTicks(4507),
                             Status = true,
                             Title = "Sức khỏe cộng đồng"
                         });
@@ -226,8 +226,20 @@ namespace Web_News.Migrations
                         new
                         {
                             RoleID = 2,
-                            Describe = "Customer Role",
+                            Describe = "Vai trò người dùng trải nghiệm",
                             NameRole = "User"
+                        },
+                        new
+                        {
+                            RoleID = 3,
+                            Describe = "Vai trò người viết tin tức",
+                            NameRole = "Reporter"
+                        },
+                        new
+                        {
+                            RoleID = 4,
+                            Describe = "Vai trò người kiểm duyệt tin tức",
+                            NameRole = "Editor"
                         });
                 });
 
@@ -295,7 +307,7 @@ namespace Web_News.Migrations
                             Email = "admin@gmail.com",
                             Name = "Administrator",
                             Password = "jGl25bVBBBW96Qi9Te4V37Fnqchz/Eu4qB9vKrRIqRg=",
-                            RegistrationDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(699),
+                            RegistrationDate = new DateTime(2024, 9, 21, 13, 11, 28, 557, DateTimeKind.Local).AddTicks(4334),
                             UserName = "admin"
                         },
                         new
@@ -304,7 +316,7 @@ namespace Web_News.Migrations
                             Email = "hngoctro@gmail.com",
                             Name = "Huỳnh Ngọc Trợ",
                             Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
-                            RegistrationDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(724),
+                            RegistrationDate = new DateTime(2024, 9, 21, 13, 11, 28, 557, DateTimeKind.Local).AddTicks(4365),
                             UserName = "NgocTro"
                         },
                         new
@@ -313,7 +325,7 @@ namespace Web_News.Migrations
                             Email = "phucbin366@gmail.com",
                             Name = "Trần Văn Phúc",
                             Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
-                            RegistrationDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(739),
+                            RegistrationDate = new DateTime(2024, 9, 21, 13, 11, 28, 557, DateTimeKind.Local).AddTicks(4379),
                             UserName = "VanPhuc"
                         },
                         new
@@ -322,7 +334,7 @@ namespace Web_News.Migrations
                             Email = "caothiphuongvy27@gmail.com",
                             Name = "Cao Thị Phương Vy",
                             Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
-                            RegistrationDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(753),
+                            RegistrationDate = new DateTime(2024, 9, 21, 13, 11, 28, 557, DateTimeKind.Local).AddTicks(4393),
                             UserName = "PhuongVy"
                         },
                         new
@@ -331,8 +343,26 @@ namespace Web_News.Migrations
                             Email = "nguyenngocquy182752@gmail.com",
                             Name = "Nguyễn Thị Ngọc Quý",
                             Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
-                            RegistrationDate = new DateTime(2024, 9, 20, 9, 53, 56, 97, DateTimeKind.Local).AddTicks(766),
+                            RegistrationDate = new DateTime(2024, 9, 21, 13, 11, 28, 557, DateTimeKind.Local).AddTicks(4406),
                             UserName = "NgocQuy"
+                        },
+                        new
+                        {
+                            UserID = 6,
+                            Email = "reporter@gmail.com",
+                            Name = "Nguyễn Văn Ánh",
+                            Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
+                            RegistrationDate = new DateTime(2024, 9, 21, 13, 11, 28, 557, DateTimeKind.Local).AddTicks(4419),
+                            UserName = "reporter"
+                        },
+                        new
+                        {
+                            UserID = 7,
+                            Email = "editor@gmail.com",
+                            Name = "Cao Văn Lãnh",
+                            Password = "71EwYhTZpjYe4dW0UubSu3DcfruFv54Cw9R0f7V9a+w=",
+                            RegistrationDate = new DateTime(2024, 9, 21, 13, 11, 28, 557, DateTimeKind.Local).AddTicks(4432),
+                            UserName = "editor"
                         });
                 });
 
@@ -359,7 +389,7 @@ namespace Web_News.Migrations
                         new
                         {
                             UserId = 2,
-                            RoleId = 2
+                            RoleId = 3
                         },
                         new
                         {
@@ -369,12 +399,22 @@ namespace Web_News.Migrations
                         new
                         {
                             UserId = 4,
-                            RoleId = 2
+                            RoleId = 3
                         },
                         new
                         {
                             UserId = 5,
                             RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = 6,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 7,
+                            RoleId = 4
                         });
                 });
 

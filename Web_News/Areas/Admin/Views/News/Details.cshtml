@@ -33,4 +33,11 @@
     </ul>
 </div> *@
 
-<a href="@Url.Action("Index", "News")" class="btn btn-secondary">Back to List</a>
+@if (ViewBag.ReturnUrl != null)
+{
+    <a href="@ViewBag.ReturnUrl" class="btn btn-secondary">Quay lại </a>
+}
+else
+{
+    <a href="@Url.Action("Index", "News")" class="btn btn-secondary">Quay lại </a>
+}

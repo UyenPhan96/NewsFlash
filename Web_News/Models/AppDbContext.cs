@@ -41,7 +41,10 @@ namespace Web_News.Models
             // Seed dữ liệu cho bảng Role
             modelBuilder.Entity<Role>().HasData(
                 new Role { RoleID = 1, NameRole = "Admin", Describe = "Administrator Role" },
-                new Role { RoleID = 2, NameRole = "User", Describe =  "Customer Role" }
+                new Role { RoleID = 2, NameRole = "User", Describe = "Vai trò người dùng trải nghiệm" },
+                new Role { RoleID = 3, NameRole = "Reporter", Describe = "Vai trò người viết tin tức" },
+                new Role { RoleID = 4, NameRole = "Editor", Describe = "Vai trò người kiểm duyệt tin tức" }
+
             );
             // Seed dữ liệu cho bảng User 
             modelBuilder.Entity<User>().HasData(
@@ -50,17 +53,20 @@ namespace Web_News.Models
                 new User { UserID = 2, Name = "Huỳnh Ngọc Trợ", Email = "hngoctro@gmail.com", UserName = "NgocTro", Password = PasswordHasher.HashPassword("1234qwer"), RegistrationDate = DateTime.Now },
                 new User { UserID = 3, Name = "Trần Văn Phúc", Email = "phucbin366@gmail.com", UserName = "VanPhuc", Password = PasswordHasher.HashPassword("1234qwer"), RegistrationDate = DateTime.Now },
                 new User { UserID = 4, Name = "Cao Thị Phương Vy", Email = "caothiphuongvy27@gmail.com", UserName = "PhuongVy", Password = PasswordHasher.HashPassword("1234qwer"), RegistrationDate = DateTime.Now },
-                new User { UserID = 5, Name = "Nguyễn Thị Ngọc Quý", Email = "nguyenngocquy182752@gmail.com", UserName = "NgocQuy", Password = PasswordHasher.HashPassword("1234qwer"), RegistrationDate = DateTime.Now }
+                new User { UserID = 5, Name = "Nguyễn Thị Ngọc Quý", Email = "nguyenngocquy182752@gmail.com", UserName = "NgocQuy", Password = PasswordHasher.HashPassword("1234qwer"), RegistrationDate = DateTime.Now },
+                 new User { UserID = 6, Name = "Nguyễn Văn Ánh", Email = "reporter@gmail.com", UserName = "reporter", Password = PasswordHasher.HashPassword("1234qwer"), RegistrationDate = DateTime.Now },
+                  new User { UserID = 7, Name = "Cao Văn Lãnh", Email = "editor@gmail.com", UserName = "editor", Password = PasswordHasher.HashPassword("1234qwer"), RegistrationDate = DateTime.Now }
             );
 
             // Seed dữ liệu cho bảng UserRole
             modelBuilder.Entity<UserRole>().HasData(
-                new UserRole {  UserId = 1, RoleId = 1 },
-                new UserRole {  UserId = 2, RoleId = 2 },
-                new UserRole {  UserId = 3, RoleId = 2 },
-                new UserRole {  UserId = 4, RoleId = 2 },
-                new UserRole {  UserId = 5, RoleId = 2 }
-
+                new UserRole { UserId = 1, RoleId = 1 },
+                new UserRole { UserId = 2, RoleId = 3 },
+                new UserRole { UserId = 3, RoleId = 2 },
+                new UserRole { UserId = 4, RoleId = 3 },
+                new UserRole { UserId = 5, RoleId = 2 },
+                new UserRole { UserId = 6, RoleId = 3 },
+                new UserRole { UserId = 7, RoleId = 4 }
             );
             // Seed dữ liệu cho bảng Category
             modelBuilder.Entity<Category>().HasData(
@@ -76,7 +82,7 @@ namespace Web_News.Models
                     PublishDate = DateTime.Now,
                     Content = "Công nghệ mới đang được phát triển toàn cầu.",
                     Image = "ct.jpeg",
-                    CreatedByUserId = 1, 
+                    CreatedByUserId = 1,
                     Status = true,
                     ApprovalStatus = ApprovalStatus.Approved,
                     RejectionReason = null
@@ -88,7 +94,7 @@ namespace Web_News.Models
                     PublishDate = DateTime.Now,
                     Content = "Sức khỏe cộng đồng Sức khỏe cộng đồng.",
                     Image = "ct.jpeg",
-                    CreatedByUserId = 1, 
+                    CreatedByUserId = 1,
                     Status = true,
                     ApprovalStatus = ApprovalStatus.Approved,
                     RejectionReason = null

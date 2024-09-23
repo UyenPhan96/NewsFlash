@@ -1,7 +1,5 @@
 ﻿@model IEnumerable<Web_News.Areas.Admin.ViewModels.NewsViewModel>
 
-<h2>Danh sách bài viết chờ duyệt</h2>
-
 
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
@@ -32,10 +30,11 @@
                             </td>
                                 <td>
                                     <a href="@Url.Action("NewsDetail", new { newsId = item.NewsId })" class="btn btn-primary">Xem chi tiết</a>
-                                    <form asp-action="RejectNews" method="post" style="display:inline;">
-                                        <input type="hidden" name="newsId" value="@item.NewsId" />
-                                        <button type="submit" class="btn btn-danger">Từ chối</button>
-                                    </form>
+                                <form asp-action="RejectNews" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn từ chối bài viết này?');">
+                                    <input type="hidden" name="newsId" value="@item.NewsId" />
+                                    <button type="submit" class="btn btn-danger">Từ chối</button>
+                                </form>
+
                                 </td>
                             </tr>
                         }

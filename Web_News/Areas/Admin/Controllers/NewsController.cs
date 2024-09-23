@@ -19,22 +19,26 @@ namespace Web_News.Areas.Admin.Controllers
             _newsService = newsService;
             _categoryService = categoryService;
         }
-        [Authorize(Roles = "Admin,Reporter,Editor")]
+
+
+
         // GET: News/Details/5
-        public async Task<IActionResult> Details(int id)
+        [Authorize(Roles = "Admin,Reporter,Editor")]
+        public async Task<IActionResult> Details(int id, string returnUrl)
         {
             var newsItem = await _newsService.GetNewsByIdAsync(id);
             if (newsItem == null)
             {
                 return NotFound();
             }
-
+            ViewBag.ReturnUrl = returnUrl;
             return View(newsItem);
         }
 
 
-        [Authorize(Roles = "Admin,Reporter,Editor")]
+
         // GET: News/Create
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         public async Task<IActionResult> Create()
         {
             var categories = await _categoryService.GetAllCategoriesAsync();
@@ -44,10 +48,11 @@ namespace Web_News.Areas.Admin.Controllers
             };
             return View(viewModel);
         }
-        [Authorize(Roles = "Admin,Reporter,Editor")]
+       
         // POST: News/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         public async Task<IActionResult> Create(NewsViewModel model)
         {
             if (!ModelState.IsValid)
@@ -89,8 +94,16 @@ namespace Web_News.Areas.Admin.Controllers
             model.Categories = await _categoryService.GetAllCategoriesAsync();
             return View(model);
         }
+
+
+
+
+        /// <summary>
+        /// GET: News/Edit/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin,Reporter,Editor")]
-        // GET: News/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var news = await _newsService.GetNewsByIdAsync(id);
@@ -114,9 +127,9 @@ namespace Web_News.Areas.Admin.Controllers
         }
 
         // POST: News/Edit/5
-        [Authorize(Roles = "Admin,Reporter,Editor")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         public async Task<IActionResult> Edit(NewsViewModel model)
         {
 
@@ -148,8 +161,13 @@ namespace Web_News.Areas.Admin.Controllers
         }
 
 
+
+        /// <summary>
+        /// GET: News/Delete/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin,Reporter,Editor")]
-        // GET: News/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
             var news = await _newsService.GetNewsByIdAsync(id);
@@ -164,10 +182,15 @@ namespace Web_News.Areas.Admin.Controllers
             return View(news);
         }
 
-        [Authorize(Roles = "Admin,Reporter,Editor")]
-        // POST: News/Delete/5
+      
+        /// <summary>
+        /// POST: News/Delete/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try
@@ -186,44 +209,80 @@ namespace Web_News.Areas.Admin.Controllers
             return View(news);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteMultiple(int[] selectedIds)
+        {
+            if (selectedIds == null || selectedIds.Length == 0)
+            {
+                return RedirectToAction("AllNews");
+            }
+
+            foreach (var id in selectedIds)
+            {
+                await _newsService.DeleteNewsAsync(id);
+            }
+
+            return RedirectToAction("AllNews");
+        }
+
 
         [Authorize(Roles = "Admin,Reporter")]
-        public async Task<IActionResult> Index(ApprovalStatus? statusFilter = ApprovalStatus.Pending)
+        public async Task<IActionResult> Index(ApprovalStatus? statusFilter = ApprovalStatus.Pending, int pageNumber = 1, string titleSearchTerm = null, DateTime? publishDate = null, string authorSearchTerm = null, int? categoryId = null)
         {
             int userId;
-            if (int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out userId)) // Giả sử bạn lưu user ID trong claim
+            if (int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out userId))
             {
-                var newsList = await _newsService.GetNewsByApprovalStatusAsync(statusFilter, userId);
+                const int pageSize = 10; // Số lượng bài viết mỗi trang
+                var pagedResult = await _newsService.GetNewsByApprovalStatusAsync(statusFilter, userId, pageNumber, pageSize, titleSearchTerm, publishDate, authorSearchTerm, categoryId);
+
                 ViewData["StatusFilter"] = statusFilter;
-                return View(newsList);
+                ViewData["TotalPages"] = pagedResult.TotalPages;
+                ViewData["CurrentPage"] = pageNumber;
+                ViewData["TitleSearchTerm"] = titleSearchTerm; // Tìm kiếm theo tiêu đề
+                ViewData["PublishDate"] = publishDate; // Tìm kiếm theo ngày viết
+                ViewData["AuthorSearchTerm"] = authorSearchTerm; // Tìm kiếm theo người viết
+                ViewData["CategoryId"] = categoryId; // Tìm kiếm theo thể loại
+
+                return View(pagedResult.News);
             }
             else
             {
-                // Xử lý trường hợp không thể chuyển đổi userId
                 return BadRequest("Invalid user ID");
             }
         }
 
-        [Authorize(Roles = "Admin,Reporter")]
+
+
         // GET: News/FilterByStatus
+        [Authorize(Roles = "Admin,Reporter")]
         public IActionResult FilterByStatus(ApprovalStatus status)
         {
             return RedirectToAction("Index", new { statusFilter = status });
         }
 
 
-
+        /// <summary>
+        /// Hiển thị danh sách các bài viết đang chờ duyệt cho Editor
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Admin,Editor")]
-        // Hiển thị danh sách các bài viết chờ duyệt
-        public async Task<IActionResult> PendingNews()
+        public async Task<IActionResult> PendingNews(string status)
         {
             var pendingNews = await _newsService.GetAllPendingNewsAsync();
+            if (status == "Pending")
+            {
+                // Thực hiện lọc theo trạng thái nếu cần
+            }
             return View(pendingNews);
         }
 
-        // Duyệt bài viết
-        [Authorize(Roles = "Admin,Editor")]
+        /// <summary>
+        /// Duyệt bài viết giành cho Editor
+        /// </summary>
+        /// <param name="newsId"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles = "Admin,Editor")]
         public async Task<IActionResult> ApproveNews(int newsId)
         {
             var result = await _newsService.ApproveNewsAsync(newsId);
@@ -234,7 +293,12 @@ namespace Web_News.Areas.Admin.Controllers
             return RedirectToAction("PendingNews");
         }
 
-        // Từ chối bài viết nếu sử dụng 
+        /// <summary>
+        /// Từ chối bài viết giành cho Editor
+        /// </summary>
+        /// <param name="newsId"></param>
+        /// <param name="rejectionReason"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin,Editor")]
         [HttpPost]
         public async Task<IActionResult> RejectNews(int newsId, string rejectionReason)
@@ -246,8 +310,13 @@ namespace Web_News.Areas.Admin.Controllers
             }
             return RedirectToAction("PendingNews");
         }
+
+        /// <summary>
+        /// Chi tiết bài viết đang chờ duyệt giành cho Editor
+        /// </summary>
+        /// <param name="newsId"></param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin,Editor")]
-        // Chi tiết bài viết đang chờ duyệt
         public async Task<IActionResult> NewsDetail(int newsId)
         {
             var newsDetail = await _newsService.GetNewsByIdAsync(newsId);
@@ -257,5 +326,56 @@ namespace Web_News.Areas.Admin.Controllers
             }
             return View(newsDetail);
         }
+
+
+        /// <summary>
+        /// Hiển thi danh sách tất cả bài viết đã duyệt || tìm kiếm || phân trang
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="titleSearchTerm"></param>
+        /// <param name="publishDate"></param>
+        /// <param name="authorSearchTerm"></param>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> AllNews
+            (ApprovalStatus? status = ApprovalStatus.Approved, int pageNumber = 1,
+            string titleSearchTerm = null,
+            DateTime? publishDate = null,
+            string authorSearchTerm = null,
+            int? categoryId = null)
+        {
+            const int pageSize = 10; // Số bài viết mỗi trang
+            var pagedResult = await _newsService.GetPagedNewsByApprovalStatusAsync(status, pageNumber, pageSize, titleSearchTerm, publishDate, authorSearchTerm, categoryId);
+            ViewData["StatusF"] = status;
+            ViewData["TotalPages"] = pagedResult.TotalPages;
+            ViewData["CurrentPage"] = pageNumber;
+            ViewData["TitleSearchTerm"] = titleSearchTerm; // Tìm kiếm theo tiêu đề
+            ViewData["PublishDate"] = publishDate; // Tìm kiếm theo ngày viết
+            ViewData["AuthorSearchTerm"] = authorSearchTerm; // Tìm kiếm theo người viết
+            ViewData["CategoryId"] = categoryId; // Tìm kiếm theo thể loại
+            return View(pagedResult.News);
+        }
+
+
+
+        /// <summary>
+        /// Cập nhật , thu hồi lại trạng thái bài viết
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> UpdateStatus(int id)
+        {
+            var result = await _newsService.UpdateNewsStatusAsync(id, ApprovalStatus.Rejected, false);
+
+            if (!result)
+            {
+                return NotFound(); // Nếu không tìm thấy bài viết
+            }
+
+            return RedirectToAction("AllNews", new { status = ApprovalStatus.Rejected });
+        }
+
+
     }
 }
