@@ -8,8 +8,9 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
         Task<News> CreateNewsAsync(News news, IEnumerable<int> categoryIds);
         Task<News> UpdateNewsAsync(News news, IEnumerable<int> categoryIds);
         Task DeleteNewsAsync(int newsId);
+        Task<bool> DeleteAllNewsAsync(int newsId);
         Task<NewsViewModel> GetNewsByIdAsync(int newsId);
-        Task<IEnumerable<NewsViewModel>> GetAllNewsAsync(bool status);
+        Task<IEnumerable<NewsViewModel>> GetAllNewsByApprovalStatusAsync(ApprovalStatus? statusFilter);
         Task<List<News>> GetTop4News();
         Task<List<Advertisement>> GetActiveAdvertisementsAsync(BannerPosition position , int maxResults);
         Task<IEnumerable<NewsViewModel>> GetNewsByCategoryAsync(int categoryId);
@@ -18,6 +19,9 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
         Task<List<NewsViewModel>> GetAllPendingNewsAsync();
         Task<bool> ApproveNewsAsync(int newsId);
         Task<bool> RejectNewsAsync(int newsId, string rejectionReason);
-        Task<IEnumerable<NewsViewModel>> GetNewsByApprovalStatusAsync(ApprovalStatus? statusFilter, int userId);
+        Task<PageResult> GetNewsByApprovalStatusAsync(ApprovalStatus? status, int userId, int pageNumber, int pageSize, string titleSearchTerm = null, DateTime? publishDate = null, string authorSearchTerm = null, int? categoryId = null);
+        Task<bool> UpdateNewsStatusAsync(int newsId, ApprovalStatus approvalStatus, bool status);
+        Task<PageResult> GetPagedNewsByApprovalStatusAsync(ApprovalStatus? status, int pageNumber, int pageSize, string titleSearchTerm = null,
+            DateTime? publishDate = null, string authorSearchTerm = null, int? categoryId = null);
     }
 }

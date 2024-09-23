@@ -129,13 +129,18 @@
                         <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                             <span class="menu-title"> Tin Tức</span>
                             <i class="menu-arrow"></i>
-                            <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+                            <i class="mdi mdi-book-multiple-variant"></i>
                         </a>
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> 
-                                    <a class="nav-link" asp-area="Admin" asp-controller="News" asp-action="Index">Soạn bài viết</a>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="News" asp-action="AllNews">Danh Sách bài viết</a>
                                 </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="News" asp-action="FilterByStatus">Soạn bài viết</a>
+                                </li>
+                            
                                 @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
                                 {
                                  <li class="nav-item">

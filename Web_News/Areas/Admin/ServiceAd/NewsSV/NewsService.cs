@@ -14,11 +14,16 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
             _context = context;
         }
 
+        /// <summary>
+        /// Tạo bài viết mới
+        /// </summary>
+        /// <param name="news"></param>
+        /// <param name="categoryIds"></param>
+        /// <returns></returns>
         public async Task<News> CreateNewsAsync(News news, IEnumerable<int> categoryIds)
         {
             news.PublishDate = DateTime.Now;
 
-            // Thêm bản ghi News vào trước để có thể lấy được NewsId
             _context.News.Add(news);
             await _context.SaveChangesAsync();  // Lưu để có được NewsId
 
@@ -31,12 +36,17 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
                     CategoryId = categoryId
                 });
             }
-
-            // Lưu tất cả thay đổi
             await _context.SaveChangesAsync();
             return news;
         }
 
+        /// <summary>
+        /// Update bài viết mới
+        /// </summary>
+        /// <param name="news"></param>
+        /// <param name="categoryIds"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public async Task<News> UpdateNewsAsync(News news, IEnumerable<int> categoryIds)
         {
             var existingNews = await _context.News.Include(n => n.NewsCategories)
@@ -66,6 +76,12 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
             return existingNews;
         }
 
+        /// <summary>
+        /// Sửa bài viết 
+        /// </summary>
+        /// <param name="newsId"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public async Task DeleteNewsAsync(int newsId)
         {
             var news = await _context.News.FindAsync(newsId);
@@ -74,32 +90,27 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
             _context.News.Remove(news);
             await _context.SaveChangesAsync();
         }
-        
-        public async Task<IEnumerable<NewsViewModel>> GetAllNewsAsync(bool status)
-        {
 
-            return await _context.News
-             .Where(n => n.Status == status)
-             .Include(n => n.NewsCategories) // Bao gồm liên kết tới bảng NewsCategories
-             .ThenInclude(nc => nc.Category) // Bao gồm thông tin danh mục từ bảng Category
-             .Select(n => new NewsViewModel
-             {
-                 NewsId = n.NewsId,
-                 Title = n.Title,
-                 Image = n.Image,
-                 PublishDate = n.PublishDate,
-                 Status = n.Status,
-                 CreatedByUserName = _context.Users.FirstOrDefault(u => u.UserID == n.CreatedByUserId).Name,
-                 ListCategories = n.NewsCategories.Select(nc => nc.Category).ToList() // Lấy danh sách các danh mục
-             })
-             .ToListAsync();
+        public async Task<bool> DeleteAllNewsAsync(int newsId)
+        {
+            var news = await _context.News.FindAsync(newsId);
+            if (news == null)
+            {
+                return false; // Bài viết không tồn tại
+            }
+
+            _context.News.Remove(news);
+            await _context.SaveChangesAsync();
+
+            return true; // Xóa thành công
         }
-        public async Task<IEnumerable<NewsViewModel>> GetNewsByApprovalStatusAsync(ApprovalStatus? statusFilter, int userId)
+
+
+        public async Task<IEnumerable<NewsViewModel>> GetAllNewsByApprovalStatusAsync(ApprovalStatus? statusFilter)
         {
             var query = _context.News.Include(n => n.NewsCategories)
                                      .ThenInclude(nc => nc.Category)
                                      .Include(n => n.CreatedByUser) // Nạp thông tin người dùng
-                                     .Where(n => n.CreatedByUserId == userId) // Lọc theo người tạo
                                      .Select(n => new NewsViewModel
                                      {
                                          NewsId = n.NewsId,
@@ -120,8 +131,180 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
             return await query.ToListAsync();
         }
 
+   
+        /// <summary>
+        /// Danh sách chính || bao gồm lọc theo trạng thái , tìm kiếm theo tiêu đề , ngày viết ,người viết, phân trang .
+        /// </summary>
+        /// <param name="status"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="titleSearchTerm"></param>
+        /// <param name="publishDate"></param>
+        /// <param name="authorSearchTerm"></param>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        public async Task<PageResult> GetPagedNewsByApprovalStatusAsync(ApprovalStatus? status, int pageNumber, int pageSize, string titleSearchTerm = null,
+            DateTime? publishDate = null, string authorSearchTerm = null, int? categoryId = null)
+        {
+            var query = _context.News.Include(n => n.NewsCategories)
+                                     .ThenInclude(nc => nc.Category)
+                                     .Include(n => n.CreatedByUser)
+                                     .AsQueryable();
+
+            // Lọc theo trạng thái nếu có
+            if (status.HasValue)
+            {
+                query = query.Where(n => n.ApprovalStatus == status.Value);
+            }
+            // Tìm kiếm theo tiêu đề
+            if (!string.IsNullOrEmpty(titleSearchTerm))
+            {
+                query = query.Where(n => n.Title.Contains(titleSearchTerm));
+            }
+            // Tìm kiếm theo ngày viết
+            if (publishDate.HasValue)
+            {
+                query = query.Where(n => n.PublishDate.Date == publishDate.Value.Date);
+            }
+            // Tìm kiếm theo người viết
+            if (!string.IsNullOrEmpty(authorSearchTerm))
+            {
+                query = query.Where(n => n.CreatedByUser.Name.Contains(authorSearchTerm));
+            }
+            // Tìm kiếm theo thể loại
+            if (categoryId.HasValue)
+            {
+                query = query.Where(n => n.NewsCategories.Any(nc => nc.CategoryId == categoryId.Value));
+            }
+            // Sắp xếp theo ngày phát hành, bài viết mới nhất trước
+            query = query.OrderByDescending(n => n.PublishDate);
+
+            var totalNews = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalNews / (double)pageSize);
+
+            var news = await query.Skip((pageNumber - 1) * pageSize)
+                                  .Take(pageSize)
+                                  .Select(n => new NewsViewModel
+                                  {
+                                      NewsId = n.NewsId,
+                                      Title = n.Title,
+                                      Image = n.Image,
+                                      PublishDate = n.PublishDate,
+                                      Status = n.Status,
+                                      ApprovalStatus = n.ApprovalStatus,
+                                      CreatedByUserName = n.CreatedByUser.Name,
+                                      ListCategories = n.NewsCategories.Select(nc => nc.Category).ToList()
+                                  })
+                                  .ToListAsync();
+
+            return new PageResult
+            {
+                News = news,
+                TotalPages = totalPages
+            };
+        }
 
 
+        /// <summary>
+        /// cập nhạt trạng thái 
+        /// </summary>
+        /// <param name="newsId"></param>
+        /// <param name="approvalStatus"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateNewsStatusAsync(int newsId, ApprovalStatus approvalStatus, bool status)
+        {
+            var news = await _context.News.FindAsync(newsId);
+            if (news == null)
+            {
+                return false; // Bài viết không tồn tại
+            }
+
+            news.ApprovalStatus = approvalStatus;
+            news.Status = status;
+
+            _context.News.Update(news);
+            await _context.SaveChangesAsync();
+
+            return true; // Cập nhật thành công
+        }
+
+
+        /// <summary>
+        /// Hiển thị bài viết theo id người tạo bài viết và trạng thái duyệt
+        /// </summary>
+        /// <param name="statusFilter"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<PageResult> GetNewsByApprovalStatusAsync(ApprovalStatus? status, int userId, int pageNumber, int pageSize, string titleSearchTerm = null, DateTime? publishDate = null, string authorSearchTerm = null, int? categoryId = null)
+        {
+            var query = _context.News.Include(n => n.NewsCategories)
+                                     .ThenInclude(nc => nc.Category)
+                                     .Include(n => n.CreatedByUser)
+                                     .Where(n => n.CreatedByUserId == userId) // Lọc theo người viết
+                                     .AsQueryable();
+
+            // Lọc theo trạng thái nếu có
+            if (status.HasValue)
+            {
+                query = query.Where(n => n.ApprovalStatus == status.Value);
+            }
+            // Tìm kiếm theo tiêu đề
+            if (!string.IsNullOrEmpty(titleSearchTerm))
+            {
+                query = query.Where(n => n.Title.Contains(titleSearchTerm));
+            }
+            // Tìm kiếm theo ngày phát hành
+            if (publishDate.HasValue)
+            {
+                query = query.Where(n => n.PublishDate.Date == publishDate.Value.Date);
+            }
+            // Tìm kiếm theo người viết
+            if (!string.IsNullOrEmpty(authorSearchTerm))
+            {
+                query = query.Where(n => n.CreatedByUser.Name.Contains(authorSearchTerm));
+            }
+            // Tìm kiếm theo thể loại
+            if (categoryId.HasValue)
+            {
+                query = query.Where(n => n.NewsCategories.Any(nc => nc.CategoryId == categoryId.Value));
+            }
+            // Sắp xếp theo ngày phát hành, bài viết mới nhất trước
+            query = query.OrderByDescending(n => n.PublishDate);
+
+            // Tính tổng số bài viết và tổng số trang
+            var totalNews = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalNews / (double)pageSize);
+
+            var news = await query.Skip((pageNumber - 1) * pageSize)
+                                  .Take(pageSize)
+                                  .Select(n => new NewsViewModel
+                                  {
+                                      NewsId = n.NewsId,
+                                      Title = n.Title,
+                                      Image = n.Image,
+                                      PublishDate = n.PublishDate,
+                                      Status = n.Status,
+                                      ApprovalStatus = n.ApprovalStatus,
+                                      CreatedByUserName = n.CreatedByUser.Name,
+                                      ListCategories = n.NewsCategories.Select(nc => nc.Category).ToList()
+                                  })
+                                  .ToListAsync();
+
+            return new PageResult
+            {
+                News = news,
+                TotalPages = totalPages
+            };
+        }
+
+
+
+        /// <summary>
+        /// Lấy bài viết theo id 
+        /// </summary>
+        /// <param name="newsId"></param>
+        /// <returns></returns>
         public async Task<NewsViewModel> GetNewsByIdAsync(int newsId)
         {
             var news = await _context.News.Include(n => n.NewsCategories)
@@ -145,6 +328,11 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
                 Categories = news.NewsCategories.Select(nc => nc.Category).ToList() // Thay đổi ở đây
             };
         }
+
+        /// <summary>
+        /// Lấy 4 bài viết mới nhất theo ngày
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<News>> GetTop4News()
         {
             return await _context.News
@@ -154,6 +342,11 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Hiển thị bài viết theo thẻ loại (đang không sử dụng)
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<NewsViewModel>> GetNewsByCategoryAsync(int categoryId)
         {
             return await _context.News
@@ -172,6 +365,14 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
                 })
                 .ToListAsync();
         }
+
+        /// <summary>
+        /// Lấy bài viết theo thể loại và phân trang giành cho bài viết
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <param name="pageNumber"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         public async Task<List<News>> GetNewsByCategoryList(int categoryId, int pageNumber, int pageSize)
         {
             // Lọc các bài viết thuộc danh mục
@@ -194,13 +395,15 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
 
 
 
-
-
-
+        /// <summary>
+        /// Hàm viết sử dụng cho việc lấy các vị trí quảng cáo
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="maxResults"></param>
+        /// <returns></returns>
         public async Task<List<Advertisement>> GetActiveAdvertisementsAsync(BannerPosition position,int maxResults)
         {
             var currentDate = DateTime.Now;
-
             // Lấy các quảng cáo dựa trên vị trí quảng cáo, trạng thái được hiển thị và còn hiệu lực
             var advertisements = await _context.Advertisements
                 .Where(ad => ad.Status == Status.Displayed &&
@@ -209,8 +412,6 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
                              ad.EndDate > currentDate) 
                 .Take (maxResults)
                 .ToListAsync();
-
-            
             // Cập nhật trạng thái của các quảng cáo đã hết hạn
             var expiredAdvertisements = await _context.Advertisements
                 .Where(ad => ad.Status == Status.Displayed && ad.EndDate <= currentDate)
@@ -220,8 +421,6 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
             {
                 ad.Status = Status.Expired;
             }
-
-          
             if (expiredAdvertisements.Any())
             {
                 await _context.SaveChangesAsync();
@@ -231,7 +430,11 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
         }
 
 
-        // Lấy danh sách bài viết theo thể loại và quảng cáo 
+        /// <summary>
+        /// Lấy danh sách bài viết theo thể loại và quảng cáo 
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
         public async Task<ListViewModel> GetNewsByCategoryWithAdsAsync(int categoryId)
         {
             // Lấy danh sách bài viết theo thể loại (CategoryId)
@@ -265,7 +468,10 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
 
 
 
-        // Đây là phần cho hiển thị danh sách bài viết đang chờ duyệt , gồm lấy danh sách , duyệt và từ chối
+        /// <summary>
+        /// hiển thị danh sách bài viết đang chờ duyệt , gồm lấy danh sách , duyệt và từ chối
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<NewsViewModel>> GetAllPendingNewsAsync()
         {
             return await _context.News
@@ -282,6 +488,11 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Duyệt bài viết
+        /// </summary>
+        /// <param name="newsId"></param>
+        /// <returns></returns>
         public async Task<bool> ApproveNewsAsync(int newsId)
         {
             var news = await _context.News.FindAsync(newsId);
@@ -296,6 +507,12 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
             return true;
         }
 
+        /// <summary>
+        /// Từ chối bài viết
+        /// </summary>
+        /// <param name="newsId"></param>
+        /// <param name="rejectionReason"></param>
+        /// <returns></returns>
         public async Task<bool> RejectNewsAsync(int newsId, string rejectionReason)
         {
             var news = await _context.News.FindAsync(newsId);
