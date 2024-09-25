@@ -1,0 +1,46 @@
+﻿@model Web_News.Areas.Admin.ViewModels.UserViewModels
+
+
+<h2>Chỉnh sửa thông tin người dùng</h2>
+
+<form asp-action="EditUser" method="post">
+    <input type="hidden" asp-for="UserId" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input type="text" asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input type="text" asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input type="email" asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Phone"></label>
+        <input type="text" asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UserName"></label>
+        <input type="text" asp-for="UserName" class="form-control" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <!-- Dropdown cho danh sách vai trò -->
+    <div class="form-group">
+        <label for="SelectedRoles">Vai trò</label>
+        <select asp-for="SelectedRoles" class="form-control" asp-items="@(new SelectList(Model.Roles, "RoleID", "NameRole", Model.SelectedRoles))">
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cập nhật</button>
+    <a href="@Url.Action("ManageUsers")" class="btn btn-secondary">Quay lại</a>
+</form>

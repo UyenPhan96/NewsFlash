@@ -28,12 +28,12 @@ namespace Web_News.Controllers
 
 
         [HttpPost]
-   
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var (user, roles) = await _accountSV.LoginAsync(model.UsernameOrEmail, model.Password,model.RememberMe);
+                var (user, roles, errorMessage) = await _accountSV.LoginAsync(model.UsernameOrEmail, model.Password, model.RememberMe);
+
                 if (user != null)
                 {
                     // Kiểm tra vai trò và chuyển hướng dựa trên vai trò
@@ -46,13 +46,21 @@ namespace Web_News.Controllers
                         return RedirectToAction("HomePage", "HomeAdmin", new { area = "Admin" });
                     }
                 }
-
-                // Đăng nhập thất bại - Thông báo "Tài khoản hoặc mật khẩu sai"
-                ModelState.AddModelError(string.Empty, "Tài khoản hoặc mật khẩu sai.");
+                else if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    // Thông báo lỗi từ AccountService (tài khoản bị khóa hoặc không tồn tại)
+                    ModelState.AddModelError(string.Empty, errorMessage);
+                }
+                else
+                {
+                    // Đăng nhập thất bại - Thông báo "Tài khoản hoặc mật khẩu sai"
+                    ModelState.AddModelError(string.Empty, "Tài khoản hoặc mật khẩu sai.");
+                }
             }
 
             return View(model);
         }
+
 
 
         // GET: Account/Logout

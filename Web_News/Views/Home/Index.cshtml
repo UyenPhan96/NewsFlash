@@ -27,7 +27,7 @@
                             <img src="/Images/@Model.LatestNews[0].Image" alt="Ảnh bài viết lớn">
                             <div class="article-contents">
                                 <h3>@Model.LatestNews[0].Title</h3>
-                                <p class="article-summary">@Html.Raw(Model.LatestNews[0].Content.Substring(0, Math.Min(Model.LatestNews[0].Content.Length, 600)))...</p>
+                                <p class="article-summary">@Html.Raw(Model.LatestNews[0].Content.Substring(0, Math.Min(Model.LatestNews[0].Content.Length, 500)))...</p>
                             </div>
                         </div>
                     </a>
