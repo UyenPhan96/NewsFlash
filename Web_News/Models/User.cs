@@ -42,6 +42,8 @@ namespace Web_News.Models
         public string? IdFacebook { get; set; }
         [MaxLength(50)]
         public string? IdGoogle { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool AccountStatus { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; }
     }

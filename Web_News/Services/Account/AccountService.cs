@@ -46,29 +46,39 @@ namespace Web_News.Services.Account
 
 
         // Phần đăng Nhập
-        public async Task<(User? user, List<string> roles)> LoginAsync(string usernameOrEmail, string password,bool rememberMe)
+        public async Task<(User? user, List<string> roles, string? errorMessage)> LoginAsync(string usernameOrEmail, string password, bool rememberMe)
         {
             if (string.IsNullOrEmpty(usernameOrEmail) || string.IsNullOrEmpty(password))
             {
-                return (null, new List<string>());
+                return (null, new List<string>(), "Thông tin đăng nhập không hợp lệ.");
             }
 
-            var user = _context.Users.SingleOrDefault(u => (u.UserName == usernameOrEmail || u.Email == usernameOrEmail));
+            var user = await _context.Users.SingleOrDefaultAsync(u => (u.UserName == usernameOrEmail || u.Email == usernameOrEmail));
 
             if (user != null)
             {
-                    // Kiểm tra mật khẩu
+                // Kiểm tra trạng thái tài khoản
+                if (user.IsDeleted)
+                {
+                    return (null, new List<string>(), "Tài khoản không tồn tại.");
+                }
+
+                if (user.AccountStatus) // Nếu AccountStatus là true thì tài khoản đã bị khóa
+                {
+                    return (null, new List<string>(), "Tài khoản đã bị khóa.");
+                }
+
+                // Kiểm tra mật khẩu
                 if (PasswordHasher.VerifyPassword(user.Password, password))
                 {
-               
-                    var roles = _context.UserRoles
+                    var roles = await _context.UserRoles
                         .Where(ur => ur.UserId == user.UserID)
                         .Select(ur => _context.Roles.FirstOrDefault(r => r.RoleID == ur.RoleId).NameRole)
-                        .ToList();
+                        .ToListAsync();
 
                     var claims = new List<Claim>
                     {
-                         new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                        new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
                         new Claim(ClaimTypes.Name, user.Name),
                         new Claim(ClaimTypes.Email, user.Email)
                     };
@@ -78,18 +88,20 @@ namespace Web_News.Services.Account
                     var principal = new ClaimsPrincipal(identity);
                     var authProperties = new AuthenticationProperties
                     {
-                        IsPersistent = rememberMe,  
+                        IsPersistent = rememberMe,
                         ExpiresUtc = rememberMe ? DateTime.UtcNow.AddDays(14) : DateTime.UtcNow.AddMinutes(20)
                     };
+
                     // Đăng nhập vào hệ thống
                     await _httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                    return (user, roles);
+                    return (user, roles, string.Empty);
                 }
             }
 
-            return (null, new List<string>());
+            return (null, new List<string>(), "Tài khoản hoặc mật khẩu sai.");
         }
+
 
 
 
