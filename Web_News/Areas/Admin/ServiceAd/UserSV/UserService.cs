@@ -29,40 +29,120 @@ namespace Web_News.Areas.Admin.ServiceAd.UserSV
         }
 
         // Lấy danh sách người dùng hoạt động (không bị xóa và không bị khóa)
-        public List<User> GetActiveUsers()
+        public List<UserViewModels> GetActiveUsers(int roleId)
         {
-            int userRoleId = 2; // Giả sử RoleId = 2 là của "User"
+            var users = (from ur in _context.UserRoles
+                         .Include(ur => ur.Role) // Bao gồm Role trong truy vấn
+                         join u in _context.Users on ur.UserId equals u.UserID
+                         where u.IsDeleted == false && u.AccountStatus == false
+                         select new UserViewModels
+                         {
+                             UserId = u.UserID,
+                             Name = u.Name,
+                             Email = u.Email,
+                             Phone = u.Phone,
+                             Address = u.Address,
+                             UserName = u.UserName,
+                             RegistrationDate = u.RegistrationDate,
+                             Role = ur.Role.NameRole 
+                         });
 
-            return (from ur in _context.UserRoles
-                    where ur.RoleId == userRoleId
-                    join u in _context.Users on ur.UserId equals u.UserID
-                    where u.IsDeleted == false && u.AccountStatus == false
-                    select u).ToList();
+            if (roleId == 2)
+            {
+                return users.Where(ur => ur.Role == "User").ToList();
+            }
+            else
+            {
+                return users.Where(ur => ur.Role != "User").ToList(); 
+            }
         }
 
-        // Lấy danh sách người dùng bị khóa
-        public List<User> GetLockedUsers()
-        {
-            int userRoleId = 2; // Giả sử RoleId = 2 là của "User"
 
-            return (from ur in _context.UserRoles
-                    where ur.RoleId == userRoleId
-                    join u in _context.Users on ur.UserId equals u.UserID
-                    where u.AccountStatus == true && u.IsDeleted == false
-                    select u).ToList();
+
+        // Lấy danh sách người dùng bị khóa
+        public List<UserViewModels> GetLockedUsers(int RoleId)
+        {
+            if (RoleId == 2)
+            {
+                return (from ur in _context.UserRoles
+                        join u in _context.Users on ur.UserId equals u.UserID
+                        where ur.RoleId == RoleId
+                              && u.AccountStatus == true
+                              && u.IsDeleted == false
+                        select new UserViewModels
+                        {
+                            UserId = u.UserID,
+                            Name = u.Name,
+                            Email = u.Email,
+                            Phone = u.Phone,
+                            Address = u.Address,
+                            UserName = u.UserName,
+                            RegistrationDate = u.RegistrationDate,
+                            Role = ur.Role.NameRole
+                        }).ToList();
+            }
+            else
+            {
+                return (from ur in _context.UserRoles
+                        join u in _context.Users on ur.UserId equals u.UserID
+                        where ur.RoleId != 2
+                              && u.AccountStatus == true
+                              && u.IsDeleted == false
+                        select new UserViewModels
+                        {
+                            UserId = u.UserID,
+                            Name = u.Name,
+                            Email = u.Email,
+                            Phone = u.Phone,
+                            Address = u.Address,
+                            UserName = u.UserName,
+                            RegistrationDate = u.RegistrationDate,
+                            Role = ur.Role.NameRole
+                        }).ToList();
+            }
         }
 
         // Lấy danh sách người dùng đã bị xóa
-        public List<User> GetDeletedUsers()
+        public List<UserViewModels> GetDeletedUsers(int RoleId)
         {
-            int userRoleId = 2; // Giả sử RoleId = 2 là của "User"
-
-            return (from ur in _context.UserRoles
-                    where ur.RoleId == userRoleId
-                    join u in _context.Users on ur.UserId equals u.UserID
-                    where u.IsDeleted == true 
-                    select u).ToList();
+            if (RoleId == 2)
+            {
+                return (from ur in _context.UserRoles
+                        join u in _context.Users on ur.UserId equals u.UserID
+                        where ur.RoleId == RoleId
+                              && u.IsDeleted == true
+                        select new UserViewModels
+                        {
+                            UserId = u.UserID,
+                            Name = u.Name,
+                            Email = u.Email,
+                            Phone = u.Phone,
+                            Address = u.Address,
+                            UserName = u.UserName,
+                            RegistrationDate = u.RegistrationDate,
+                            Role = ur.Role.NameRole
+                        }).ToList();
+            }
+            else
+            {
+                return (from ur in _context.UserRoles
+                        join u in _context.Users on ur.UserId equals u.UserID
+                        where ur.RoleId != 2
+                              && u.IsDeleted == true
+                        select new UserViewModels
+                        {
+                            UserId = u.UserID,
+                            Name = u.Name,
+                            Email = u.Email,
+                            Phone = u.Phone,
+                            Address = u.Address,
+                            UserName = u.UserName,
+                            RegistrationDate = u.RegistrationDate,
+                            Role = ur.Role.NameRole
+                        }).ToList();
+            }
         }
+
 
         public bool AccountStatus(int userId)
         {
