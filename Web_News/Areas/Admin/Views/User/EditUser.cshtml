@@ -1,10 +1,10 @@
 ﻿@model Web_News.Areas.Admin.ViewModels.UserViewModels
 
-
 <h2>Chỉnh sửa thông tin người dùng</h2>
 
 <form asp-action="EditUser" method="post">
     <input type="hidden" asp-for="UserId" />
+    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" /> 
 
     <div class="form-group">
         <label asp-for="Name"></label>
@@ -42,5 +42,5 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Cập nhật</button>
-    <a href="@Url.Action("ManageUsers")" class="btn btn-secondary">Quay lại</a>
+    <a href="@ViewBag.ReturnUrl" class="btn btn-secondary">Quay lại</a> <!-- Quay lại đường dẫn đã cho -->
 </form>
