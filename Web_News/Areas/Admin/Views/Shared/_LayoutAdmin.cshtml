@@ -5,7 +5,7 @@
     <meta charset="utf-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Web_News</title>
+    <title>@ViewData["Title"]</title>
   @*   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> *@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/LayoutAdmin/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -170,19 +170,22 @@
                         </a>
                     </li>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="ManageUsers">
-                            <span class="menu-title">Quản lý người dùng</span>
-                            <i class="mdi mdi-contacts menu-icon"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="ManageAdmins">
-                            <span class="menu-title">Quản lý Admin</span>
-                            <i class="mdi mdi-contacts menu-icon"></i>
-                        </a>
-                    </li>
-   
+                        @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="ManageUsers">
+                                <span class="menu-title">Quản lý người dùng</span>
+                                <i class="mdi mdi-contacts menu-icon"></i>
+                            </a>
+                        </li>
+      
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="ManageRoles">
+                                <span class="menu-title">Quản lý nhân viên</span>
+                                <i class="mdi mdi-contacts menu-icon"></i>
+                            </a>
+                        </li>
+                    }
 
                   @*   <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false" aria-controls="general-pages">

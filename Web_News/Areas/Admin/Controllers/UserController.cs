@@ -41,27 +41,29 @@ namespace Web_News.Areas.Admin.Controllers
             return View(users);
         }
         // Lấy danh sách cho 3 trạng thái admin
-        public ActionResult ManageAdmins(string status = "active")
+      
+        public ActionResult ManageAdmins(int roleId ,string status = "active")
         {
+           
             List<UserViewModels> users;
 
             switch (status.ToLower())
             {
                 case "locked":
-                    users = _userService.GetLockedUsers(0);
+                    users = _userService.GetLockedUsers(roleId);
                     ViewBag.CurrentStatus = "locked";
                     break;
                 case "deleted":
-                    users = _userService.GetDeletedUsers(0);
+                    users = _userService.GetDeletedUsers(roleId);
                     ViewBag.CurrentStatus = "deleted";
                     break;
                 case "active":
                 default:
-                    users = _userService.GetActiveUsers(0);
+                    users = _userService.GetActiveUsers(roleId);
                     ViewBag.CurrentStatus = "active";
                     break;
             }
-
+            ViewBag.RoleId = roleId;
             return View(users);
         }
 
@@ -79,14 +81,10 @@ namespace Web_News.Areas.Admin.Controllers
             {
                 TempData["Error"] = "Không tìm thấy người dùng.";
             }
-
-            // Nếu returnUrl có giá trị, chuyển hướng về đúng trang mà người dùng đang thao tác
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 return Redirect(returnUrl);
             }
-
-            // Nếu không có returnUrl, mặc định chuyển hướng về ManageUsers
             return RedirectToAction("ManageUsers", new { status = status });
         }
 
@@ -105,13 +103,10 @@ namespace Web_News.Areas.Admin.Controllers
                 TempData["Error"] = "Không tìm thấy người dùng.";
             }
 
-            // Nếu returnUrl có giá trị, chuyển hướng về đúng trang mà người dùng đang thao tác
             if (!string.IsNullOrEmpty(returnUrl))
             {
                 return Redirect(returnUrl);
             }
-
-            // Nếu không có returnUrl, mặc định chuyển hướng về ManageUsers
             return RedirectToAction("ManageUsers", new { status = status });
         }
 
@@ -123,7 +118,6 @@ namespace Web_News.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             var viewModel = new UserViewModels
             {
                 UserId = user.UserID,
@@ -133,38 +127,41 @@ namespace Web_News.Areas.Admin.Controllers
                 Phone = user.Phone,
                 UserName = user.UserName,
                 SelectedRoles = user.UserRoles.Select(ur => ur.RoleId).ToList(),
-                Roles = _userService.GetAllRoles() // Lấy danh sách vai trò
+                Roles = _userService.GetAllRoles() 
             };
 
             ViewBag.ReturnUrl = returnUrl;
-            ViewBag.IsAdmin = isAdmin; // Lưu thông tin xem có phải là admin hay không
-            return View(viewModel); // Trả về ViewModel cho View
+            ViewBag.IsAdmin = isAdmin; 
+            return View(viewModel); 
         }
 
 
         [HttpPost]
-        public IActionResult EditUser(UserViewModels model, bool isAdmin = false)
+        public IActionResult EditUser(UserViewModels model, string returnUrl, bool isAdmin = false)
         {
             if (ModelState.IsValid)
             {
-                // Nếu model không hợp lệ, trả về view với model hiện tại
                 model.Roles = _userService.GetAllRoles();
                 return View(model);
             }
-
-            // Tiến hành cập nhật thông tin người dùng
             var result = _userService.UpdateUserInfo(model);
             if (result)
             {
-                return Redirect(ViewBag.ReturnUrl ?? "ManageUsers");
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+                return RedirectToAction("ManageUsers");
             }
-
-            // Nếu không cập nhật được, thêm thông báo lỗi vào ModelState
             ModelState.AddModelError("", "Không thể cập nhật thông tin người dùng.");
-
-            // Nạp lại danh sách vai trò nếu có lỗi
             model.Roles = _userService.GetAllRoles();
             return View(model);
+        }
+
+        public ActionResult ManageRoles()
+        {
+            var roles = _userService.GetRolesWithUserCounts();
+            return View(roles); // Hiển thị danh sách role
         }
 
 

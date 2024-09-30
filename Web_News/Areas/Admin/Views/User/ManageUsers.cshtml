@@ -1,7 +1,7 @@
 ﻿@model List<Web_News.Areas.Admin.ViewModels.UserViewModels>
 
 @{
-    // Lấy URL hiện tại
+    ViewBag.title ="Danh Sách User - "+ ViewBag.CurrentStatus;
     var returnUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
@@ -47,33 +47,33 @@
                             <td>
                                 @if (ViewBag.CurrentStatus == "active")
                                 {
-                                   
-                                        <a href="@Url.Action("EditUser", new { userId = user.UserId, returnUrl = Url.Action("ManageUsers"), isAdmin = false })" class="btn btn-outline-info btn-sm">Sửa</a>
+
+                                    <a href="@Url.Action("EditUser", new { userId = user.UserId, returnUrl = Url.Action("ManageUsers"), isAdmin = false })" class="btn btn-outline-info btn-sm"><i class="mdi mdi-eyedropper"></i></a>
                                     
 
 
                                     <!-- Form Xóa tài khoản -->
                                     <form method="post" action="@Url.Action("DeleteUser", new { userId = user.UserId, returnUrl = returnUrl })" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');" style="display:inline;">
                                         <input type="hidden" name="userId" value="@user.UserId" />
-                                        <button type="submit" class="btn btn-outline-warning btn-sm">Xóa</button>
+                                        <button type="submit" class="btn btn-outline-warning btn-sm"><i class="mdi mdi-delete "></i></button>
                                     </form>
 
                                     <!-- Form Khóa tài khoản -->
                                     <form method="post" action="@Url.Action("AccountStatus", new { userId = user.UserId, status = "locked", returnUrl = returnUrl })" style="display:inline;">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">Khóa</button>
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="mdi mdi-lock"></i></button>
                                     </form>
                                 }
                                 else if (ViewBag.CurrentStatus == "locked")
                                 {
                                     <!-- Form Mở khóa tài khoản -->
                                     <form method="post" action="@Url.Action("AccountStatus", new { userId = user.UserId, status = "active", returnUrl = returnUrl })" style="display:inline;">
-                                        <button type="submit" class="btn btn-outline-success btn-sm">Mở khóa</button>
+                                        <button type="submit" class="btn btn-outline-success btn-sm"><i class="mdi mdi-lock-open"></i></button>
                                     </form>
 
                                     <!-- Form Xóa tài khoản -->
                                     <form method="post" action="@Url.Action("DeleteUser", new { userId = user.UserId, returnUrl = returnUrl })" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');" style="display:inline;">
                                         <input type="hidden" name="userId" value="@user.UserId" />
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">Xóa</button>
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="mdi mdi-delete "></i></button>
                                     </form>
                                 }
                             </td>

@@ -4,7 +4,6 @@
     ViewData["Title"] = "Category List";
 }
 
-<h1>Category List</h1>
 
 <p>
     <a asp-action="Create" class="btn btn-primary">Create New Category</a>
@@ -32,8 +31,8 @@
                             <td>@item.NameCategory</td>
                             <td>@item.Describe</td>
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-warning">Edit</a> |
-                                <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger">Delete</a>
+                                <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-warning btn-sm">Edit</a> |
+                                <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-danger btn-sm">Delete</a>
                             </td>
                         </tr>
                     }
