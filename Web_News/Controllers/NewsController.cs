@@ -4,6 +4,7 @@ using Web_News.Areas.Admin.ServiceAd.CategorySV;
 using Web_News.Areas.Admin.ServiceAd.NewsSV;
 using Web_News.Areas.Admin.ViewModels;
 using Web_News.Models;
+using Web_News.ViewModels;
 
 namespace Web_News.Controllers
 {
@@ -53,7 +54,45 @@ namespace Web_News.Controllers
                 TotalItems = totalNewsCount
             };
 
+            return View(viewModel); 
+        }
+        public async Task<IActionResult> SearchNews(int? categoryId, string searchQuery, DateTime? startDate, DateTime? endDate, int pageNumber = 1, int pageSize = 10)
+        {
+            var categories = await _categoryService.GetCategoriessAsync();
+
+            // Gọi Service để tìm bài viết
+            var newsList = await _newsService.SearchNewsAsync(categoryId, searchQuery, startDate, endDate);
+
+            // Tính toán tổng số trang
+            var totalItems = newsList.Count;
+            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            // Phân trang
+            var paginatedNewsList = newsList.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            // Gọi Service để lấy quảng cáo
+            var sidebarAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Sidebar, 5);
+            var headerAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Header, 1);
+            var footerAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Footer, 1);
+
+            // Tạo ViewModel để truyền dữ liệu ra View
+            var viewModel = new SearchWithAdsViewModel
+            {
+                LatestNews = paginatedNewsList,
+                SidebarAdvertisements = sidebarAds,
+                HeaderAdvertisements = headerAds,
+                FooterAdvertisements = footerAds,
+                SearchQuery = searchQuery,
+                CategoryId = categoryId ?? 0,
+                StartDate = startDate,
+                EndDate = endDate,
+                Categories = categories,
+                PageNumber = pageNumber,
+                TotalPages = totalPages
+            };
+
             return View(viewModel);
         }
+
     }
 }

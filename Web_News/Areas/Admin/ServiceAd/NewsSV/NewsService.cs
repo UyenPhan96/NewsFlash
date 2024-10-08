@@ -394,6 +394,46 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
         }
 
 
+        // Tìm kiếm bài viết tổng quát hoặc có thể thêm điều kiện tìm kiếm nâng cao
+        public async Task<List<News>> SearchNewsAsync(int? categoryId, string searchQuery, DateTime? startDate, DateTime? endDate)
+        {
+    
+            var newsQuery = _context.News
+                .Include(n => n.NewsCategories)
+                .ThenInclude(nc => nc.Category)
+                .Where(n => n.Status); 
+
+            if (categoryId.HasValue && categoryId.Value > 0)
+            {
+                newsQuery = newsQuery.Where(n => n.NewsCategories.Any(nc => nc.CategoryId == categoryId.Value));
+            }
+
+            
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                var lowerSearchQuery = searchQuery.ToLower(); 
+                newsQuery = newsQuery.Where(n =>
+                    n.Title.ToLower().Contains(lowerSearchQuery) ||  
+                    n.Content.ToLower().Contains(lowerSearchQuery)); 
+            }
+
+            if (startDate.HasValue)
+            {
+                newsQuery = newsQuery.Where(n => n.PublishDate >= startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                newsQuery = newsQuery.Where(n => n.PublishDate <= endDate.Value);
+            }
+            return await newsQuery.OrderByDescending(n => n.PublishDate).ToListAsync();
+        }
+
+
+
+
+
+
 
         /// <summary>
         /// Hàm viết sử dụng cho việc lấy các vị trí quảng cáo

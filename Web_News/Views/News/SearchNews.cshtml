@@ -1,0 +1,136 @@
+﻿@model Web_News.ViewModels.SearchWithAdsViewModel
+
+@{
+    ViewBag.title = "Tìm Kiếm";
+}
+
+<body>
+   <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <div class="container">
+        <div class="main-content">
+            <form method="get" asp-action="SearchNews" asp-controller="News" onsubmit="return validateSearchForm()">
+                <input type="hidden" value="@Model.CategoryId" />
+
+                <div class="form-group">
+                    <label for="searchQuery">Search Query</label>
+                    <input type="text" id="searchQuery" name="searchQuery" class="form-control" value="@Model.SearchQuery" placeholder="Search news...">
+                </div>
+
+                <div class="form-group">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" name="startDate" class="form-control" value="@Model.StartDate?.ToString("yyyy-MM-dd")">
+                </div>
+
+                <div class="form-group">
+                    <label for="endDate">End Date</label>
+                    <input type="date" name="endDate" class="form-control" value="@Model.EndDate?.ToString("yyyy-MM-dd")">
+                </div>
+    
+                <div class="form-group">
+                    <label for="categoryId">Category</label>
+                    <select name="categoryId" class="form-control">
+                        <option value="0">All Categories</option>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <!option value="@category.CategoryId" @(category.CategoryId == Model.CategoryId ? "selected" : "")>
+                                @category.NameCategory
+                            </!option>
+                        }
+                    </select>
+                </div>
+    
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+
+    <!-- Kết quả tìm kiếm bài viết -->
+            <div>
+                <h3>Search Results</h3>
+                @if (!Model.LatestNews.Any())
+                {
+                    <p>Không có bài viết nào được tìm thấy.</p>
+                }
+                else
+                {
+                    @foreach (var news in Model.LatestNews)
+                    {
+                        <article class="grid-item-small article">
+                            <a class="article-link" href="@Url.Action("Privacy", "Home", new { id = news.NewsId })">
+                                <div class="article-header">
+                                    <img src="/Images/@news.Image" alt="@news.Title" />
+                                    <div class="article-content">
+                                        <h3>@news.Title</h3>
+                                    </div>
+                                </div>
+                                <p>@Html.Raw(news.Content?.Substring(0, Math.Min(news.Content.Length, 100)))...</p>
+                            </a>
+                            <p>Ngày đăng: @news.PublishDate.ToString("dd/MM/yyyy")</p>
+                        </article>
+                    }
+                }
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <!-- Nút lui (luôn hiển thị) -->
+                        <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                            <a class="page-link" href="@(Model.PageNumber == 1 ? "#" : Url.Action("SearchNews", new { pageNumber = Model.PageNumber - 1, searchQuery = Model.SearchQuery, categoryId = Model.CategoryId, startDate = Model.StartDate, endDate = Model.EndDate }))" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+
+                        <!-- Hiển thị số trang -->
+                        @for (var i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("SearchNews", new { pageNumber = i, searchQuery = Model.SearchQuery, categoryId = Model.CategoryId, startDate = Model.StartDate, endDate = Model.EndDate })">@i</a>
+                            </li>
+                        }
+
+                        <!-- Nút tới (luôn hiển thị) -->
+                        <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                            <a class="page-link" href="@(Model.PageNumber == Model.TotalPages ? "#" : Url.Action("SearchNews", new { pageNumber = Model.PageNumber + 1, searchQuery = Model.SearchQuery, categoryId = Model.CategoryId, startDate = Model.StartDate, endDate = Model.EndDate }))" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+            </div>
+
+         </div>
+    <!-- Phần quảng cáo bên phải -->
+        <aside class="sidebar">
+            @foreach (var ad in Model.SidebarAdvertisements)
+            {
+                <div class="sidebar-section">
+                    <div class="vertical-banner">
+                        <a href="@ad.Link" target="_blank">
+                            <img src="~/ImagesAdvertisement/@ad.Image" alt="Quảng Cáo Dọc">
+                        </a>
+                    </div>
+                </div>
+            }
+        </aside>
+    </div>
+</body>
+
+
+<script>
+    function validateSearchForm() {
+        var searchInput = document.getElementById('searchQuery').value.trim(); 
+        if (searchInput === "") {
+            return false; 
+        }
+        return true;
+    }
+</script>
