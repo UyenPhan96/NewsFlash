@@ -93,8 +93,10 @@
 <nav>
     <ul class="menu">
         <li><a href="/"><i class="fas fa-home"></i></a></li>
-        @foreach (var cate in Model)
+
+        @for (var i = 0; i < Math.Min(14, Model.Count); i++)
         {
+            var cate = Model[i];
             <li class="dropdown">
                 <a href="@Url.Action("Index", "News", new { id = cate.CategoryId })" class="dropbtn">@cate.NameCategory</a>
                 @if (cate.SubCategories.Any())
@@ -108,6 +110,20 @@
                 }
             </li>
         }
+
+        <!-- Hiển thị biểu tượng "..." nếu có nhiều hơn 14 danh mục -->
+        @if (Model.Count > 14)
+        {
+            <li class="dropdown">
+                <a href="#" class="dropbtn more-categories"><i class="fas fa-ellipsis-h"></i></a>
+                <ul class="dropdown-menu">
+                    @for (var i = 14; i < Model.Count; i++)
+                    {
+                        var cate = Model[i];
+                        <li><a href="@Url.Action("Index", "News", new { id = cate.CategoryId })">@cate.NameCategory</a></li>
+                    }
+                </ul>
+            </li>
+        }
     </ul>
 </nav>
-
