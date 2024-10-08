@@ -1,4 +1,4 @@
-body {
+﻿body {
     margin: 0;
     font-size: 10px;
     font-family: system-ui, "Segoe UI";
@@ -10,50 +10,33 @@ header {
     border-bottom: #050608 1px solid;
 }
 
-#date {
-    font-size: 12px;
-    color: #000000;
-    position: absolute;
-    cursor: pointer;
-    right: 28%;
-    top: 14px;
-    padding: 5px 10px;
-    background-color: #ffffff;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease, color 0.3s ease;
-    margin-bottom: 50px;
-}
-
-    #date:hover {
-        background-color: #e0e0e0;
-        color: #000;
-    }
-
 .header-top {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #ffffff;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed; /* Vị trí cố định */
+    top: 0; /* Cách trên cùng */
+    left: 0; /* Cách bên trái */
+    width: 100%; /* Chiều rộng 100% */
+    display: flex; /* Hiển thị dạng flex */
+    justify-content: space-between; /* Căn giữa các phần tử */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    padding: 10px 20px; /* Khoảng cách trong */
+    background-color: #ffffff; /* Màu nền */
+    z-index: 10000; /* Độ ưu tiên hiển thị */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    height: 60px; /* Chiều cao cố định */
+    transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
 }
 
     .header-top::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0%;
-        width: 100%;
-        height: 1px;
-        background: #080808;
-        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+        content: ""; /* Nội dung rỗng */
+        position: absolute; /* Vị trí tuyệt đối */
+        bottom: 0; /* Cách dưới cùng */
+        left: 0%; /* Cách bên trái */
+        width: 100%; /* Chiều rộng 100% */
+        height: 1px; /* Chiều cao */
+        background: #080808; /* Màu nền */
+        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); /* Đổ bóng */
     }
+
 
 #logo {
     transform: translate(10rem, 0rem);
@@ -119,118 +102,8 @@ header {
     }
 
 
-nav {
-    background: #ffffff;
-}
-
-.menu {
-    font-family: system-ui, "Segoe UI";
-    display: flex;
-    margin: 14px;
-    padding: 0px;
-    list-style: none;
-    justify-content: center;
-    font-weight: bold;
-    position: fixed;
-    top: 50px;
-    left: 0;
-    width: 100%;
-    background-color: #ffffff;
-    z-index: 999;
-    border-bottom: 1px solid #ccc;
-}
-
-    .menu::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 0.5px;
-        background: #080808;
-        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
-    }
-
-    .menu > li {
-        position: relative;
-        margin-right: 0px;
-    }
-
-        .menu > li > a {
-            display: block;
-            padding: 15px 20px;
-            color: #000000;
-            text-decoration: none;
-            text-transform: uppercase;
-            position: relative;
-        }
-
-            .menu > li > a::after {
-                content: '';
-                display: block;
-                width: 0;
-                height: 3.5px;
-                background: rgb(255, 2, 2);
-                transition: width 0.3s ease;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-            }
-
-            .menu > li > a:hover::after {
-                width: 100%;
-            }
 
 
-    /* C?u h�nh cho menu con */
-    .menu ul {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #fffdfd;
-        min-width: 150px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-    }
-
-    .menu li:hover > ul {
-        display: block;
-    }
-
-    .menu ul li {
-        padding: 5px 0;
-        border-bottom: 1px solid #ffffff;
-    }
-
-        .menu ul li a {
-            color: #000;
-            text-decoration: none;
-            display: block;
-            padding: 5px 15px;
-            position: relative;
-        }
-
-            .menu ul li a::after {
-                content: '';
-                display: block;
-                width: 0;
-                height: 2px;
-                background: rgb(255, 2, 2);
-                transition: width 0.3s ease;
-                position: absolute;
-                bottom: 0;
-                left: 0;
-            }
-
-            .menu ul li a:hover::after {
-                width: 100%;
-            }
-
-            .menu ul li a:hover {
-                background: #ffffff;
-                color: rgb(255, 0, 0);
-            }
 
 .container {
     display: flex;
@@ -249,7 +122,7 @@ nav {
 
 .tieudiemtuan {
     font-size: 17px;
-    margin-top: 100px;
+    margin-top: 150px;
     margin-bottom: 20px;
 }
 
@@ -481,7 +354,7 @@ footer {
         font-size: 14px;
     }
 
-/* Kho?ng c�ch gi?a c�c m?c ch�nh */
+/* Kho?ng cách gi?a các m?c chính */
 h2 {
     font-size: 17px;
     margin: 35px 0 10px;
@@ -495,7 +368,7 @@ h2 {
 
 
 
-/* C� th? b?n quan t�m */
+/* Có th? b?n quan tâm */
 .recommendations {
     display: flex;
     flex-wrap: wrap;
@@ -542,13 +415,8 @@ h2 {
             }
 
 
-.date-time {
-    font-size: 12px;
-    color: #666;
-    margin-top: 5px;
-}
 
-/*FONT ?NH CHO T?T C? C�C B�I VI?T ? c�c m?c tin trong n??c > h?t*/
+/*FONT ?NH CHO T?T C? CÁC BÀI VI?T ? các m?c tin trong n??c > h?t*/
 .news-item {
     flex: 1 1 calc(33.333% - 20px);
     background: #fff;
@@ -633,7 +501,7 @@ h2 a {
     }
 
 
-    .news-details .date-time {
+    .news-details {
         color: #777;
         margin-bottom: 10px;
     }
