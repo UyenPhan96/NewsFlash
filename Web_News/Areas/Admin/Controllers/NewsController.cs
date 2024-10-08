@@ -226,7 +226,7 @@ namespace Web_News.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Roles = "Admin,Reporter")]
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         public async Task<IActionResult> Index(ApprovalStatus? statusFilter = ApprovalStatus.Pending, int pageNumber = 1, string titleSearchTerm = null, DateTime? publishDate = null, string authorSearchTerm = null, int? categoryId = null)
         {
             int userId;
@@ -254,7 +254,7 @@ namespace Web_News.Areas.Admin.Controllers
 
 
         // GET: News/FilterByStatus
-        [Authorize(Roles = "Admin,Reporter")]
+        [Authorize(Roles = "Admin,Reporter,Editor")]
         public IActionResult FilterByStatus(ApprovalStatus status)
         {
             return RedirectToAction("Index", new { statusFilter = status });

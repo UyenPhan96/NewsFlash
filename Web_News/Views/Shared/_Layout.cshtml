@@ -18,22 +18,20 @@
                     <img src="~/images/newlogo.jpg" alt="NewFlash">
                 </div>
             </a>
-           
+
             <div class="search-container">
-                <form class="search-form" id="searchForm" onsubmit="performSearch(event)">
-                    <input type="text" class="search-input" id="searchInput" placeholder="Tìm kiếm...">
+                <form class="search-form" id="searchForm" method="get" asp-controller="News" asp-action="SearchNews" onsubmit="return validateSearch()">
+                    <input type="text" class="search-input" id="searchInput" name="searchQuery" placeholder="Tìm kiếm...">
                     <button type="submit" class="search-button">
                         <i class="fas fa-search"></i>
                     </button>
                 </form>
             </div>
-
             <span class="separator">|</span>
             <partial name="_PartialLogin" />
         </div>
     </header>
         <!-- Thanh Menu -->
-  @*   @await Html.PartialAsync("Menu", ViewData["Categories"] as List<Category>) *@
     @await Component.InvokeAsync("Menu")
 
     <div class="container">
@@ -66,6 +64,16 @@
         </div>
     </footer>
     <script src="~/layoutpage/scripts.js"></script>
+    <script>
+        function validateSearch() {
+            var searchInput = document.getElementById('searchInput').value.trim(); 
+            if (searchInput === "") {
+                return false; 
+            }
+            return true; 
+        }
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

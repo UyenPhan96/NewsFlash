@@ -1,0 +1,35 @@
+﻿@model List<Web_News.Areas.Admin.ViewModels.RoleViewModel>
+
+@{
+    ViewBag.title = "Danh sách Role  " ;
+}
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tên vai trò</th>
+                        <th>Miêu tả</th>
+                        <th>Số lượng </th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var role in Model)
+                    {
+                        <tr>
+                            <td>@role.RoleName</td>
+                            <td>@role.Describe</td>
+                            <td>@role.UserCount</td>
+                            <td>
+                                <a href="@Url.Action("ManageAdmins", "User", new { roleId = role.RoleId, status = "active" })"><i class="mdi mdi-eye icon-md"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

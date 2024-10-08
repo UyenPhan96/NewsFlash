@@ -12,6 +12,7 @@ namespace Web_News.Areas.Admin.ServiceAd.UserSV
         List<User> GetAllUsersWithRole();
         List<UserViewModels> GetDeletedUsers(int RoleId);
         List<UserViewModels> GetLockedUsers(int RoleId);
+        List<RoleViewModel> GetRolesWithUserCounts();
         User GetUserById(int userId);
         bool UpdateUserInfo(UserViewModels model);
         

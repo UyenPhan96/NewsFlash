@@ -23,5 +23,6 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
         Task<bool> UpdateNewsStatusAsync(int newsId, ApprovalStatus approvalStatus, bool status);
         Task<PageResult> GetPagedNewsByApprovalStatusAsync(ApprovalStatus? status, int pageNumber, int pageSize, string titleSearchTerm = null,
             DateTime? publishDate = null, string authorSearchTerm = null, int? categoryId = null);
+        Task<List<News>> SearchNewsAsync(int? categoryId, string searchQuery, DateTime? startDate, DateTime? endDate);
     }
 }

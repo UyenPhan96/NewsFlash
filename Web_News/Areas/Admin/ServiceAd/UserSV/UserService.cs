@@ -32,7 +32,7 @@ namespace Web_News.Areas.Admin.ServiceAd.UserSV
         public List<UserViewModels> GetActiveUsers(int roleId)
         {
             var users = (from ur in _context.UserRoles
-                         .Include(ur => ur.Role) // Bao gồm Role trong truy vấn
+                         .Include(ur => ur.Role) 
                          join u in _context.Users on ur.UserId equals u.UserID
                          where u.IsDeleted == false && u.AccountStatus == false
                          select new UserViewModels
@@ -44,7 +44,8 @@ namespace Web_News.Areas.Admin.ServiceAd.UserSV
                              Address = u.Address,
                              UserName = u.UserName,
                              RegistrationDate = u.RegistrationDate,
-                             Role = ur.Role.NameRole 
+                             Role = ur.Role.NameRole ,
+                             RoleId = ur.RoleId
                          });
 
             if (roleId == 2)
@@ -53,22 +54,19 @@ namespace Web_News.Areas.Admin.ServiceAd.UserSV
             }
             else
             {
-                return users.Where(ur => ur.Role != "User").ToList(); 
+                return users.Where(ur => ur.RoleId == roleId).ToList();
             }
         }
 
 
 
         // Lấy danh sách người dùng bị khóa
-        public List<UserViewModels> GetLockedUsers(int RoleId)
+        public List<UserViewModels> GetLockedUsers(int roleId)
         {
-            if (RoleId == 2)
-            {
-                return (from ur in _context.UserRoles
+            var users = from ur in _context.UserRoles
+                         .Include(ur => ur.Role)
                         join u in _context.Users on ur.UserId equals u.UserID
-                        where ur.RoleId == RoleId
-                              && u.AccountStatus == true
-                              && u.IsDeleted == false
+                        where u.IsDeleted == false && u.AccountStatus == true
                         select new UserViewModels
                         {
                             UserId = u.UserID,
@@ -78,39 +76,29 @@ namespace Web_News.Areas.Admin.ServiceAd.UserSV
                             Address = u.Address,
                             UserName = u.UserName,
                             RegistrationDate = u.RegistrationDate,
-                            Role = ur.Role.NameRole
-                        }).ToList();
+                            Role = ur.Role.NameRole,
+                            RoleId = ur.RoleId
+                        };
+           
+            // Lọc theo Role
+            if (roleId == 2)
+            {
+                return users.Where(ur => ur.Role == "User").ToList();
             }
             else
             {
-                return (from ur in _context.UserRoles
-                        join u in _context.Users on ur.UserId equals u.UserID
-                        where ur.RoleId != 2
-                              && u.AccountStatus == true
-                              && u.IsDeleted == false
-                        select new UserViewModels
-                        {
-                            UserId = u.UserID,
-                            Name = u.Name,
-                            Email = u.Email,
-                            Phone = u.Phone,
-                            Address = u.Address,
-                            UserName = u.UserName,
-                            RegistrationDate = u.RegistrationDate,
-                            Role = ur.Role.NameRole
-                        }).ToList();
+                return users.Where(ur => ur.RoleId == roleId).ToList();
             }
         }
 
+
         // Lấy danh sách người dùng đã bị xóa
-        public List<UserViewModels> GetDeletedUsers(int RoleId)
+        public List<UserViewModels> GetDeletedUsers(int roleId)
         {
-            if (RoleId == 2)
-            {
-                return (from ur in _context.UserRoles
+            var users = from ur in _context.UserRoles
+                        .Include(ur => ur.Role)
                         join u in _context.Users on ur.UserId equals u.UserID
-                        where ur.RoleId == RoleId
-                              && u.IsDeleted == true
+                        where u.IsDeleted == true
                         select new UserViewModels
                         {
                             UserId = u.UserID,
@@ -120,28 +108,21 @@ namespace Web_News.Areas.Admin.ServiceAd.UserSV
                             Address = u.Address,
                             UserName = u.UserName,
                             RegistrationDate = u.RegistrationDate,
-                            Role = ur.Role.NameRole
-                        }).ToList();
+                            Role = ur.Role.NameRole,
+                            RoleId = ur.RoleId
+                        };
+
+            // Lọc theo Role
+            if (roleId == 2)
+            {
+                return users.Where(ur => ur.Role == "User").ToList();
             }
             else
             {
-                return (from ur in _context.UserRoles
-                        join u in _context.Users on ur.UserId equals u.UserID
-                        where ur.RoleId != 2
-                              && u.IsDeleted == true
-                        select new UserViewModels
-                        {
-                            UserId = u.UserID,
-                            Name = u.Name,
-                            Email = u.Email,
-                            Phone = u.Phone,
-                            Address = u.Address,
-                            UserName = u.UserName,
-                            RegistrationDate = u.RegistrationDate,
-                            Role = ur.Role.NameRole
-                        }).ToList();
+                return users.Where(ur => ur.RoleId == roleId).ToList();
             }
         }
+
 
 
         public bool AccountStatus(int userId)
@@ -224,5 +205,20 @@ namespace Web_News.Areas.Admin.ServiceAd.UserSV
         {
             return _context.Roles.ToList();
         }
+        // Lấy danh sách role và số lượng người dùng tương ứng
+        public List<RoleViewModel> GetRolesWithUserCounts()
+        {
+            var roles = _context.Roles
+                .Select(role => new RoleViewModel
+                {
+                    RoleId = role.RoleID,
+                    RoleName = role.NameRole,
+                    Describe = role.Describe,
+                    UserCount = _context.UserRoles.Count(ur => ur.RoleId == role.RoleID)
+                }).ToList();
+
+            return roles;
+        }
+
     }
 }
