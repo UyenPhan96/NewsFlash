@@ -1,7 +1,187 @@
 ﻿@{
     ViewData["Title"] = "HomePage";
-    // Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+   
 }
 
-<h1>HomePage</h1>
 
+        <div class="page-header">
+            <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-primary text-white me-2">
+                    <i class="mdi mdi-home"></i>
+                </span> Trang chủ
+            </h3>
+            <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <span></span>Tổng quang <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="row">
+            <!-- Số lượng người dùng với Role là User -->
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-danger card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/LayoutAdmin/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                        <h4 class="font-weight-normal mb-3">Số người dùng <i class="mdi mdi-account mdi-24px float-right"></i></h4>
+                        <h2 class="mb-5">@ViewBag.NumberOfUsers</h2>
+                        <h6 class="card-text">@ViewBag.UserPercentageChange</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- Số lượng bài viết đang hiển thị -->
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-info card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/LayoutAdmin/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                        <h4 class="font-weight-normal mb-3">Bài viết đang hiển thị <i class="mdi mdi-book mdi-24px float-right"></i></h4>
+                        <h2 class="mb-5">@ViewBag.NumberOfDisplayedNews</h2>
+                        <h6 class="card-text">@ViewBag.NewsPercentageChange</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- Số lượng quảng cáo đang hiển thị -->
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="card bg-gradient-success card-img-holder text-white">
+                    <div class="card-body">
+                        <img src="~/LayoutAdmin/assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
+                        <h4 class="font-weight-normal mb-3">Quảng cáo đang hiển thị <i class="mdi mdi-bullhorn mdi-24px float-right"></i></h4>
+                        <h2 class="mb-5">@ViewBag.NumberOfDisplayedAds</h2>
+                        <h6 class="card-text">@ViewBag.AdsPercentageChange</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Biểu đồ số lượng bài viết</h4>
+                        <canvas id="areaChart" style="height:250px"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Số lượng bài viết / người</h4>
+                    <canvas id="newsByUserChart" ></canvas>
+                        <div id="traffic-chart-legend" class="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Biểu đồ số lượng quảng cáo trong 10 ngày gần đây -->
+        <div class="row">
+            <div class="col-md-7 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Biểu đồ số lượng quảng cáo</h4>
+                        <canvas id="adsChart" style="height:250px"></canvas>
+                    </div>   
+                </div>
+            </div>
+      
+            <div class="col-md-5 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Số lượng bài viết / người</h4>
+                        <canvas id=""></canvas>
+                        <div id="traffic-chart-legend" class="rounded-legend legend-vertical legend-bottom-left pt-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<script src="~/layoutadmin/assets/vendors/chart.js/chart.min.js"></script>
+
+<script>
+    // biểu đồ đường dành cho hiển thị số lượng bài viết trong tuần quá
+    var areaCtx = document.getElementById('areaChart').getContext('2d');
+    var newsCountData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.NewsCountByDay));
+
+    var labels = Object.keys(newsCountData); // Nhãn là các ngày trong 7 ngày gần nhất
+    var data = Object.values(newsCountData); // Dữ liệu là số lượng bài viết tương ứng mỗi ngày
+
+    var areaChart = new Chart(areaCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Số lượng bài viết',
+                data: data,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 2,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    </script>
+
+    <script>
+    // Biểu đồ quảng cáo trong 10 ngày gần nhất
+    var adsCtx = document.getElementById('adsChart').getContext('2d');
+    var adsCountData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.AdsCountByDay));
+
+    var adsLabels = Object.keys(adsCountData);
+    var adsData = Object.values(adsCountData);
+
+    var adsChart = new Chart(adsCtx, {
+        type: 'line',
+        data: {
+            labels: adsLabels,
+            datasets: [{
+                label: 'Số lượng quảng cáo',
+                data: adsData,
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 2,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+</script>
+
+@*  biểu đồ tròn dành cho hiển thị người viết bài và số lượng bài viết của người đó *@
+<script>
+    var newsByUserCtx = document.getElementById('newsByUserChart').getContext('2d');
+    var newsByUserData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.NewsByUserForCurrentMonth));
+
+    var chartData = {
+        labels: Object.keys(newsByUserData),
+        datasets: [{
+            label: 'Bài viết theo tài khoản',
+            data: Object.values(newsByUserData),
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+        }]
+    };
+
+    var newsByUserChart = new Chart(newsByUserCtx, {
+        type: 'pie',
+        data: chartData,
+    });
+</script>
+
+<script>
+
+</script>

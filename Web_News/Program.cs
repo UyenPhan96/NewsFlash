@@ -11,6 +11,7 @@ using Web_News.Areas.Admin.ServiceAd.NewsSV;
 using Web_News.Services.ContactSV;
 using Web_News.Areas.Admin.ServiceAd.AdvertisementSV;
 using Web_News.Areas.Admin.ServiceAd.UserSV;
+using Web_News.Areas.Admin.ServiceAd.DashboardSV;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ builder.Services.AddScoped<INewsService, NewsService>();
 builder.Services.AddScoped<IAdvertisementService, AdvertisementService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 
 
