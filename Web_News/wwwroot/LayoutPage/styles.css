@@ -11,32 +11,20 @@ header {
 }
 
 .header-top {
-    position: fixed; /* Vị trí cố định */
-    top: 0; /* Cách trên cùng */
-    left: 0; /* Cách bên trái */
-    width: 100%; /* Chiều rộng 100% */
-    display: flex; /* Hiển thị dạng flex */
-    justify-content: space-between; /* Căn giữa các phần tử */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    padding: 10px 20px; /* Khoảng cách trong */
-    background-color: #ffffff; /* Màu nền */
-    z-index: 10000; /* Độ ưu tiên hiển thị */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Đổ bóng */
-    height: 60px; /* Chiều cao cố định */
-    transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff; 
+    z-index: 10000; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 60px; 
+    transition: transform 0.3s ease;
 }
-
-    .header-top::after {
-        content: ""; /* Nội dung rỗng */
-        position: absolute; /* Vị trí tuyệt đối */
-        bottom: 0; /* Cách dưới cùng */
-        left: 0%; /* Cách bên trái */
-        width: 100%; /* Chiều rộng 100% */
-        height: 1px; /* Chiều cao */
-        background: #080808; /* Màu nền */
-        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3); /* Đổ bóng */
-    }
-
 
 #logo {
     transform: translate(10rem, 0rem);
