@@ -316,6 +316,45 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
                 return null;
             }
 
+            var relatedNews = await _context.News
+                .Where(n => n.NewsCategories.Any(nc => news.NewsCategories.Select(c => c.CategoryId).Contains(nc.CategoryId)) && n.NewsId != newsId)
+                .OrderByDescending(n => n.PublishDate) 
+                .Take(6) 
+                .Select(n => new NewsViewModel
+                {
+                    NewsId = n.NewsId,
+                    Title = n.Title,
+                    Image = n.Image,
+                    PublishDate = n.PublishDate
+                })
+                .ToListAsync();
+            // Lấy thêm 6 bài viết tiếp theo 
+            var get6RelatedNews = await _context.News
+                .Where(n => n.NewsId != newsId) 
+                .OrderByDescending(n => n.PublishDate)
+                .Skip(6) 
+                .Take(6)
+                .Select(n => new NewsViewModel
+                {
+                    NewsId = n.NewsId,
+                    Title = n.Title,
+                    Image = n.Image,
+                    PublishDate = n.PublishDate
+                })
+                .ToListAsync();
+            // Lấy thêm các bài viết tiếp theo liên quan bỏ quan 12 bài viết đầu
+            var allNews = await _context.News
+                .Where(n => n.NewsId != newsId) 
+                .OrderByDescending(n => n.PublishDate)
+                .Skip(12)
+                .Select(n => new NewsViewModel
+                {
+                    NewsId = n.NewsId,
+                    Title = n.Title,
+                    Image = n.Image,
+                    PublishDate = n.PublishDate
+                })
+                .ToListAsync();
             return new NewsViewModel
             {
                 NewsId = news.NewsId,
@@ -325,9 +364,13 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
                 PublishDate = news.PublishDate,
                 CreatedByUserName = _context.Users.FirstOrDefault(u => u.UserID == news.CreatedByUserId)?.Name,
                 Status = news.Status,
-                Categories = news.NewsCategories.Select(nc => nc.Category).ToList() // Thay đổi ở đây
+                Categories = news.NewsCategories.Select(nc => nc.Category).ToList(),
+                RelatedNews = relatedNews ,
+                Allnews = allNews,
+                Get6RelatedNews = get6RelatedNews
             };
         }
+
 
         /// <summary>
         /// Lấy 4 bài viết mới nhất theo ngày
@@ -341,6 +384,24 @@ namespace Web_News.Areas.Admin.ServiceAd.NewsSV
                 .Take(4)
                 .ToListAsync();
         }
+        public async Task<List<News>> GetNewsByCategory(int categoryId, int count)
+        {
+            return await _context.News
+                .Where(n => n.Status && n.NewsCategories.Any(nc => nc.CategoryId == categoryId)) // Truy cập qua bảng trung gian NewsCategory
+                .OrderByDescending(n => n.PublishDate)
+                .Take(count)
+                .ToListAsync();
+        }
+        public async Task<List<News>> GetTopNews360(int count)
+        {
+            return await _context.News
+                .Where(n => n.Status ) 
+                .OrderByDescending(n => n.PublishDate) 
+                .Take(count)  
+                .ToListAsync();
+        }
+
+
 
         /// <summary>
         /// Hiển thị bài viết theo thẻ loại (đang không sử dụng)

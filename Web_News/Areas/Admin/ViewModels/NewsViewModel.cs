@@ -24,7 +24,11 @@ namespace Web_News.Areas.Admin.ViewModels
         public List<Category> ListCategories { get; set; }
         public IEnumerable<Category> Categories { get; set; }
         public IEnumerable<int> SelectedCategories { get; set; }
+        // Tin tức liên quan
+        public List<NewsViewModel> RelatedNews { get; set; }
+        public List<NewsViewModel> Allnews { get; set; }
+        public List<NewsViewModel> Get6RelatedNews { get; set; }
 
-  
+
     }
 }
