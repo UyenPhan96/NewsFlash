@@ -24,7 +24,7 @@ namespace Web_News.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ContactViewModel model)
+        public async Task<IActionResult> Create(ContactViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -37,18 +37,20 @@ namespace Web_News.Controllers
                     // Lưu file ảnh hoặc video
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        model.MediaFile.CopyTo(stream);
+                        await model.MediaFile.CopyToAsync(stream);
                     }
 
                     model.MediaFilePath = fileName; // Lưu tên file vào model
                 }
 
-                _contactService.CreateContact(model);
+                await _contactService.CreateContact(model);
+
                 return RedirectToAction("Create");
             }
 
             return View(model);
         }
+
 
         public IActionResult Success()
         {

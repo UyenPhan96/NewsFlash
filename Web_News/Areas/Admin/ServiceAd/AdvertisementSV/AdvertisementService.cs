@@ -19,6 +19,18 @@ namespace Web_News.Areas.Admin.ServiceAd.AdvertisementSV
             _webHostEnvironment = webHostEnvironment; // Khởi tạo biến trường
         }
 
+        // Đánh dấu đã đọc thông báo
+        public async Task MarkAsReadAsync(int id)
+        {
+            var advertisement = await _context.Advertisements.FindAsync(id);
+            if (advertisement != null && !advertisement.IsRead)
+            {
+                advertisement.IsRead = true;
+                _context.Advertisements.Update(advertisement);
+                await _context.SaveChangesAsync();
+            }
+        }
+
         // Lấy danh sách quảng cáo
         public async Task<List<Advertisement>> GetAdvertisementsAsync()
         {

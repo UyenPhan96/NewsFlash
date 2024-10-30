@@ -33,11 +33,13 @@ namespace Web_News.Areas.Admin.Controllers
         // Chi tiết quảng cáo
         public async Task<IActionResult> Approve(int id)
         {
+            await _advertisementService.MarkAsReadAsync(id);
             var advertisement = await _advertisementService.GetAdvertisementByIdAsync(id);
             if (advertisement == null)
             {
                 return NotFound();
             }
+
             return View(advertisement);
         }
 

@@ -37,6 +37,11 @@ namespace Web_News.Models
 
         [ForeignKey("ApprovedByUserId")]
         public User? ApprovedByUser { get; set; }
+        // Ngày tạo thông báo
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+
+        // Trạng thái đã đọc
+        public bool IsRead { get; set; } = false;
     }
     public enum BannerPosition
     {

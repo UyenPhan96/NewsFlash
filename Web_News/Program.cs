@@ -12,6 +12,7 @@ using Web_News.Services.ContactSV;
 using Web_News.Areas.Admin.ServiceAd.AdvertisementSV;
 using Web_News.Areas.Admin.ServiceAd.UserSV;
 using Web_News.Areas.Admin.ServiceAd.DashboardSV;
+using Web_News.Areas.Admin.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,7 +72,7 @@ builder.Services.AddAuthentication(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSignalR();
 var app = builder.Build();
     
 // Configure the HTTP request pipeline.
@@ -98,4 +99,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+// Thêm MapHub để đăng ký endpoint cho SignalR
+app.MapHub<NotificationHub>("/notificationHub");
+
 app.Run();

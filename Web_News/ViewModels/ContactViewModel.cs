@@ -4,6 +4,7 @@ namespace Web_News.ViewModels
 {
     public class ContactViewModel
     {
+        public int Id { get; set; }
         [Required]
         [StringLength(100, ErrorMessage = "Tên người liên hệ không được quá 100 ký tự.")]
         public string ContactName { get; set; }
