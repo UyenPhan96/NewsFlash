@@ -1,20 +1,24 @@
 ﻿@model List<Category>
 
-    <style>
+<style>
     .menu {
         list-style-type: none;
         margin: 0;
         padding: 0;
         display: flex;
         justify-content: center;
-        background-color: black;
-        font-family: "Times New Roman", Times, serif;
+        background-color: #f8f9fa; /* Màu nền sáng nhẹ cho thanh menu chính */
+        font-family: Arial, sans-serif;
+        font-size: 15px;
+        font-weight: 400;
         position: fixed;
         top: 80px;
         left: 0;
         width: 100%;
         z-index: 9999;
         transition: transform 0.3s ease;
+        border-top: 2px solid #ccc; /* Đường kẻ trên */
+        border-bottom: 2px solid #ccc; /* Đường kẻ dưới */
     }
 
         .menu.hidden {
@@ -27,26 +31,27 @@
 
             .menu li a {
                 display: block;
-                color: white;
+                color: #333; /* Màu chữ tối cho dễ đọc */
                 text-align: center;
                 padding: 14px 20px;
                 text-decoration: none;
-                font-size: 18px;
+                font-size: 19px;
+                transition: background-color 0.3s ease, color 0.3s ease; /* Thêm hiệu ứng cho liên kết */
             }
 
-
-                .menu li a:hover, .menu li .dropbtn:hover {
-                    background-color: #555; /* Màu nền khi hover */
+                .menu li a:hover {
+                    background-color: #e2e6ea; /* Màu nền nhẹ khi hover */
+                    color: #000; /* Màu chữ đen khi hover */
                 }
 
     .dropdown-menu {
         display: none;
         position: absolute;
-        background-color: #2b2b2b;
-        min-width: 140px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        background-color: #f8f9fa; /* Màu nền sáng cho menu con */
+        min-width: 160px; /* Độ rộng tối thiểu lớn hơn */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
         z-index: 1;
-        border-radius: 10px;
+        border-radius: 4px; /* Bo tròn góc cho menu con */
         padding: 8px 0;
         transform: translateY(-10px);
         opacity: 0;
@@ -65,22 +70,20 @@
 
         .dropdown-menu li a {
             padding: 12px 20px;
-            color: #ffffff;
+            color: #333; /* Màu chữ cho menu con */
             text-decoration: none;
             display: block;
             font-size: 14px;
             transition: background-color 0.3s ease, color 0.3s ease;
-            border-radius: 5px;
         }
 
             .dropdown-menu li a:hover {
-                background-color: #444;
-                color: white;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+                background-color: #e2e6ea; /* Màu nền nhẹ khi hover trên menu con */
+                color: #000; /* Màu chữ đen khi hover trên menu con */
             }
 
         .dropdown-menu li + li {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(0, 0, 0, 0.1); /* Đường phân cách giữa các mục */
         }
 
         .dropdown-menu li a i {
@@ -89,12 +92,10 @@
         }
 
         .dropdown-menu li a:hover i {
-            color: #ffd700;
+            color: #333; /* Màu icon không thay đổi khi hover */
         }
 
-
-
-    </style>
+</style>
 <nav>
     <ul class="menu">
         <li><a href="/"><i class="fas fa-home"></i></a></li>

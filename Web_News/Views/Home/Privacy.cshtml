@@ -49,22 +49,18 @@
             <div class="news-list">
                 <div class="news-row">
                     @foreach (var news in Model.Allnews)
-            {
-                <div class="recommendation-item">
-                    <img src="/Images/@news.Image" alt="Ảnh bài viết @news.Title">
-                    <div class="recommendation-content">
-                        <h3><a href="/Home/Privacy/@news.NewsId">@news.Title</a></h3>
-                        <p class="date-time">Ngày đăng: <span>@news.PublishDate.ToString("dddd, d/M/yyyy, HH:mm (GMT+7)")</span></p>
-                    </div>
-                </div>
-            }
+                    {
+                        <div class="recommendation-item">
+                            <img src="/Images/@news.Image" alt="Ảnh bài viết @news.Title">
+                            <div class="recommendation-content">
+                                <h3><a href="/Home/Privacy/@news.NewsId">@news.Title</a></h3>
+                                <p class="date-time">Ngày đăng: <span>@news.PublishDate.ToString("dddd, d/M/yyyy, HH:mm (GMT+7)")</span></p>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
-      
-
-
-        
     </div>
 
     <aside class="sidebar">

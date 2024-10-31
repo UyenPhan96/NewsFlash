@@ -8,7 +8,7 @@ window.addEventListener('scroll', function () {
     if (currentScroll > lastScrollTop) {
         // Cu?n xu?ng, ?n thanh header và thanh menu
         header.style.transform = 'translateY(-100%)';
-        menu.style.transform = 'translateY(-170%)';
+        menu.style.transform = 'translateY(-147%)';
     } else {
         // Cu?n lên, hi?n th? l?i thanh header và thanh menu
         header.style.transform = 'translateY(0)';

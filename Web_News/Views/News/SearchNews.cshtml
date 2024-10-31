@@ -1,13 +1,135 @@
-﻿@model Web_News.ViewModels.SearchWithAdsViewModel
+﻿﻿
+@model Web_News.ViewModels.SearchWithAdsViewModel
 
 @{
     ViewBag.title = "Tìm Kiếm";
 }
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif; /* Thiết lập font chữ Arial */
+            font-size: 15px; /* Kích thước chữ 15px */
+            font-weight: 400; /* Trọng số chữ 400 (bình thường) */
+        }
+
+        .container {
+            max-width: 1000px;
+            font-family: Arial, sans-serif; /* Thiết lập font chữ Arial */
+            font-size: 15px; /* Kích thước chữ 15px */
+            font-weight: 400; /* Trọng số chữ 400 (bình thường) */
+        }
+
+        .main-content {
+            max-width: 670px; /* Đặt chiều rộng tối đa cho khung chứa biểu mẫu */
+            margin: 20px auto; /* Căn giữa biểu mẫu trên trang */
+            padding: 20px; /* Thêm một ít khoảng đệm */
+            border-radius: 8px; /* Bo tròn các góc */
+        }
+
+        .form-group {
+            margin-bottom: 15px; /* Khoảng cách giữa các nhóm biểu mẫu */
+        }
+
+        label {
+            font-size: 15px;
+            font-weight: bold; /* Nhấn mạnh chữ đậm cho nhãn */
+            margin-bottom: 5px; /* Khoảng cách giữa nhãn và ô nhập liệu */
+            display: block; /* Làm cho nhãn thành phần khối */
+        }
+
+        .form-control {
+            width: 100%; /* Ô nhập liệu chiếm toàn bộ chiều rộng */
+            padding: 10px; /* Khoảng đệm cho ô nhập liệu */
+            border: 1px solid #ccc; /* Màu đường viền */
+            border-radius: 4px; /* Bo tròn các góc của ô nhập liệu */
+            box-sizing: border-box; /* Bao gồm khoảng đệm và đường viền trong chiều rộng */
+            transition: border-color 0.3s; /* Hiệu ứng chuyển đổi màu đường viền mượt mà */
+        }
+
+            .form-control:focus {
+                border-color: #808080; /* Thay đổi màu đường viền khi ô được chọn */
+                outline: none; /* Xóa viền ngoài */
+            }
+
+        select.form-control {
+            appearance: none; /* Xóa mũi tên mặc định của ô chọn */
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 10px center; /* Mũi tên tùy chỉnh */
+            background-size: 12px; /* Kích thước của mũi tên tùy chỉnh */
+        }
+
+        button.btn {
+            width: 100%; /* Nút chiếm toàn bộ chiều rộng */
+            padding: 10px; /* Khoảng đệm cho nút */
+            font-size: 16px; /* Kích thước chữ */
+            border: none; /* Xóa đường viền mặc định */
+            border-radius: 4px; /* Bo tròn các góc của nút */
+            cursor: pointer; /* Con trỏ chuột */
+            transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu nền mượt mà */
+        }
+
+        button.btn-primary {
+            background-color: #808080; /* Màu nút chính */
+            color: white; /* Màu chữ trên nút */
+        }
+
+            button.btn-primary:hover {
+                background-color: #696969; /* Màu tối hơn khi di chuột qua */
+            }
+
+        .sidebar {
+            width: 250px; /* Độ rộng của sidebar */
+            margin-top: 50px;
+        }
+        .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 20px 0;
+    list-style: none;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+.page-link {
+            color: #808080;
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.page-link:hover {
+    background-color: #f8f9fa;
+                color: #808080;
+}
+
+.page-item.active .page-link {
+            background-color: #808080;
+    color: white;
+            border-color: #808080;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #e9ecef;
+    border-color: #ddd;
+}
+
+.page-link span[aria-hidden="true"] {
+    font-size: 14px;
+}
+
+
+
+
+    </style>
+</head>
 
 <body>
-   <br />
-    <br />
-    <br />
     <br />
     <br />
     <br />
@@ -20,22 +142,22 @@
                 <input type="hidden" value="@Model.CategoryId" />
 
                 <div class="form-group">
-                    <label for="searchQuery">Search Query</label>
+                    <label for="searchQuery">Từ khóa tìm kiếm</label>
                     <input type="text" id="searchQuery" name="searchQuery" class="form-control" value="@Model.SearchQuery" placeholder="Search news...">
                 </div>
 
                 <div class="form-group">
-                    <label for="startDate">Start Date</label>
+                    <label for="startDate">Ngày bắt đầu</label>
                     <input type="date" name="startDate" class="form-control" value="@Model.StartDate?.ToString("yyyy-MM-dd")">
                 </div>
 
                 <div class="form-group">
-                    <label for="endDate">End Date</label>
+                    <label for="endDate">Ngày kết thúc</label>
                     <input type="date" name="endDate" class="form-control" value="@Model.EndDate?.ToString("yyyy-MM-dd")">
                 </div>
-    
+
                 <div class="form-group">
-                    <label for="categoryId">Category</label>
+                    <label for="categoryId">Thể loại</label>
                     <select name="categoryId" class="form-control">
                         <option value="0">All Categories</option>
                         @foreach (var category in Model.Categories)
@@ -46,11 +168,11 @@
                         }
                     </select>
                 </div>
-    
-                <button type="submit" class="btn btn-primary">Search</button>
+
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
             </form>
 
-    <!-- Kết quả tìm kiếm bài viết -->
+            <!-- Kết quả tìm kiếm bài viết -->
             <div>
                 <h3>Search Results</h3>
                 @if (!Model.LatestNews.Any())
@@ -107,8 +229,8 @@
 
             </div>
 
-         </div>
-    <!-- Phần quảng cáo bên phải -->
+        </div>
+        <!-- Phần quảng cáo bên phải -->
         <aside class="sidebar">
             @foreach (var ad in Model.SidebarAdvertisements)
             {
@@ -127,9 +249,9 @@
 
 <script>
     function validateSearchForm() {
-        var searchInput = document.getElementById('searchQuery').value.trim(); 
+        var searchInput = document.getElementById('searchQuery').value.trim();
         if (searchInput === "") {
-            return false; 
+            return false;
         }
         return true;
     }
