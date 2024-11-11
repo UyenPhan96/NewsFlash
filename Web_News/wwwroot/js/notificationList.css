@@ -1,0 +1,46 @@
+﻿#notificationList {
+    max-height: 400px; /* Giới hạn chiều cao của danh sách thông báo */
+    overflow-y: auto; /* Thêm thanh cuộn dọc */
+    padding-right: 15px; /* Thêm khoảng cách cho thanh cuộn */
+}
+/* Làm đậm tên người dùng và nội dung thông báo */
+/*.notification-item-new .preview-subject {
+    font-weight: bold;*/ /* Làm đậm tên người dùng */
+/*}*/
+
+/* Thông báo chưa đọc */
+.notification-item-new {
+    font-weight: normal;
+    background-color: #f8f9fa; /* Màu nền sáng cho thông báo chưa đọc */
+}
+
+    .notification-item-new .preview-subject {
+        font-weight: bold; /* Để tên người dùng đậm */
+        color: #333; /* Màu chữ đen */
+    }
+
+    .notification-item-new .content-preview {
+        color: #333; /* Màu cho nội dung thông báo */
+    }
+
+    .notification-item-new .small {
+        font-size: 0.8rem; /* Kích thước nhỏ cho ngày */
+        color: #aaa; /* Màu nhạt cho ngày */
+    }
+
+/* Thông báo đã đọc */
+.notification-item-read {
+   
+}
+
+    .notification-item-read .preview-subject {
+        color: #888; /* Màu đen nhạt cho tên người dùng */
+    }
+
+    .notification-item-read .content-preview {
+        color: #aaa; /* Màu nhạt cho nội dung thông báo */
+    }
+
+    .notification-item-read .small {
+        color: #bbb; /* Màu nhạt hơn cho ngày */
+    }

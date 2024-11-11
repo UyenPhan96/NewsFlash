@@ -1,4 +1,5 @@
-﻿using Web_News.ViewModels;
+﻿using Web_News.Areas.Admin.ViewModels;
+using Web_News.ViewModels;
 
 namespace Web_News.Services.ContactSV
 {
@@ -6,5 +7,7 @@ namespace Web_News.Services.ContactSV
     {
       
         Task CreateContact(ContactViewModel model);
+        Task<List<NotificationViewModel>> GetRecentNotifications();
+        Task MarkAsRead(int advertisementId);
     }
 }

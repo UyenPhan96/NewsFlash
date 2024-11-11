@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Web_News.Areas.Admin.Hubs;
+using Web_News.Areas.Admin.ViewModels;
 using Web_News.Models;
 using Web_News.ViewModels;
 
@@ -30,14 +32,40 @@ namespace Web_News.Services.ContactSV
 
             _context.Advertisements.Add(advertisement);
             await _context.SaveChangesAsync();
+            // Gửi thông báo tới tất cả client
+            await _hubContext.Clients.All.SendAsync("ReceiveNotification",
+                advertisement.AdvertisementId.ToString(),
+                advertisement.ContactName,
+                advertisement.Content,
+                advertisement.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss"));
 
-            // Gửi thông báo đến tất cả các client với thông tin chi tiết
-            await _hubContext.Clients.All.SendAsync("ReceiveNotification", new
+        }
+        // Lấy 10 thông báo gần đây nhất
+        public async Task<List<NotificationViewModel>> GetRecentNotifications()
+        {
+            return await _context.Advertisements
+                .OrderByDescending(a => a.CreatedDate)
+                .Take(10)
+                .Select(a => new NotificationViewModel
+                {
+                    AdvertisementId = a.AdvertisementId,
+                    ContactName = a.ContactName,
+                    Content = a.Content,
+                    CreatedDate = a.CreatedDate,
+                    IsRead = a.IsRead
+                })
+                .ToListAsync();
+        }
+
+        // Đánh dấu một thông báo là đã đọc
+        public async Task MarkAsRead(int advertisementId)
+        {
+            var advertisement = await _context.Advertisements.FindAsync(advertisementId);
+            if (advertisement != null)
             {
-                advertisementId = advertisement.AdvertisementId,
-                contactName = advertisement.ContactName,
-                content = advertisement.Content
-            });
+                advertisement.IsRead = true;
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

@@ -51,7 +51,19 @@ namespace Web_News.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetRecentNotifications()
+        {
+            var notifications = await _contactService.GetRecentNotifications();
+            return Json(notifications); // Trả về danh sách thông báo dưới dạng JSON
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> MarkAsRead(int advertisementId)
+        {
+            await _contactService.MarkAsRead(advertisementId);
+            return Ok();
+        }
         public IActionResult Success()
         {
             return View();
