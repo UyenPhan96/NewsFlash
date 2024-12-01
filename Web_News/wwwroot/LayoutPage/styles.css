@@ -1,164 +1,102 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    
+﻿body {
     margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-.container {
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
+    font-size: 10px;
+    font-family: Arial, sans-serif; /* Thiết lập font chữ Arial */
 }
 
 header {
-    background: #ffffff; /* Màu nền của header */
-    color: #040000; /* Màu chữ trong header */
-    padding: 10px 20px; /* Khoảng cách padding trong header */
-    border-bottom: #050608 3px solid; /* Đường viền dưới của header */
-    display: flex; /* Sử dụng Flexbox để căn chỉnh nội dung */
-    align-items: center; /* Căn chỉnh các mục dọc theo trục ngang */
-    justify-content: space-between; /* Phân phối không gian đều giữa các mục */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    position: sticky; /* Giữ header cố định khi cuộn */
-    top: 0; /* Đặt vị trí cố định ở trên cùng */
-    z-index: 1000; /* Đảm bảo header luôn hiển thị trên các phần tử khác */
-    transition: background 0.3s ease, padding 0.3s ease; /* Thêm hiệu ứng chuyển tiếp */
+    background: #ffffff;
+    color: #040000;
+    border-bottom: #050608 1px solid;
 }
 
-header.fixed-header {
-    padding: 5px 20px; /* Thay đổi padding khi cố định */
+.header-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    z-index: 10000;
+    height: 60px;
 }
 
-header #branding {
-    display: flex; /* Sử dụng Flexbox cho phần branding */
-    align-items: center; /* Căn chỉnh nội dung dọc theo trục ngang */
+#logo {
+    transform: translate(10rem, 0rem);
+    display: flex;
+    align-items: center;
 }
 
-header #branding h1 {
-    margin: 0; /* Loại bỏ margin */
-    font-size: 25px; /* Kích thước font chữ của tiêu đề */
-    letter-spacing: 1px; /* Khoảng cách giữa các chữ cái */
-    font-family: inherit; /* Kế thừa font-family từ phần tử cha (header) */
-}
-
-nav {
-    display: flex; /* Sử dụng Flexbox cho phần điều hướng */
-    align-items: center; /* Căn chỉnh các mục dọc theo trục ngang */
-    font-family: inherit; /* Kế thừa font-family từ phần tử cha (header) */
-}
-
-nav ul {
-    margin: 0; /* Loại bỏ margin */
-    padding: 0; /* Loại bỏ padding */
-    list-style: none; /* Loại bỏ dấu chấm của danh sách */
-    display: flex; /* Sử dụng Flexbox để sắp xếp các mục trong danh sách */
-}
-
-nav ul li {
-    margin: 0 10px; /* Khoảng cách giữa các mục trong danh sách */
- 
-}
-
-nav ul li a {
-    color: #060404; /* Màu chữ của liên kết trong menu */
-    text-decoration: none; /* Loại bỏ gạch chân của liên kết */
-    text-transform: uppercase; /* Chuyển đổi chữ thành chữ hoa */
-    font-size: 18px; /* Kích thước font chữ của liên kết */
-    font-family: inherit; /* Kế thừa font-family từ phần tử cha (nav) */
-    transition: color 0.3s ease, transform 0.3s ease; /* Thêm hiệu ứng chuyển tiếp cho màu chữ và hiệu ứng phóng to */
-}
-
-header a:hover {
-    text-decoration: underline; /* Gạch chân liên kết khi di chuột qua */
-    color: #000000; /* Màu chữ khi di chuột qua */
-    transform: scale(1.1); /* Hiệu ứng phóng to khi di chuột qua */
-}
-
-nav ul li .dropdown-menu {
-    display: none; /* Ẩn menu con */
-    position: absolute; /* Định vị tuyệt đối so với mục chính */
-    top: 100%; /* Đặt menu con dưới mục chính */
-    left: 100; /* Canh trái so với mục chính */
-    background: #fff; /* Màu nền của menu con */
-    padding: 0; /* Loại bỏ padding */
-    list-style: none; /* Loại bỏ dấu chấm của danh sách */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Thêm hiệu ứng bóng cho menu con */
-    z-index: 1000; /* Đảm bảo menu con hiển thị trên các phần tử khác */
-}
-
-nav ul li .dropdown-menu a {
-    padding: 10px 20px; /* Thêm padding cho các mục trong menu con */
-    display: block; /* Hiển thị dưới dạng khối */
-    color: #333; /* Màu chữ của liên kết trong menu con */
-    text-transform: none; /* Không chuyển đổi chữ thành chữ hoa */
-    font-size: 16px; /* Kích thước font chữ của liên kết trong menu con */
-    text-decoration: none; /* Loại bỏ gạch chân của liên kết */
-}
-
-nav ul li:hover .dropdown-menu,
-nav ul li .dropdown-m.economic-menu {
-    display: block; /* Hiển thị menu con */
-}
-
-
+    #logo img {
+        max-width: 7rem;
+        max-height: 7rem;
+        width: auto;
+        height: auto;
+    }
 
 .search-container {
-    text-align: center;
-    margin: 20px 0;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 65%;
+    margin-top: 10px;
 }
 
 .search-form {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
 }
+
+    .search-form:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
 
 .search-input {
-    padding: 8px;
+    flex: 1;
+    padding: 6px 1px;
     border: none;
-    border-radius: 4px 0 0 4px;
-    width: 200px;
-    font-size: 16px;
+    font-size: 10px;
+    border-radius: 25px 0 0 25px;
+    outline: none;
+    transition: background-color 0.3s ease;
 }
+
+    .search-input:focus {
+        background-color: #f0f0f0;
+    }
 
 .search-button {
-    padding: 8px 16px;
+    padding: 5px 10px;
     border: none;
-    border-radius: 0 4px 4px 0;
-    background: #0779e4;
+    background: #000000;
     color: #fff;
-    font-size: 16px;
     cursor: pointer;
+    border-radius: 0 25px 25px 0;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
 }
 
-.search-button:hover {
-    background: #065aa1;
-}
+    .search-button:hover {
+        background-color: #000000;
+    }
 
-.login-container {
+
+
+
+
+.container {
     display: flex;
-    align-items: center;
-    margin-left: 20px;
-}
-
-.login-button {
-    background: #fff;
-    color: #e01313;
-    border: 1px solid #e01313;
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.login-button:hover {
-    background: #e01313;
-    color: #fff;
-    border: 1px solid #e01313;
+    justify-content: space-between;
+    width: 72rem;
+    margin: auto;
+    overflow: hidden;
 }
 
 .main-content {
@@ -167,65 +105,58 @@ nav ul li .dropdown-m.economic-menu {
     display: flex;
     flex-direction: column;
 }
+
 .tieudiemtuan {
-    color: #007bff; /* Màu xanh cho tiêu đề */
-    margin-bottom: 10px; /* Khoảng cách dưới tiêu đề */
+    font-size: 17px;
+    margin-top: 150px;
+    margin-bottom: 20px;
 }
 
-/* Lưới với 1 bài viết trên cùng và 3 bài viết dưới cùng */
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 cột với chiều rộng bằng nhau */
-    grid-template-rows: auto auto auto; /* 3 hàng với chiều cao tự động */
-    gap: 15px; /* Khoảng cách giữa các ô lưới */
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto auto;
+    gap: 5px;
 }
 
-/* Bài viết lớn chiếm toàn bộ chiều rộng của hàng đầu tiên */
 .grid-item-large {
-    grid-column: 1 / -1; /* Chiếm toàn bộ chiều rộng của lưới */
-    grid-row: 1 / span 2; /* Chiếm 2 hàng */
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    grid-column: 1 / -1;
+    grid-row: 1 / span 2;
+    border-radius: 3px;
     overflow: hidden;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex; /* Sử dụng flexbox để căn chỉnh các phần tử */
-    flex-direction: column; /* Sắp xếp các phần tử theo chiều dọc */
+    display: flex;
+    flex-direction: column;
 }
 
-/* Bài viết nhỏ chiếm một ô lưới */
 .grid-item-small {
-    background: #fff;
+    font-size: 12px;
     border: 1px solid #ddd;
-    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-
-
-/* Phần bai viết lớn */
 .article-headers img {
-    width: 50%; /* Điều chỉnh chiều rộng hình ảnh */
-    height: 500px; /* Chiều cao hình ảnh */
-    object-fit: cover; /* Đảm bảo hình ảnh không bị biến dạng */
-    margin-right: 10px; /* Khoảng cách giữa hình ảnh và nội dung tiêu đề */
+    width: 50%;
+    height: 500px;
+    object-fit: cover;
+    margin-right: 10px;
     border-radius: 4px;
 }
+
 .article-headers {
     display: flex;
     align-items: center;
     padding: 10px;
     background-color: #f8f9fa;
-    border-bottom: 1px solid #ddd; /* Thêm đường viền dưới phần tiêu đề */
+    border-bottom: 1px solid #ddd;
 }
+
 .article-contents {
-    flex: 1; /* Chiếm không gian còn lại của phần tiêu đề */
-    display: flex; /* Sử dụng flexbox để căn chỉnh tiêu đề và thông tin */
-    flex-direction: column; /* Sắp xếp tiêu đề và thông tin theo chiều dọc */
-    justify-content: center; /* Căn giữa các phần tử theo chiều dọc */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .article-content h3 a {
@@ -238,484 +169,186 @@ nav ul li .dropdown-m.economic-menu {
     color: #007bff;
 }
 
-/* Phần tiêu đề bài viết và hình ảnh */
+.grid-item-large .article-headers h3 {
+    font-size: 22px;
+}
+
+.grid-item-large .article-summary {
+    font-size: 14px;
+}
+
 .article-header {
     display: flex;
-    align-items: flex-start; /* Căn chỉnh các phần tử lên trên cùng */
+    align-items: flex-start;
     padding: 10px;
     background-color: #f8f9fa;
-    border-bottom: 1px solid #ddd; /* Thêm đường viền dưới phần tiêu đề */
+    border-bottom: 1px solid #ddd;
 }
 
-.article-header img {
-    width: 50%; /* Điều chỉnh chiều rộng hình ảnh */
-    height: 200px; /* Chiều cao hình ảnh */
-    object-fit: cover; /* Đảm bảo hình ảnh không bị biến dạng */
-    margin-right: 10px; /* Khoảng cách giữa hình ảnh và nội dung tiêu đề */
-    border-radius: 4px;
-}
+    .article-header img {
+        width: 50%;
+        height: 150px;
+        object-fit: cover;
+        margin-right: 10px;
+        border-radius: 4px;
+    }
 
 .article-content {
-    flex: 1; /* Chiếm không gian còn lại của phần tiêu đề */
-    display: flex; /* Sử dụng flexbox để căn chỉnh tiêu đề và thông tin */
-    flex-direction: column; /* Sắp xếp tiêu đề và thông tin theo chiều dọc */
-    justify-content: center; /* Căn giữa các phần tử theo chiều dọc */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.article-content h3 a {
-    color: #333;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
+    .article-content h3 a {
+        color: #333;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
 
-.article-content h3 a:hover {
-    color: #007bff;
-}
+        .article-content h3 a:hover {
+            color: #007bff;
+        }
 
 .article-meta {
     color: #777;
     font-size: 14px;
 }
 
-.date-time {
-    margin: 5px 0;
-}
-
 .article-summary {
     padding: 10px;
     color: #333;
-    font-size: 16px;
-    flex: 1; /* Chiếm không gian còn lại trong phần bài viết lớn */
-}
-
-
-.comments, .tags {
-    margin-top: 20px;
-    padding: 10px;
-    background: #fff;
-}
-
-.comments h3, .tags h3 {
-    margin-top: 0;
+    font-size: 13px;
+    flex: 1;
 }
 
 .sidebar {
-    flex: 1;
-    margin-top: 115px;
+    flex: 0.8;
+    margin-top: 190px;
     margin-left: 30px;
     display: flex;
     flex-direction: column;
-    
 }
 
 .sidebar-section {
-    flex: center; /* Sidebar chiếm 1 phần không gian có sẵn */
-    padding: 20px;
+    flex: center;
+    padding: 0px;
     background: #fff;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
 }
 
+    .sidebar-section img {
+        width: 100%;
+        height: auto;
+        transition: transform 0.3s ease;
+    }
 
-.sidebar-section img {
-    width: 100%;
-    height: auto;
-    transition: transform 0.3s ease; /* Hiệu ứng chuyển đổi cho hình ảnh */
-}
+    .sidebar-section h2 {
+        margin-top: 0;
+        font-size: 16px;
+        color: #333;
+    }
 
-.sidebar-section h2 {
-    margin-top: 0;
-    font-size: 18px;
-    color: #333;
-}
-.sidebar-section:hover {
-    background: #f0f8ff; /* Màu nền khi di chuột qua */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.8); /* Bóng đổ khi di chuột qua */
-}
-.sidebar-section:hover h2 a {
-    color: #007bff; /* Màu chữ khi di chuột qua */
-}
+    .article a, .sidebar-section a, .news-item a {
+        color: #333;
+        text-decoration: none;
+    }
 
-.sidebar-section p {
-    color: #666; /* Màu văn bản nội dung */
-    transition: color 0.3s ease; /* Hiệu ứng chuyển đổi cho màu văn bản */
-}
+        .article a:hover, .sidebar-section a:hover, .economic-news a:hover, .culture-news a:hover, .news-item a:hover {
+            text-decoration: underline;
+        }
 
-.sidebar-section:hover p {
-    color: #333; /* Màu văn bản khi di chuột qua */
-}
-/* Hiệu ứng gạch chân khi di chuột qua liên kết trong tất cả các mục */
-.article a, .sidebar-section a,.news-item a {
-    color: #333;
-    text-decoration: none; /* Không gạch chân mặc định */
-}
-
-.article a:hover, .sidebar-section a:hover, .economic-news a:hover, .culture-news a:hover, .news-item a:hover {
-    text-decoration: underline; /* Thêm gạch chân khi di chuột qua */
-}
-
-/* Nếu bạn muốn thêm hiệu ứng cho các tiêu đề của các mục trong sidebar */
-.sidebar-section h2 a {
-    color: #333;
-    text-decoration: none;
-}
-
-.sidebar-section h2 a:hover {
-    text-decoration: underline;
-}
-
-/* Style cho banner dọc */
 .vertical-banner {
-    width: 100%; /* Chiều rộng banner dọc */
-    height: 600px; /* Chiều cao của banner dọc, có thể điều chỉnh */
-    background: #f4f4f4; /* Màu nền của banner */
+    width: 100%;
+    height: 350px;
+    background: #f4f4f4;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-    border: 1px solid #ddd; /* Đường viền cho banner */
+    border: 1px solid #ddd;
     position: relative;
     overflow: hidden;
 }
 
-.vertical-banner img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease-in-out; /* Hiệu ứng chuyển động */
-}
+    .vertical-banner img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease-in-out;
+    }
 
-.vertical-banner:hover img {
-    transform: scale(1.1); /* Hiệu ứng phóng to khi hover */
-}
-footer {
-    background: #333;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-}
+    .vertical-banner:hover img {
+        transform: scale(1.1);
+    }
 
-footer p {
-    margin: 0;
-}
 
-footer a {
-    color: #fff;
-    text-decoration: none;
-}
 
-footer a:hover {
-    text-decoration: underline;
-}
-
-/* Khoảng cách giữa các mục chính */
+/* Kho?ng cách gi?a các m?c chính */
 h2 {
-    font-size: 24px;
-    margin: 40px 0 20px; /* Khoảng cách phía trên và dưới tiêu đề */
+    font-size: 17px;
+    margin: 35px 0 10px;
     padding: 0;
-    border-bottom: 2px solid #ccc; /* Đường gạch chân dưới tiêu đề */
-    padding-bottom: 10px; /* Khoảng cách giữa tiêu đề và đường gạch chân */
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 0px;
     color: #333;
-}
-
-.recommendations, .news-summary {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Khoảng cách giữa các mục */
-    margin: 20px 0; /* Khoảng cách phía trên và dưới */
-    transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
-}
-
-.recommendation-item, .news-summary-item {
-    flex: 1 1 calc(33.333% - 30px); /* Chiều rộng của mỗi mục (3 cột với khoảng cách) */
-    background: #fff;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 8px; /* Bo tròn các góc của mục */
-    box-sizing: border-box; /* Bao gồm padding và border trong tổng chiều rộng */
-}
-
-.recommendation-item img, .news-summary-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px; /* Bo tròn các góc của hình ảnh */
-    margin-bottom: 10px; /* Khoảng cách giữa hình ảnh và tiêu đề */
-    transition: transform 0.3s ease; /* Hiệu ứng chuyển đổi cho hình ảnh */
-
-}
-
-.recommendation-item h3, .news-summary-item h3 {
-    font-size: 16px;
-    margin: 0; /* Loại bỏ margin bên trên và dưới */
-    color: #333;
-}
-
-.recommendation-item a, .news-summary-item a {
-    color: #333;
-    text-decoration: none;
-}
-
-.recommendation-item a:hover, .news-summary-item a:hover {
-    text-decoration: underline;
-    background: #f0f8ff; /* Màu nền khi di chuột qua */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2); /* Bóng đổ khi di chuột qua */
-    border-color: #007bff; /* Màu viền khi di chuột qua */
-}
-.recommendation-item:hover img {
-    transform: scale(1.05); /* Phóng to hình ảnh khi di chuột qua */
-}
-
-.recommendation-content h3 a {
-    transition: color 0.3s ease; /* Hiệu ứng chuyển đổi cho màu liên kết */
-}
-
-.recommendation-item:hover .recommendation-content h3 a {
-    color: #007bff; /* Màu chữ khi di chuột qua */
-}
-
-.recommendation-content p {
-    transition: color 0.3s ease; /* Hiệu ứng chuyển đổi cho màu văn bản */
-}
-
-.recommendation-item:hover .recommendation-content p {
-    color: #333; /* Màu văn bản khi di chuột qua */
-}
-.economic-news {
-    margin-top: 20px;
-}
-
-.economic-news .news-article {
-    margin-bottom: 20px;
-}
-
-.economic-news .news-article-header img {
-    width: 100px;
-    height: auto;
-    margin-right: 15px;
-}
-
-.economic-news .news-article-content h3 a {
-    color: #333;
-    text-decoration: none;
-}
-
-.economic-news .news-article-content h3 a:hover {
-    text-decoration: underline;
-}
-.culture-news {
-    margin-top: 20px;
-}
-
-.culture-news .news-article {
-    margin-bottom: 10px;
-}
-
-.culture-news .news-article-header img {
-    width: 100px;
-    height: auto;
-    margin-right: 15px;
-}
-
-.culture-news .news-article-content h3 a {
-    color: #333;
-    text-decoration: none;
-}
-
-.culture-news .news-article-content h3 a:hover {
-    text-decoration: underline;
-}
-
-
-.news-360 .news-item h3 {
-    font-size: 20px; /* Tăng cỡ chữ cho tiêu đề bài viết */
-}
-
-.news-360 .news-item p {
-    font-size: 18px; /* Tăng cỡ chữ cho đoạn văn bản */
-}
-
-.news-360 .news-item a {
-    font-size: 25px; /* Tăng cỡ chữ cho liên kết */
-}
-
-
-
-.news-item {
-    flex: 1 1 calc(33.333% - 20px); /* Chiều rộng của mỗi mục (3 cột với khoảng cách) */
-    background: #fff;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 8px; /* Bo tròn các góc của mục */
-    box-sizing: border-box; /* Bao gồm padding và border trong tổng chiều rộng */
-    transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
-}
-
-.news-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px; /* Bo tròn các góc của hình ảnh */
-    margin-bottom: 10px; /* Khoảng cách giữa hình ảnh và tiêu đề */
-    transition: transform 0.3s ease; /* Hiệu ứng chuyển đổi cho hình ảnh */
-    max-width: 300px; /* Đặt kích thước tối đa của ảnh */
-}
-
-.news-item h3 {
-    font-size: 16px;
-    margin: 0; /* Loại bỏ margin bên trên và dưới */
-    color: #333;
-}
-
-.news-item a {
-    color: #333;
-    text-decoration: none;
-}
-.news-item:hover {
-    background: #f0f8ff; /* Màu nền khi di chuột qua */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2); /* Bóng đổ khi di chuột qua */
-}
-
-.news-item:hover img {
-    transform: scale(1.05); /* Phóng to hình ảnh khi di chuột qua */
-}
-
-.news-details h3 a {
-    transition: color 0.3s ease; /* Hiệu ứng chuyển đổi cho màu liên kết */
-}
-
-.news-item:hover .news-details h3 a {
-    color: #007bff; /* Màu chữ khi di chuột qua */
-}
-
-.news-details p {
-    transition: color 0.3s ease; /* Hiệu ứng chuyển đổi cho màu văn bản */
-}
-
-.news-item:hover .news-details p {
-    color: #333; /* Màu văn bản khi di chuột qua */
-}
-.content-wrapper {
-    display: flex;
-    flex: 1;
-    gap: 20px; /* Điều chỉnh khoảng cách giữa nội dung chính và sidebar */
-}
-
-
-
-
-
-
-
-
-
-/* Hiệu ứng khi di chuột qua tất cả các bài viết tin */
-.news-item:hover {
-    background: #f9f9f9; /* Màu nền khi di chuột qua */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Hiệu ứng đổ bóng */
-    transform: translateY(-5px); /* Hiệu ứng nâng lên nhẹ */
-    transition: all 0.3s ease; /* Hiệu ứng chuyển tiếp */
-}
-/* Màu sắc của liên kết trong các bài viết */
-.article a, .sidebar-section a{
-    text-decoration: none; /* Không gạch chân mặc định */
-}
-
-
-
-
-
-
-/* Hiệu ứng cho các tiêu đề của các bài viết trong mục tin tức kinh tế và văn hóa */
-.economic-news .news-article-content h3 a, .culture-news .news-article-content h3 a {
-    color: #333;
-    text-decoration: none;
-}
-
-.economic-news .news-article-content h3 a:hover, .culture-news .news-article-content h3 a:hover {
-    text-decoration: underline;
-}
-   /* Style cho banner quảng cáo */
-   .advertisement-banner {
-    background-color: #f8f8f8;
-    text-align: center;
-    padding: 10px 0;
-    border-bottom: 2px solid #ddd; /* Đường viền dưới banner */
-    overflow: hidden; /* Ẩn phần hình ảnh bị tràn ra ngoài */
-}
-
-.advertisement-banner img {
-    width: 1775px; /* Đặt chiều rộng cố định cho banner */
-    height: 300px; /* Đặt chiều cao cố định cho banner */
-    object-fit: cover; /* Đảm bảo hình ảnh không bị kéo dãn */
-    transition: transform 0.5s ease-in-out; /* Thay đổi thuộc tính transform với hiệu ứng chuyển động */
-}
-
-.advertisement-banner:hover img {
-    transform: scale(1.1); /* Phóng to hình ảnh */
-}
-
-.tieudiemtuan,.recommendations,.news-360,.national-news,.international-news,.economic-news,.culture-news,.sports-news,.health-news,.tech-news,.press-news{
-    color: #000000;
-    margin-bottom: 10px; /* Khoảng cách dưới tiêu đề */
-}
-
-
-.news-item{
+    font-size: 18px;
     color: #000000;
 }
 
-h2 a {
-    color: black;
-    text-decoration: none; /* Loại bỏ gạch chân nếu cần */
-}
-
-h2 a:hover {
-    text-decoration: underline; /* Tùy chọn: Thêm gạch chân khi hover nếu muốn */
-}
-
-/* Tiêu đề các bài viết */
-.economic-news-item h2 a {
-    font-size: 20px; /* Tăng kích thước font cho tiêu đề bài viết */
-}
-
-/* Nội dung các bài viết */
-.economic-news-item p {
-    font-size: 16px; /* Tăng kích thước font cho đoạn văn bản nội dung */
-}
-
-/* Ngày đăng bài viết */
-.economic-news-item .date-time {
-    font-size: 18px; /* Tăng kích thước font cho ngày đăng */
-}
-
-/* Tiêu đề thanh menu */
-.economic-menu ul li a {
-    font-size: 18px; /* Tăng kích thước font cho tiêu đề menu */
-}
-
-/* Tiêu đề lớn cho bài viết trong .grid-item-large */
-.grid-item-large .article-headers h3 {
-    font-size: 35px; /* Tăng kích thước font cho tiêu đề bài viết lớn */
-}
-/* Tóm tắt bài viết trong .grid-item-large */
-.grid-item-large .article-summary {
-    font-size: 18px; /* Tăng kích thước font cho tóm tắt bài viết lớn */
-}
 
 
-
-
-
-
-
-/* Tin nhanh 360 */
-.news-360 {
+/* Có th? b?n quan tâm */
+.recommendations {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    margin: 20px 0;
+    gap: 0px;
+    justify-content: center;
 }
+
+/* Style cho t?ng item */
+.recommendation-item {
+    flex: 1 1 calc(33.333% - 30px);
+    max-width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    background: #fff;
+    margin: 6px;
+}
+
+
+    .recommendation-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+
+.recommendation-content {
+    padding: 10px;
+}
+
+    .recommendation-content h3 {
+        margin: 0;
+        font-size: 16px;
+        font-family: system-ui, "Segoe UI";
+    }
+
+        .recommendation-content h3 a {
+            text-decoration: none;
+            color: #000000;
+        }
+
+            .recommendation-content h3 a:hover {
+                text-decoration: underline;
+            }
+
+
+
+/*FONT ?NH CHO T?T C? CÁC BÀI VI?T ? các m?c tin trong n??c > h?t*/
 .news-item {
     flex: 1 1 calc(33.333% - 20px);
     background: #fff;
@@ -723,48 +356,64 @@ h2 a:hover {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     border-radius: 8px;
     box-sizing: border-box;
+    transition: all 0.3s ease;
 }
-.news-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 10px;
+
+    .news-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        transition: transform 0.3s ease;
+        max-width: 300px;
+    }
+
+    .news-item a {
+        color: #333;
+        text-decoration: none;
+    }
+
+
+.news-details h3 a {
+    transition: color 0.3s ease;
 }
-.news-item h3 {
-    font-size: 16px;
-    margin: 0 0 10px;
+
+.news-item:hover .news-details h3 a {
+    color: #007bff;
+}
+
+.news-details p {
+    transition: color 0.3s ease;
+}
+
+.news-item:hover .news-details p {
     color: #333;
 }
-.news-summary {
-    font-size: 14px;
+
+.content-wrapper {
+    display: flex;
+    flex: 1;
+    gap: 20px;
 }
-.news-summary .date-time {
-    color: #777;
+
+.news-item {
+    color: #000000;
 }
-.news-summary p {
-    margin: 0;
-}
-.news-item a {
-    color: #333;
+
+h2 a {
+    color: rgb(0, 0, 0);
     text-decoration: none;
 }
-.news-item a:hover {
-    text-decoration: underline;
-}
 
-/* Tin trong nước */
-/* Đặt khoảng cách trên cho phần tin tức quốc gia */
-.national-news , .international-news,.economic-news,.culture-news,.sports-news,.health-news,.tech-news,.press-news {
-    margin-top: 20px;
-}
+    h2 a:hover {
+        text-decoration: underline;
+    }
 
-/* Sử dụng flexbox để tạo bố cục hàng ngang với khoảng cách giữa các cột */
 .news-list {
     display: flex;
     gap: 20px;
 }
 
-/* Mỗi cột tin tức là một flexbox cột với khoảng cách giữa các mục tin tức */
 .news-column {
     flex: 1;
     display: flex;
@@ -772,74 +421,149 @@ h2 a:hover {
     gap: 20px;
 }
 
-/* Thiết lập các mục tin tức với nền trắng, padding và shadow */
-.news-item {
-    background: #fff;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-}
-
-
-
-
-/* Thiết lập chi tiết tin tức với font-size và flexbox cột */
 .news-details {
-    font-size: 14px;
+    font-size: 13px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 }
 
-/* Định dạng tiêu đề tin tức với font-size, margin và màu sắc */
-.news-details h3 {
-    font-size: 16px;
-    margin: 0 0 10px;
-    color: #333;
-}
+    .news-details h3 {
+        font-size: 17px;
+        margin: 0 0 10px;
+        color: #333;
+    }
 
-/* Định dạng ngày giờ đăng tin với màu sắc và margin */
-.news-details .date-time {
+
+.news-details {
     color: #777;
     margin-bottom: 10px;
 }
 
-/* Định dạng đoạn văn bản tóm tắt nội dung tin tức */
-.news-details p {
-    margin: 0;
-    flex-grow: 1;
+
+
+    .news-details p {
+        margin: 0;
+        flex-grow: 1;
+    }
+
+
+    .news-details a {
+        color: #333;
+        text-decoration: none;
+    }
+
+        .news-details a:hover {
+            text-decoration: underline;
+        }
+
+.news-item img {
+    max-width: 95%;
+    height: auto;
+    display: block;
+}
+footer {
+    background-color: #f8f9fa; /* Màu nền sáng cho footer */
+    color: #000; /* Màu chữ đen */
+    padding: 40px 0;
+    margin-top: 30px;
+    font-family: Arial, sans-serif;
 }
 
-/* Định dạng liên kết trong chi tiết tin tức với màu sắc và loại bỏ gạch chân */
-.news-details a {
-    color: #333;
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: auto;
+    text-align: left; /* Căn lề trái cho tất cả các phần tử */
+}
+
+.footer-main, .footer-contact, .footer-advertising {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.footer h5 {
+    font-weight: bold;
+    color: #000; /* Màu tiêu đề đen */
+    margin-bottom: 15px;
+}
+
+.footer p {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #000; /* Màu chữ đen */
+}
+
+.footer ul {
+    padding-left: 0;
+    list-style: none;
+    margin: 0;
+}
+
+.footer a {
+    text-decoration: none;
+    color: #000; /* Màu liên kết đen */
+    transition: color 0.3s ease;
+}
+
+    .footer a:hover {
+        text-decoration: underline;
+    }
+
+.footer-links {
+    margin-top: 10px;
+}
+
+    .footer-links a {
+        color: #000; /* Màu liên kết đen trong các phần của footer */
+        text-decoration: none;
+    }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+.footer-contact h3, .footer-advertising h3 {
+    margin-bottom: 15px;
+    color: #000; /* Màu tiêu đề của các mục liên hệ và quảng cáo đen */
+}
+
+.footer-contact p, .footer-advertising p {
+    margin: 5px 0;
+    color: #000; /* Màu chữ đen */
+    font-size: 14px;
+}
+
+.footer-contact i, .footer-advertising i {
+    margin-right: 8px;
+    color: #000; /* Màu icon đen */
+}
+
+.footer-contact a, .footer-advertising a {
+    color: #000; /* Màu liên kết đen */
     text-decoration: none;
 }
 
-/* Hiệu ứng hover cho liên kết để gạch chân */
-.news-details a:hover {
-    text-decoration: underline;
+    .footer-contact a:hover, .footer-advertising a:hover {
+        text-decoration: underline;
+    }
+
+.copyright {
+    text-align: left; /* Căn lề trái cho copyright */
+    margin-top: 20px;
+    color: #000; /* Màu chữ đen cho thông tin bản quyền */
+    font-size: 13px;
 }
 
-/* Kích thước cụ thể cho ảnh trong bài viết */
-.news-item img {
-    max-width: 150%; /* Đảm bảo ảnh không vượt quá chiều rộng khối */
-    height: auto; /* Giữ tỷ lệ ảnh */
-    display: block; /* Loại bỏ khoảng trắng phía dưới ảnh */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-main, .footer-contact, .footer-advertising {
+        margin: 20px 0;
+    }
 }
-/* Điều chỉnh kích thước ảnh cho các bài viết trong mục tin nhanh 360 */
-.news-item {
-    max-width: 100%; /* Giữ cho khối tin nhanh không vượt quá chiều rộng của cột */
-}
-
-.news-item img {
-    max-height: 280px; /* Giới hạn chiều cao ảnh */
-    object-fit: cover; /* Cắt bớt hoặc kéo dãn ảnh để phù hợp với kích thước */
-}
-
-
-
-

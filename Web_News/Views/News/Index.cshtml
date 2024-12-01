@@ -1,0 +1,158 @@
+﻿@model Web_News.Areas.Admin.ViewModels.ListViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Danh Sách Bài Viết";
+}
+<style>
+    .category-menu {
+        margin: 0;
+        padding: 0;
+    }
+
+        .category-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        .category-menu > ul > li {
+            margin-right: 20px; /* Adjust spacing between categories */
+        }
+
+    .parent-category > a {
+        font-size: 18px; /* Adjust the font size for parent categories */
+        font-weight: bold;
+    }
+
+ 
+
+    /* Highlight active category */
+    .category-menu .active > a {
+        color: red; /* Highlight color for active category */
+        font-weight: bold; /* Make active category text bold */
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+</style>
+<body>
+    <div class="results" id="results"></div>
+    <div class="container">
+        <div class="main-content">
+            <h2 class="tieudiemtuan">
+              
+                <div class="category-menu">
+                    <ul>
+                        @foreach (var category in Model.Categories.Where(c => c.ParentCategoryId == null))
+                        {
+                            <li class="parent-category @(category.CategoryId == Model.SelectedCategoryId ? "active" : "")">
+                                <a href="@Url.Action("Index", "News", new { id = category.CategoryId })">@category.NameCategory</a>
+                                @if (Model.Categories.Any(c => c.ParentCategoryId == category.CategoryId))
+                                {
+                                   @foreach (var subCategory in Model.Categories.Where(c => c.ParentCategoryId == category.CategoryId))
+                                     {
+                                       <li class="@(subCategory.CategoryId == Model.SelectedCategoryId ? "active" : "")">
+                                               <a href="@Url.Action("Index", "News", new { id = subCategory.CategoryId })">@subCategory.NameCategory</a>
+                                       </li>
+                                     }
+                                }
+                           </li>
+                        }
+                    </ul>
+                </div>
+            </h2>
+            <div class="grid-container">
+
+                <!-- Hiển thị bài viết lớn nhất đầu tiên -->
+                @if (Model.LatestNews.Any())
+                {
+                    var firstNews = Model.LatestNews.First();
+                    <article class="grid-item-large article">
+                        <a class="article-link" href="@Url.Action("Privacy", "Home", new { id = firstNews.NewsId })">
+                            <div class="article-headers">
+                                <img src="/Images/@firstNews.Image" alt="@firstNews.Title" />
+                                <div class="article-contents">
+                                    <h3>@firstNews.Title</h3>
+                                    <p class="article-summary">@Html.Raw(firstNews.Content?.Substring(0, Math.Min(firstNews.Content.Length, 600)))...</p>
+                                </div>
+                            </div>
+                        </a>
+                        <p>Ngày đăng: @firstNews.PublishDate.ToString("dd/MM/yyyy")</p>
+                      
+                    </article>
+                }
+
+                <!-- Hiển thị các bài viết nhỏ tiếp theo -->
+                @foreach (var news in Model.LatestNews.Skip(1))
+                {
+                    <article class="grid-item-small article">
+                        <a class="article-link" href="@Url.Action("Privacy", "Home", new { id = news.NewsId })">
+                            <div class="article-header">
+                                <img src="/Images/@news.Image" alt="@news.Title" />
+                                <div class="article-content">
+                                    <h3>@news.Title</h3>
+                                </div>
+                            </div>
+                            <p>@Html.Raw(news.Content?.Substring(0, Math.Min(news.Content.Length, 100)))...</p>
+                        </a>
+                        <p>Ngày đăng: @news.PublishDate.ToString("dd/MM/yyyy")</p>
+                    </article>
+                }
+            </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    @if (Model.PageNumber > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { id = Model.SelectedCategoryId, page = Model.PageNumber - 1 })" tabindex="-1">Previous</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= (Model.TotalItems + Model.PageSize - 1) / Model.PageSize; i++)
+                    {
+                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { id = Model.SelectedCategoryId, page = i })">@i</a>
+                        </li>
+                    }
+
+                    @if (Model.PageNumber < (Model.TotalItems + Model.PageSize - 1) / Model.PageSize)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { id = Model.SelectedCategoryId, page = Model.PageNumber + 1 })">Next</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+
+        </div>
+
+        <aside class="sidebar">
+            @foreach (var ad in Model.SidebarAdvertisements)
+            {
+                <div class="sidebar-section">
+                    <div class="vertical-banner">
+                        <a href="@ad.Link" target="_blank">
+                            <img src="~/ImagesAdvertisement/@ad.Image" alt="Quảng Cáo Dọc">
+                        </a>
+                    </div>
+                </div>
+            }
+        </aside>
+    </div>
+</body>

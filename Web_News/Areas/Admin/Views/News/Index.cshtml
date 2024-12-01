@@ -1,0 +1,141 @@
+﻿@model IEnumerable<Web_News.Areas.Admin.ViewModels.NewsViewModel>
+
+@{
+    ViewData["Title"] = "All News";
+    var statusFilter = ViewData["StatusFilter"]?.ToString();
+    int currentPage = ViewData["CurrentPage"] != null ? (int)ViewData["CurrentPage"] : 1;
+    int totalPages = ViewData["TotalPages"] != null ? (int)ViewData["TotalPages"] : 1;
+}
+<style>
+    .search-form .form-control {
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .search-form .d-flex {
+        gap: 10px;
+    }
+</style>
+<p>
+    <a asp-action="Create" class="btn btn-success">Tạo bài viết</a>
+</p>
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="btn-group" role="group">
+                <!-- Nút để lọc theo trạng thái -->
+                @foreach (var status in new[] { ApprovalStatus.Pending, ApprovalStatus.Approved, ApprovalStatus.Rejected })
+                {
+                    <form method="get" action="@Url.Action("FilterByStatus", "News")">
+                        <input type="hidden" name="status" value="@status" />
+                        <button type="submit" class="btn @(ViewData["StatusFilter"]?.ToString() == status.ToString() ? "btn-dark" : "btn-outline-secondary")">
+                            @(status == ApprovalStatus.Pending ? "Chờ duyệt"
+                                : status == ApprovalStatus.Approved ? "Đã duyệt"
+                                : "Từ chối")
+                        </button>
+                    </form>
+                }
+
+            </div>
+            <hr />
+            <!-- Form tìm kiếm -->
+            <form method="get" action="@Url.Action("Index", "News")" class="mb-3 search-form">
+                <div class="d-flex flex-wrap">
+                    <input type="hidden" name="statusFilter" value="@ViewData["StatusFilter"]" />
+                    <input type="text" name="titleSearchTerm" value="@ViewData["TitleSearchTerm"]" placeholder="Tìm kiếm theo tiêu đề" class="form-control me-2" />
+                    <input type="date" name="publishDate" value="@((ViewData["PublishDate"] != null) ? ((DateTime)ViewData["PublishDate"]).ToString("yyyy-MM-dd") : string.Empty)" class="form-control me-2" />
+                    <input type="text" name="authorSearchTerm" value="@ViewData["AuthorSearchTerm"]" placeholder="Tìm kiếm theo người viết" class="form-control me-2" />
+                    <button type="submit" class="btn btn-primary btn-sm">Tìm kiếm</button>
+                </div>
+            </form>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Ảnh</th>
+                        <th>Tiêu đề</th>
+                        <th>Ngày viết</th>
+                        <th>Người viết</th>
+                        <th>Thể loại</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="/Images/@item.Image" style="max-width: 150px; height: auto; border-radius: 5px;" />
+                            </td>
+                            <td title="@item.Title">
+                                @(item.Title.Length > 45 ? item.Title.Substring(0, 45) + "..." : item.Title)
+                            </td>
+                            <td>@item.PublishDate.ToString("dd/MM/yyyy")</td>
+                            <td>@item.CreatedByUserName</td>
+                            <td>
+                                @if (item.ListCategories != null && item.ListCategories.Count > 0)
+                                {
+                                    var displayCate = item.ListCategories.Take(2);
+                                    foreach (var category in displayCate)
+                                    {
+                                        <span class="badge bg-secondary">@category.NameCategory</span>
+                                    }
+                                    @if (item.ListCategories.Count > 2)
+                                    {
+                                        <span>...</span>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @if (item.Status)
+                                {
+                                    <span class="badge bg-success">On</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Off</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.NewsId" asp-route-returnUrl="@Url.Action("FilterByStatus", new { status = ViewData["StatusFilter"] })" class="btn btn-info btn-sm">Details</a>
+                                <a asp-action="Edit" asp-route-id="@item.NewsId" class="btn btn-primary btn-sm">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.NewsId" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Phân trang -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    @if (currentPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { statusFilter = ViewData["StatusFilter"], pageNumber = currentPage - 1, titleSearchTerm = ViewData["TitleSearchTerm"], publishDate = ViewData["PublishDate"], authorSearchTerm = ViewData["AuthorSearchTerm"], categoryId = ViewData["CategoryId"] })" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    }
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { statusFilter = ViewData["StatusFilter"], pageNumber = i, titleSearchTerm = ViewData["TitleSearchTerm"], publishDate = ViewData["PublishDate"], authorSearchTerm = ViewData["AuthorSearchTerm"], categoryId = ViewData["CategoryId"] })">@i</a>
+                        </li>
+                    }
+                    @if (currentPage < totalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { statusFilter = ViewData["StatusFilter"], pageNumber = currentPage + 1, titleSearchTerm = ViewData["TitleSearchTerm"], publishDate = ViewData["PublishDate"], authorSearchTerm = ViewData["AuthorSearchTerm"], categoryId = ViewData["CategoryId"] })" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</div>

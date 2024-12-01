@@ -1,0 +1,28 @@
+﻿@model Web_News.Areas.Admin.ViewModels.NewsViewModel
+
+<h2>Chi tiết bài viết: @Model.Title</h2>
+
+<p><strong>Nội dung:</strong>   @Html.Raw(Model.Content)</p>
+<p><strong>Người tạo:</strong> @Model.CreatedByUserName</p>
+<p><strong>Ngày đăng:</strong> @Model.PublishDate.ToString("dd/MM/yyyy")</p>
+<p><strong>Thể loại:</strong></p>
+@* <ul>
+    @foreach (var category in Model.ListCategories)
+    {
+        <li>@category.NameCategory</li>
+    }
+</ul> *@
+
+<form asp-action="ApproveNews" method="post">
+    <input type="hidden" name="newsId" value="@Model.NewsId" />
+    <button type="submit" class="btn btn-success">Duyệt bài</button>
+</form>
+<br />
+<form asp-action="RejectNews" method="post">
+    <input type="hidden" name="newsId" value="@Model.NewsId" />
+    <label>Lý do từ chối:</label>
+    <textarea name="rejectionReason" class="form-control"></textarea>
+    <button type="submit" class="btn btn-danger">Từ chối</button>
+    <a href="@Url.Action("PendingNews", "News")" class="btn btn-secondary">Quay lại </a>
+</form>
+<br 

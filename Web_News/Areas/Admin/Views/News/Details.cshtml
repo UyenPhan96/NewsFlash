@@ -1,0 +1,43 @@
+﻿@model Web_News.Areas.Admin.ViewModels.NewsViewModel
+
+@{
+    ViewData["Title"] = "News Details";
+}
+
+<h1>@Model.Title</h1>
+
+<div>
+    <img src="/Images/@Model.Image"  style="max-width: 150px; height: auto;" />
+</div>
+
+<div>
+
+    <dd class="col-sm-10">
+        @Html.Raw(Model.Content)
+    </dd>
+</div>
+
+@* <div>
+    <p><strong>Publish Date:</strong> @Model.PublishDate.ToString("MMMM dd, yyyy")</p>
+    <p><strong>Created By:</strong> @Model.CreatedByUserName</p>
+    <p><strong>Status:</strong> @Model.Status</p>
+</div>
+
+<div>
+    <h3>Categories</h3>
+    <ul>
+        @foreach (var category in Model.Categories)
+        {
+            <span class="badge bg-secondary">@category.NameCategory</span>
+        }
+    </ul>
+</div> *@
+
+@if (ViewBag.ReturnUrl != null)
+{
+    <a href="@ViewBag.ReturnUrl" class="btn btn-secondary">Quay lại </a>
+}
+else
+{
+    <a href="@Url.Action("Index", "News")" class="btn btn-secondary">Quay lại </a>
+}

@@ -1,49 +1,83 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Web_News</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
     <link rel="stylesheet" href="~/Web_News.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/layoutpage/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>@ViewBag.title</title>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Web_News</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+	
+        <div class="header-top">
+            <a href="/" id="logo-link">
+                <div id="logo">
+                    <img src="~/images/newlogo.jpg" alt="NewFlash">
                 </div>
+            </a>
+
+            <div class="search-container">
+                <form class="search-form" id="searchForm" method="get" asp-controller="News" asp-action="SearchNews" onsubmit="return validateSearch()">
+                    <input type="text" class="search-input" id="searchInput" name="searchQuery" placeholder="Tìm kiếm...">
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
             </div>
-        </nav>
+            <span class="separator">|</span>
+            <partial name="_PartialLogin" />
+        </div>
     </header>
+        <!-- Thanh Menu -->
+    @await Component.InvokeAsync("Menu")
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Web_News - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+    <footer class="footer">
+        <div class="footer-content container">
+            <div class="footer-main">
+                <p>&copy; 2003-2024. Toàn bộ bản quyền thuộc <strong>NewFlash</strong></p>
+                <div class="footer-links">
+                    <a href="#">Chính sách bảo mật</a> | <a href="#">Điều khoản sử dụng</a>
+                </div>
+            </div>
+            <div class="footer-contact">
+                <h3><i class="fas fa-phone-alt"></i> Hợp tác truyền thông</h3>
+                <p><i class="fas fa-envelope"></i> Liên hệ: <a href="mailto:contact@newflash.com">contact@newflash.com</a></p>
+                <p><i class="fas fa-phone"></i> Số điện thoại: <span>070 376 2255</span></p>
+                <p><i class="fab fa-facebook"></i> Facebook: <a href="https://www.facebook.com/NguyenLuccc/" target="_blank">NewFlash</a></p>
+            </div>
+            <div class="footer-advertising">
+                <h3><i class="fas fa-bullhorn"></i> Liên hệ quảng cáo</h3>
+                <p><i class="fas fa-envelope"></i> Liên hệ: <a href="mailto:ads@newflash.com">ads@newflash.com</a></p>
+                <p><i class="fas fa-phone"></i> Số điện thoại: <span>070 376 2255</span></p>
+                <p><i class="fab fa-facebook"></i> Facebook: <a href="https://www.facebook.com/NguyenLuccc/" target="_blank">NewFlash Ads</a></p>
+            </div>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+    <script src="~/layoutpage/scripts.js"></script>
+    <script>
+        function validateSearch() {
+            var searchInput = document.getElementById('searchInput').value.trim(); 
+            if (searchInput === "") {
+                return false; 
+            }
+            return true; 
+        }
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+<script src="~/layoutpage/toggleheadervisibility.js"></script>
 </html>

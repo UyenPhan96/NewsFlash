@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Web_News.Areas.Admin.ViewModels.NewsViewModel>
+
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Tìm kiếm</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                        <th style="font-weight: bold;">Tiêu đề</th>
+                        <th style="font-weight: bold;">Người tạo</th>
+                        <th style="font-weight: bold;">Ngày đăng</th>
+                        <th style="font-weight: bold;">Thể loại</th>
+                        <th style="font-weight: bold;">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Title</td>
+                                <td>@item.CreatedByUserName</td>
+                                <td>@item.PublishDate.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @foreach (var category in item.ListCategories)
+                                {
+                                    <span class="badge bg-secondary">@category.NameCategory</span>
+                                }
+                            </td>
+                                <td>
+                                    <a href="@Url.Action("NewsDetail", new { newsId = item.NewsId })" class="btn btn-primary">Xem chi tiết</a>
+                                <form asp-action="RejectNews" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn từ chối bài viết này?');">
+                                    <input type="hidden" name="newsId" value="@item.NewsId" />
+                                    <button type="submit" class="btn btn-danger">Từ chối</button>
+                                </form>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>

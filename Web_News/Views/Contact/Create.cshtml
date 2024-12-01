@@ -1,0 +1,105 @@
+﻿@model Web_News.ViewModels.ContactViewModel
+
+@{
+    ViewBag.Title = "Liên hệ quảng cáo";
+    Layout = "_LayoutAds";
+}
+<header>
+    <div class="banner">
+        <img src="~/images/ads.png" alt="Banner" class="img-fluid" />
+    </div>
+</header>
+<br />
+<h2>LIÊN HỆ VỚI CHÚNG TÔI TẠI ĐÂY !</h2>
+<form asp-action="Create" method="post" enctype="multipart/form-data" id="contactForm">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="ContactName">Tên liên hệ</label>
+        <input asp-for="ContactName" class="form-control form-control-lg" required />
+        <span asp-validation-for="ContactName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Content">Nội dung</label>
+        <input asp-for="Content" class="form-control" required />
+        <span asp-validation-for="Content" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MediaFile">Chọn ảnh, video hoặc ảnh động</label>
+        <input asp-for="MediaFile" type="file" class="form-control" accept="image/*,video/*" required />
+        <span id="imageError" class="text-danger" style="display:none;"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Link">Liên kết</label>
+        <input asp-for="Link" class="form-control" />
+        <span asp-validation-for="Link" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i> Gửi liên hệ
+        </button>
+        <a href="/" class="btn btn-secondary">
+            <i class="fas fa-home"></i> Quay lại trang chủ
+        </a>
+    </div>
+    <div class="floating-phone">
+        <div class="phone-icon-container">
+            <a href="tel:0703762255" aria-label="Gọi cho chúng tôi">
+                <i class="fas fa-phone-alt phone-icon"></i>
+            </a>
+        </div>
+        <div class="mail-icon-container">
+            <a href="mailto:contact@newflash.com" aria-label="Gửi email cho chúng tôi">
+                <i class="fas fa-envelope mail-icon"></i>
+            </a>
+        </div>
+    </div>
+</form>
+
+
+
+
+<br />
+<br />
+<br />
+<footer class="footer">
+    <div class="footer-content container">
+        <div class="footer-main">
+            <p>&copy; 2003-2024. Toàn bộ bản quyền thuộc <strong>NewFlash</strong></p>
+            <div class="footer-links">
+                <a href="#">Chính sách bảo mật</a> | <a href="#">Điều khoản sử dụng</a>
+            </div>
+        </div>
+        <div class="footer-contact">
+            <h3><i class="fas fa-phone-alt"></i> Hợp tác truyền thông</h3>
+            <p><i class="fas fa-envelope"></i> Liên hệ: <a href="mailto:contact@newflash.com">contact@newflash.com</a></p>
+            <p><i class="fas fa-phone"></i> Số điện thoại: <span>070 376 2255</span></p>
+            <p><i class="fab fa-facebook"></i> Facebook: <a href="https://www.facebook.com/NguyenLuccc/" target="_blank">NewFlash</a></p>
+        </div>
+        <div class="footer-advertising">
+            <h3><i class="fas fa-bullhorn"></i> Liên hệ quảng cáo</h3>
+            <p><i class="fas fa-envelope"></i> Liên hệ: <a href="mailto:ads@newflash.com">ads@newflash.com</a></p>
+            <p><i class="fas fa-phone"></i> Số điện thoại: <span>070 376 2255</span></p>
+            <p><i class="fab fa-facebook"></i> Facebook: <a href="https://www.facebook.com/NguyenLuccc/" target="_blank">NewFlash Ads</a></p>
+        </div>
+    </div>
+</footer>
+
+
+@section Scripts {
+    @* Thêm script để xử lý validation *@
+    <partial name="_ValidationScriptsPartial" />
+    <script src="./LayoutAds/jsADS/ADS.js"></script>
+    <script>
+        // Thêm hiệu ứng lắc cho icon điện thoại
+        window.onload = function () {
+            const phoneIcon = document.getElementById('phone-icon');
+            phoneIcon.classList.add('shake'); // Thêm lớp 'shake' khi trang tải xong
+        };
+    </script>
+
+}

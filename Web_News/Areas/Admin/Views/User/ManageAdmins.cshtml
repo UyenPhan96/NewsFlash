@@ -1,0 +1,86 @@
+﻿@model List<Web_News.Areas.Admin.ViewModels.UserViewModels> // Thay đổi model sang UserViewModels
+
+@{
+ 
+    var returnUrl = Url.Action("ManageAdmins", new { roleId = ViewBag.RoleId, status = ViewBag.CurrentStatus });
+    ViewBag.title ="DS Admin - "+ ViewBag.CurrentStatus;
+}
+
+<div>
+    <a href="@Url.Action("ManageAdmins", new {roleId = ViewBag.RoleId, status = "active" })" class="btn @((ViewBag.CurrentStatus == "active") ? "btn-danger" : "btn-secondary")">Tài khoản hoạt động</a>
+    <a href="@Url.Action("ManageAdmins", new {roleId = ViewBag.RoleId, status = "locked" })" class="btn @((ViewBag.CurrentStatus == "locked") ? "btn-danger" : "btn-secondary")">Tài khoản bị khóa</a>
+    <a href="@Url.Action("ManageAdmins", new {roleId = ViewBag.RoleId, status = "deleted" })" class="btn @((ViewBag.CurrentStatus == "deleted") ? "btn-danger" : "btn-secondary")">Tài khoản đã xóa</a>
+</div>
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tên người dùng</th>
+                        <th>Email</th>
+                        <th>Địa chỉ</th>
+                        <th>SĐT</th>
+                        <th>Tên tài khoản</th>
+                        <th>Vai trò</th>
+                        <th>Ngày đăng ký</th>
+                        <th>Trạng thái tài khoản</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.Name</td>
+                            <td>@user.Email</td>
+                            <td>@user.Address</td>
+                            <td>@user.Phone</td>
+                            <td>@user.UserName</td>
+                            <td>@user.Role</td>
+                            <td>@user.RegistrationDate.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <span class="badge @(user.AccountStatus ? "bg-danger" : "bg-success")">
+                                    @(user.AccountStatus ? "Đã khóa" : "Hoạt động")
+                                </span>
+                            </td>
+                            <td>
+                                @if (ViewBag.CurrentStatus == "active")
+                                {
+                                    <a href="@Url.Action("EditUser", new { userId = user.UserId, returnUrl = Url.Action("ManageAdmins", new { roleId = ViewBag.RoleId, status = ViewBag.CurrentStatus }), isAdmin = true })" class="btn btn-outline-info btn-sm"><i class="mdi mdi-eyedropper"></i></a>
+
+
+
+                                    <!-- Form Xóa tài khoản -->
+                                    <form method="post" action="@Url.Action("DeleteUser", new { userId = user.UserId, returnUrl = returnUrl })" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');" style="display:inline;">
+                                        <input type="hidden" name="userId" value="@user.UserId" />
+                                        <button type="submit" class="btn btn-outline-warning btn-sm"><i class="mdi mdi-delete "></i></button>
+                                    </form>
+
+                                    <!-- Form Khóa tài khoản -->
+                                    <form method="post" action="@Url.Action("AccountStatus", new { userId = user.UserId, status = "locked", returnUrl = returnUrl })" style="display:inline;">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="mdi mdi-lock"></i></button>
+                                    </form>
+                                }
+                                else if (ViewBag.CurrentStatus == "locked")
+                                {
+                                    <!-- Form Mở khóa tài khoản -->
+                                    <form method="post" action="@Url.Action("AccountStatus", new { userId = user.UserId, status = "active", returnUrl = returnUrl })" style="display:inline;">
+                                        <button type="submit" class="btn btn-outline-success btn-sm"><i class="mdi mdi-lock-open"></i></button>
+                                    </form>
+
+                                    <!-- Form Xóa tài khoản -->
+                                    <form method="post" action="@Url.Action("DeleteUser", new { userId = user.UserId, returnUrl = returnUrl })" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');" style="display:inline;">
+                                        <input type="hidden" name="userId" value="@user.UserId" />
+                                        <button type="submit" class="btn btn-outline-warning btn-sm"><i class="mdi mdi-delete "></i></button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

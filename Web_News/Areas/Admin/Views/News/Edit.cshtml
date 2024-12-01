@@ -1,0 +1,209 @@
+﻿@model Web_News.Areas.Admin.ViewModels.NewsViewModel
+
+@{
+    ViewData["Title"] = "Edit News";
+
+}
+
+
+
+@using (Html.BeginForm("Edit", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <!-- Display current image -->
+    <div class="form-group">
+        @if (!string.IsNullOrEmpty(Model.Image))
+        {
+            <div>
+                <label>Ảnh đã chọn:</label>
+                <img src="/images/@Model.Image" alt="Current Image" class="img-thumbnail" style="width: 200px; height: auto;" />
+            </div>
+        }
+        else
+        {
+            <div>No image available</div>
+        }
+    </div>
+    <div class="form-group">
+        @Html.Label("Ảnh")
+        <div class="input-group">
+            <input type="text" id="selectedImage" class="form-control" readonly placeholder="Select an image..." value="@Model.Image" />
+            <div class="input-group-append">
+                <button class="btn btn-secondary" type="button" onclick="openImageModal()">Select Image</button>
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.Image)
+        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Tiêu đề")
+        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <div style="text-align: center;">
+            <strong>Danh sách các thể loại </strong>
+        </div>
+        <br />
+        <div class="row">
+            @foreach (var category in Model.Categories)
+            {
+                <div class="col-sm-2">
+                    <!-- Chia thành 3 cột trên màn hình lớn -->
+                    <div class="form-check form-check-danger">
+                        <label class="form-check-label">
+                            <input type="checkbox" name="SelectedCategories" value="@category.CategoryId"
+                            @(Model.SelectedCategories.Contains(category.CategoryId) ? "checked" : "")
+                                   class="form-check-input" id="category_@category.CategoryId" />
+                        </label>
+
+                        <label class="form-check-label" for="category_@category.CategoryId">@category.NameCategory</label>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div style="text-align: center;">
+            <strong>Nội dung bài viết </strong>
+        </div>
+        <br />
+        @Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows = 5, id = "Content" })
+        @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+    </div>
+
+
+
+
+    <!-- Hidden field for News ID -->
+    <input type="hidden" name="NewsId" value="@Model.NewsId" />
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="@Url.Action("Index", "News")" class="btn btn-secondary">Cancel</a>
+}
+
+<!-- Modal for selecting or uploading image -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Select or Upload Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="imageGallery" class="row">
+                    <!-- Images will be loaded here -->
+                </div>
+                <hr />
+                <div>
+                    <label for="uploadImage">Upload a new image:</label>
+                    <input type="file" id="uploadImage" />
+                    <button type="button" class="btn btn-primary mt-2" onclick="uploadNewImage()">Upload</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+    <script>
+        CKEDITOR.replace('Content');
+
+        function openImageModal() {
+            // Fetch the list of images and display them in the modal
+            fetch('@Url.Action("GetImages", "Image")')
+                .then(response => response.json())
+                .then(images => {
+                    const imageGallery = document.getElementById('imageGallery');
+                    imageGallery.innerHTML = ''; // Clear previous images
+
+                    images.forEach(image => {
+                        const imageElement = document.createElement('div');
+                        imageElement.className = 'col-md-3';
+                        imageElement.innerHTML = `
+                                    <img src="/images/${image}" alt="${image}" class="img-thumbnail" style="width: 100%; height: auto;" />
+                                    <button class="btn btn-primary btn-sm mt-2" onclick="selectImage('${image}')">Select</button>
+                                    <button class="btn btn-danger btn-sm mt-2" onclick="deleteImage('${image}')">Delete</button>
+                                `;
+                        imageGallery.appendChild(imageElement);
+                    });
+
+                    $('#imageModal').modal('show'); // Show the modal
+                })
+                .catch(error => {
+                    console.error('Error fetching images:', error);
+                });
+        }
+
+        function selectImage(imageName) {
+            document.getElementById('selectedImage').value = imageName;
+            document.querySelector('input[name="Image"]').value = imageName;
+            $('#imageModal').modal('hide');
+        }
+
+        function uploadNewImage() {
+            const fileInput = document.getElementById('uploadImage');
+            if (fileInput.files.length === 0) {
+                alert('Please select an image to upload.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('imageFile', fileInput.files[0]);
+
+            fetch('@Url.Action("UploadImage", "Image")', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        // Refresh image gallery
+                        openImageModal();
+                        fileInput.value = ''; // Clear the file input
+                    } else {
+                        alert('Upload failed: ' + (result.message || 'Unknown error.'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function deleteImage(imageName) {
+            if (!imageName) {
+                alert('Invalid image name.');
+                return;
+            }
+
+            fetch('@Url.Action("DeleteImage", "Image")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ImageName: imageName })
+            })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        // Refresh image gallery
+                        openImageModal();
+                    } else {
+                        alert('Delete failed: ' + (result.message || 'Unknown error.'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+}

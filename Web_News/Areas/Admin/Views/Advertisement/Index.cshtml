@@ -1,0 +1,92 @@
+﻿@model List<Web_News.Models.Advertisement>
+@using Web_News.Areas.Admin.ServiceAd.AdvertisementSV
+
+@{
+    ViewData["Title"] = "Advertisement";
+    
+}
+
+<div class="btn-group" role="group">
+    <!-- Nút để lọc theo trạng thái "Đang chờ duyệt" -->
+    <a href="@Url.Action("Index", new { status = Web_News.Models.ApprovalStatus.Pending })"
+       class="btn @(ViewData["StatusFilter"]?.ToString() == "Pending" ? "btn-dark" : "btn-outline-secondary")">
+        Đang chờ duyệt
+    </a>
+
+    <!-- Nút để lọc theo trạng thái "Duyệt" -->
+    <a href="@Url.Action("Index", new { status = Web_News.Models.ApprovalStatus.Approved })"
+       class="btn @(ViewData["StatusFilter"]?.ToString() == "Approved" ? "btn-dark" : "btn-outline-secondary")">
+        Đã duyệt
+    </a>
+
+    <!-- Nút để lọc theo trạng thái "Từ chối" -->
+    <a href="@Url.Action("Index", new { status = Web_News.Models.ApprovalStatus.Rejected })"
+       class="btn @(ViewData["StatusFilter"]?.ToString() == "Rejected" ? "btn-dark" : "btn-outline-secondary")">
+        Từ chối
+    </a>
+</div>
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4>Danh sách liên hệ quảng cáo</h4>
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>STT</th> <!-- Cột số thứ tự -->
+                        <th>Tên Người liên hệ</th>
+                        <th>Nội dung</th>
+                        <th>Ảnh</th>
+                        <th>Link</th>
+                        <th>Trạng thái duyệt</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        var ad = Model[i];
+                        <tr>
+                            <td>@(i + 1)</td> <!-- Hiển thị số thứ tự -->
+                            <td>@ad.ContactName</td>
+                            <td title="@ad.Content">
+                                @(ad.Content.Length > 25 ? ad.Content.Substring(0, 25) + "..." : ad.Content)
+                            </td>
+
+                            <td><img src="/ImagesAdvertisement/@ad.Image" alt="Image" style="max-width: 150px; height: auto; border-radius: 5px;"  /></td>
+                            <td>
+                                <a href="@ad.Link" target="_blank" title="@ad.Link">
+                                    @(ad.Link.Length > 50 ? ad.Link.Substring(0, 50) + "..." : ad.Link)
+                                </a>
+                            </td>
+
+                            <td>@ad.ApprovalStatus.GetDisplayName()</td>
+                            <td>
+                                @if (ad.ApprovalStatus == Web_News.Models.ApprovalStatus.Approved)
+                                {                        
+                                    <form asp-action="Reject" asp-route-id="@ad.AdvertisementId" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-warning btn-sm">Thu hồi</button>
+                                    </form>
+                                }
+                                else if (ad.ApprovalStatus == Web_News.Models.ApprovalStatus.Rejected)
+                                {
+                                    <a asp-action="Approve" asp-route-id="@ad.AdvertisementId" class="btn btn-info btn-sm">Sửa</a>                        
+                                }
+                                else
+                                {
+                                <a asp-action="Approve" asp-route-id="@ad.AdvertisementId" class="btn btn-info btn-sm">Duyệt</a>
+                                <form asp-action="Reject" asp-route-id="@ad.AdvertisementId" method="post" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger btn-sm">Từ chối</button>
+                                </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

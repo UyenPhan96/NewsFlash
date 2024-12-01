@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+# IDEs and editors
+.vs/
+Web_News/obj/
+Web_News/bin/
+
+/Web_News/obj/
+/Web_News/bin/
+/.vs/

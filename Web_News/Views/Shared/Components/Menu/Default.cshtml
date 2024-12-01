@@ -1,0 +1,135 @@
+﻿@model List<Category>
+
+<style>
+    .menu {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        background-color: #f8f9fa; /* Màu nền sáng nhẹ cho thanh menu chính */
+        font-family: Arial, sans-serif;
+        font-size: 15px;
+        font-weight: 400;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        z-index: 9999;
+        transition: transform 0.3s ease;
+        border-top: 2px solid #ccc; /* Đường kẻ trên */
+        border-bottom: 2px solid #ccc; /* Đường kẻ dưới */
+    }
+
+        .menu.hidden {
+            transform: translateY(-100%);
+        }
+
+        .menu li {
+            position: relative;
+        }
+
+            .menu li a {
+                display: block;
+                color: #333; /* Màu chữ tối cho dễ đọc */
+                text-align: center;
+                padding: 14px 20px;
+                text-decoration: none;
+                font-size: 19px;
+                transition: background-color 0.3s ease, color 0.3s ease; /* Thêm hiệu ứng cho liên kết */
+            }
+
+                .menu li a:hover {
+                    background-color: #e2e6ea; /* Màu nền nhẹ khi hover */
+                    color: #000; /* Màu chữ đen khi hover */
+                }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f8f9fa; /* Màu nền sáng cho menu con */
+        min-width: 160px; /* Độ rộng tối thiểu lớn hơn */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+        z-index: 1;
+        border-radius: 4px; /* Bo tròn góc cho menu con */
+        padding: 8px 0;
+        transform: translateY(-10px);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .menu li:hover .dropdown-menu {
+        display: block;
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .dropdown-menu li {
+        float: none;
+    }
+
+        .dropdown-menu li a {
+            padding: 12px 20px;
+            color: #333; /* Màu chữ cho menu con */
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+            .dropdown-menu li a:hover {
+                background-color: #e2e6ea; /* Màu nền nhẹ khi hover trên menu con */
+                color: #000; /* Màu chữ đen khi hover trên menu con */
+            }
+
+        .dropdown-menu li + li {
+            border-top: 1px solid rgba(0, 0, 0, 0.1); /* Đường phân cách giữa các mục */
+        }
+
+        .dropdown-menu li a i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .dropdown-menu li a:hover i {
+            color: #333; /* Màu icon không thay đổi khi hover */
+        }
+
+</style>
+<nav>
+    <ul class="menu">
+        <li><a href="/"><i class="fas fa-home"></i></a></li>
+
+        @for (var i = 0; i < Math.Min(11, Model.Count); i++)
+        {
+            var cate = Model[i];
+            <li class="dropdown">
+                <a href="@Url.Action("Index", "News", new { id = cate.CategoryId })" class="dropbtn">@cate.NameCategory</a>
+                @if (cate.SubCategories.Any())
+                {
+                    <ul class="dropdown-menu">
+                        @foreach (var subCategory in cate.SubCategories)
+                        {
+                            <li><a href="@Url.Action("Index", "News", new { id = subCategory.CategoryId })">@subCategory.NameCategory</a></li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+
+        <!-- Hiển thị biểu tượng "..." nếu có nhiều hơn 14 danh mục -->
+        @if (Model.Count > 14)
+        {
+            <li class="dropdown">
+                <a href="#" class="dropbtn more-categories"><i class="fas fa-ellipsis-h"></i></a>
+                <ul class="dropdown-menu">
+                    @for (var i = 14; i < Model.Count; i++)
+                    {
+                        var cate = Model[i];
+                        <li><a href="@Url.Action("Index", "News", new { id = cate.CategoryId })">@cate.NameCategory</a></li>
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+</nav>
