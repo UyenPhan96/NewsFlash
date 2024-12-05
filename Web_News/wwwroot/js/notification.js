@@ -1,8 +1,14 @@
 ﻿// Khởi tạo kết nối SignalR
 const connection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:7005/notificationHub")
+    .withUrl("/notificationHub")
     .build();
 
+// Bắt đầu kết nối
+connection.start().then(function () {
+    console.log("SignalR Connected.");
+}).catch(function (err) {
+    return console.error(err.toString());
+});
 
 // Khi có thông báo mới từ SignalR, thêm thông báo vào danh sách
 connection.on("ReceiveNotification", (advertisementId, contactName, content, createdDate) => {

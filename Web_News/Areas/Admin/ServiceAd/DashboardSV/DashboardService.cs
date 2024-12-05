@@ -127,7 +127,7 @@ namespace Web_News.Areas.Admin.ServiceAd.DashboardSV
             // Kiểm tra xem danh sách bài viết có trống không
             if (newsInCurrentMonth == null || !newsInCurrentMonth.Any())
             {
-                throw new InvalidOperationException("No news found for the current month.");
+                return new Dictionary<string, int> { { "Chưa có dữ liệu", 0 } };
             }
 
             // Lấy thông tin người dùng và số lượng bài viết của mỗi người trong tháng
@@ -141,6 +141,7 @@ namespace Web_News.Areas.Admin.ServiceAd.DashboardSV
 
             return result;
         }
+
         // Thêm phương thức này để lấy dữ liệu số lượng quảng cáo trong 10 ngày gần nhất  
         public Dictionary<string, int> GetAdsCountForLast10Days()
         {

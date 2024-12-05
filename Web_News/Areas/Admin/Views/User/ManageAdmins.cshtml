@@ -48,9 +48,11 @@
                             <td>
                                 @if (ViewBag.CurrentStatus == "active")
                                 {
-                                    <a href="@Url.Action("EditUser", new { userId = user.UserId, returnUrl = Url.Action("ManageAdmins", new { roleId = ViewBag.RoleId, status = ViewBag.CurrentStatus }), isAdmin = true })" class="btn btn-outline-info btn-sm"><i class="mdi mdi-eyedropper"></i></a>
+                                    @if (ViewBag.RoleId != 2){
+                                           <a href="@Url.Action("EditUser", new { userId = user.UserId, returnUrl = Url.Action("ManageAdmins", new { roleId = ViewBag.RoleId, status = ViewBag.CurrentStatus }), isAdmin = true })" class="btn btn-outline-info btn-sm"><i class="mdi mdi-eyedropper"></i></a>
 
-
+                                    }
+                             
 
                                     <!-- Form Xóa tài khoản -->
                                     <form method="post" action="@Url.Action("DeleteUser", new { userId = user.UserId, returnUrl = returnUrl })" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');" style="display:inline;">
