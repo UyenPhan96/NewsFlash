@@ -567,3 +567,23 @@ footer {
         margin: 20px 0;
     }
 }
+/* Loại bỏ gạch chân cho tất cả các liên kết */
+.article a, .sidebar-section a, .news-item a, .footer a, h2 a {
+    color: #333;
+    text-decoration: none; /* Loại bỏ gạch chân */
+}
+
+    /* Loại bỏ hiệu ứng hover gạch chân */
+    .article a:hover, .sidebar-section a:hover, .news-item a:hover, .footer a:hover, h2 a:hover {
+        text-decoration: none; /* Loại bỏ gạch chân khi hover */
+    }
+/* Hiệu ứng đổi màu khi di chuột qua tiêu đề bài viết */
+.article h2:hover,
+.article h3:hover,
+.sidebar-section h2:hover,
+.sidebar-section h3:hover,
+.news-item h2:hover,
+.news-item h3:hover {
+    color: #007bff; /* Màu tiêu đề khi di chuột qua */
+    transition: color 0.3s ease; /* Hiệu ứng chuyển màu mượt mà */
+}

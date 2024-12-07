@@ -9,8 +9,8 @@
         justify-content: center;
         background-color: #f8f9fa; /* Màu nền sáng nhẹ cho thanh menu chính */
         font-family: Arial, sans-serif;
-        font-size: 15px;
-        font-weight: 400;
+        font-size: 13px;
+       
         position: fixed;
         top: 80px;
         left: 0;
@@ -19,6 +19,7 @@
         transition: transform 0.3s ease;
         border-top: 2px solid #ccc; /* Đường kẻ trên */
         border-bottom: 2px solid #ccc; /* Đường kẻ dưới */
+        font-weight: bold;
     }
 
         .menu.hidden {
@@ -35,7 +36,7 @@
                 text-align: center;
                 padding: 14px 20px;
                 text-decoration: none;
-                font-size: 19px;
+                font-size: 13px;
                 transition: background-color 0.3s ease, color 0.3s ease; /* Thêm hiệu ứng cho liên kết */
             }
 
@@ -56,6 +57,7 @@
         transform: translateY(-10px);
         opacity: 0;
         transition: all 0.3s ease;
+        list-style-type: none;
     }
 
     .menu li:hover .dropdown-menu {
@@ -73,7 +75,7 @@
             color: #333; /* Màu chữ cho menu con */
             text-decoration: none;
             display: block;
-            font-size: 14px;
+            font-size: 13px;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
@@ -88,7 +90,7 @@
 
         .dropdown-menu li a i {
             margin-right: 8px;
-            font-size: 16px;
+            font-size: 13px;
         }
 
         .dropdown-menu li a:hover i {

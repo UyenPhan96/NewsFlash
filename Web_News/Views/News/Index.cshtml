@@ -1,7 +1,8 @@
 ﻿@model Web_News.Areas.Admin.ViewModels.ListViewModel
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutArticleDetails.cshtml";
+
     ViewData["Title"] = "Danh Sách Bài Viết";
 }
 <style>
@@ -34,10 +35,47 @@
         font-weight: bold; /* Make active category text bold */
     }
 
-    .pagination .page-item.active .page-link {
-        background-color: #007bff;
-        border-color: #007bff;
+    .pagination {
+        display: flex; /* Sử dụng Flexbox để căn chỉnh các mục phân trang theo chiều ngang */
+        justify-content: center; /* Căn giữa các mục phân trang */
+        padding-left: 0;
+        list-style: none;
     }
+
+        .pagination .page-item {
+            margin-right: 10px; /* Khoảng cách giữa các mục phân trang */
+        }
+
+        .pagination .page-link {
+            display: inline-block;
+            padding: 8px 16px; /* Khoảng cách giữa các trang */
+            background-color: #e9ecef; /* Màu nền xám nhạt */
+            border: 1px solid #ccc; /* Viền xám nhạt */
+            color: #495057; /* Màu chữ xám tối */
+            text-decoration: none;
+            border-radius: 4px; /* Bo góc nhẹ */
+            transition: background-color 0.3s, border-color 0.3s; /* Hiệu ứng chuyển màu nhẹ */
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff; /* Màu nền xanh dương cho mục active */
+            border-color: #007bff; /* Màu viền xanh dương */
+            color: white; /* Màu chữ trắng */
+        }
+
+        .pagination .page-link:hover {
+            background-color: #d6d8db; /* Màu nền xám đậm khi hover */
+            color: #495057; /* Màu chữ xám tối khi hover */
+            border-color: #adb5bd; /* Viền xám trung tính khi hover */
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #adb5bd; /* Màu chữ xám trung tính cho trạng thái disabled */
+            background-color: #f8f9fa; /* Nền xám nhạt cho disabled */
+            border-color: #ddd; /* Viền xám nhạt */
+        }
+
+
 </style>
 <body>
     <div class="results" id="results"></div>
@@ -68,6 +106,7 @@
             <div class="grid-container">
 
                 <!-- Hiển thị bài viết lớn nhất đầu tiên -->
+                <!-- Bài viết lớn nhất -->
                 @if (Model.LatestNews.Any())
                 {
                     var firstNews = Model.LatestNews.First();
@@ -82,12 +121,11 @@
                             </div>
                         </a>
                         <p>Ngày đăng: @firstNews.PublishDate.ToString("dd/MM/yyyy")</p>
-                      
                     </article>
                 }
 
-                <!-- Hiển thị các bài viết nhỏ tiếp theo -->
-                @foreach (var news in Model.LatestNews.Skip(1))
+                <!-- 3 bài viết nhỏ tiếp theo -->
+                @foreach (var news in Model.LatestNews.Skip(1).Take(3))
                 {
                     <article class="grid-item-small article">
                         <a class="article-link" href="@Url.Action("Privacy", "Home", new { id = news.NewsId })">
@@ -102,19 +140,36 @@
                         <p>Ngày đăng: @news.PublishDate.ToString("dd/MM/yyyy")</p>
                     </article>
                 }
+
+                <!-- Các bài viết còn lại theo chiều dọc -->
+                @foreach (var news in Model.LatestNews.Skip(4))
+                {
+                    <article class="grid-item-vertical article">
+                        <a class="article-link" href="@Url.Action("Privacy", "Home", new { id = news.NewsId })">
+                            <div class="article-header">
+                                <img src="/Images/@news.Image" alt="@news.Title" />
+                                <div class="article-content">
+                                    <h3>@news.Title</h3>
+                                </div>
+                            </div>
+                            <p>@Html.Raw(news.Content?.Substring(0, Math.Min(news.Content.Length, 500)))...</p>
+                        </a>
+                        <p>Ngày đăng: @news.PublishDate.ToString("dd/MM/yyyy")</p>
+                    </article>
+                }
             </div>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
                     @if (Model.PageNumber > 1)
                     {
                         <li class="page-item">
-                            <a class="page-link" href="@Url.Action("Index", new { id = Model.SelectedCategoryId, page = Model.PageNumber - 1 })" tabindex="-1">Previous</a>
+                            <a class="page-link" href="@Url.Action("Index", new { id = Model.SelectedCategoryId, page = Model.PageNumber - 1 })" tabindex="-1">Trước</a>
                         </li>
                     }
                     else
                     {
                         <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            <a class="page-link" href="#" tabindex="-1">Trước</a>
                         </li>
                     }
 
@@ -128,13 +183,13 @@
                     @if (Model.PageNumber < (Model.TotalItems + Model.PageSize - 1) / Model.PageSize)
                     {
                         <li class="page-item">
-                            <a class="page-link" href="@Url.Action("Index", new { id = Model.SelectedCategoryId, page = Model.PageNumber + 1 })">Next</a>
+                            <a class="page-link" href="@Url.Action("Index", new { id = Model.SelectedCategoryId, page = Model.PageNumber + 1 })">Sau</a>
                         </li>
                     }
                     else
                     {
                         <li class="page-item disabled">
-                            <a class="page-link" href="#">Next</a>
+                            <a class="page-link" href="#">Sau</a>
                         </li>
                     }
                 </ul>

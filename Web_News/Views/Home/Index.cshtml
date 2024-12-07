@@ -81,8 +81,9 @@
                                         <!-- Thông tin meta -->
                                     </div>
                                     <p class="article-summary">
-                                        @Html.Raw(Model.News360[1].Content.Substring(0, Math.Min(Model.News360[0].Content.Length, 500)))...
+                                        @Html.Raw(Model.News360[1].Content.Substring(0, Math.Min(Model.News360[1].Content.Length, 500)))
                                     </p>
+
 
                                 </div>
                             </div>
@@ -116,7 +117,8 @@
             <div class="international-news">
                 <h2 class="world-news-title">
                     <a href="/News/Index/53">
-                        <i class="fas fa-globe"></i> TIN THẾ GIỚI
+                        <i class="fas fa-globe"></i> TIN TRONG NƯỚC
+                    </a>
                     </a>
                 </h2>
                 <div class="news-list">
@@ -153,11 +155,11 @@
                 </div>
             </div>
 
-            <!-- Thể loại Kinh Tế -->
+            <!-- Thể loại THỜI SỰ -->
             <div class="international-news">
                 <h2 class="world-news-title">
                     <a href="/News/Index/52">
-                        <i class="fas fa-dollar-sign"></i> TIN KINH TẾ
+                        <i class="fas fa-dollar-sign"></i> TIN THỜI SỰ
                     </a>
                 </h2>
                 <div class="news-list">
@@ -197,11 +199,11 @@
                 </div>
             </div>
 
-            <!-- Tin Công Nghệ -->
+            <!-- Tin ĐỜI SỐNG -->
             <div class="technology-news">
                 <h2 class="technology-news-title">
                     <a href="/News/Index/61">
-                        <i class="fas fa-laptop"></i> TIN CÔNG NGHỆ
+                        <i class="fas fa-laptop"></i> TIN ĐỜI SỐNG
                     </a>
                 </h2>
                 <div class="news-list">
@@ -215,7 +217,7 @@
                                         <a href="@Url.Action("Privacy", "Home", new { id = Model.TechnologyNews[i].NewsId })">@Model.TechnologyNews[i].Title</a>
                                     </h3>
                                     <p class="date-time">Ngày đăng: <span class="date">@Model.TechnologyNews[i].PublishDate.ToString("dd/MM/yyyy")</span></p>
-                                    <p>@Html.Raw(Model.TechnologyNews[i].Content.Substring(0, Math.Min(Model.TechnologyNews[i].Content.Length, 100)))...</p>
+                                    <p>@Html.Raw(Model.TechnologyNews[i].Content.Substring(0, Math.Min(Model.TechnologyNews[i].Content.Length, 150)))...</p>
                                 </div>
                             </div>
                         }
@@ -238,52 +240,13 @@
                 </div>
             </div>
 
-            <!-- Tin Văn Hóa -->
-            <div class="culture-news">
-                <h2 class="culture-news-title">
-                    <a href="/News/Index/54">
-                        <i class="fas fa-paint-brush"></i> TIN VĂN HÓA
-                    </a>
-                </h2>
-                <div class="news-list">
-                    <div class="news-column">
-                        @for (int i = 0; i < Math.Min(3, Model.CultureNews.Count); i++)
-                        {
-                            <div class="news-item">
-                                <img src="/Images/@Model.CultureNews[i].Image" alt="@Model.CultureNews[i].Title">
-                                <div class="news-details">
-                                    <h3>
-                                        <a href="@Url.Action("Privacy", "Home", new { id = Model.CultureNews[i].NewsId })">@Model.CultureNews[i].Title</a>
-                                    </h3>
-                                    <p class="date-time">Ngày đăng: <span class="date">@Model.CultureNews[i].PublishDate.ToString("dd/MM/yyyy")</span></p>
-                                    <p>@Html.Raw(Model.CultureNews[i].Content.Substring(0, Math.Min(Model.CultureNews[i].Content.Length, 100)))...</p>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                    <div class="news-column">
-                        @for (int i = 3; i < Math.Min(6, Model.CultureNews.Count); i++)
-                        {
-                            <div class="news-item">
-                                <img src="/Images/@Model.CultureNews[i].Image" alt="@Model.CultureNews[i].Title">
-                                <div class="news-details">
-                                    <h3>
-                                        <a href="@Url.Action("Privacy", "Home", new { id = Model.CultureNews[i].NewsId })">@Model.CultureNews[i].Title</a>
-                                    </h3>
-                                    <p class="date-time">Ngày đăng: <span class="date">@Model.CultureNews[i].PublishDate.ToString("dd/MM/yyyy")</span></p>
-                                    <p>@Html.Raw(Model.CultureNews[i].Content.Substring(0, Math.Min(Model.CultureNews[i].Content.Length, 100)))...</p>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
+           
 
-            <!-- Tin Thể Thao -->
+            <!-- Tin GIÁO DỤC -->
             <div class="sports-news">
                 <h2 class="sports-news-title">
                     <a href="/News/Index/59">
-                        <i class="fas fa-futbol"></i> TIN THỂ THAO
+                        <i class="fas fa-futbol"></i> TIN GIÁO DỤC
                     </a>
                 </h2>
                 <div class="news-list">
@@ -320,11 +283,11 @@
                 </div>
             </div>
 
-            <!-- Tin Pháp Luật -->
+            <!-- Tin THỂ THAO -->
             <div class="law-news">
                 <h2 class="law-news-title">
                     <a href="/News/Index/55">
-                        <i class="fas fa-gavel"></i> TIN PHÁP LUẬT
+                        <i class="fas fa-gavel"></i> TIN THỂ THAO
                     </a>
                 </h2>
                 <div class="news-list">
@@ -361,11 +324,11 @@
                 </div>
             </div>
 
-            <!-- Tin Giao Thông -->
+            <!-- Tin VĂN HÓA -->
             <div class="traffic-news">
                 <h2 class="traffic-news-title">
                     <a href="/News/Index/62">
-                        <i class="fas fa-car"></i> TIN GIAO THÔNG
+                        <i class="fas fa-car"></i> TIN VĂN HÓA
                     </a>
                 </h2>
                 <div class="news-list">

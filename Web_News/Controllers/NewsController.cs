@@ -24,7 +24,7 @@ namespace Web_News.Controllers
             int pageSize = 10;
             int categoryId = id ?? 0;
             var latestNews = await _newsService.GetNewsByCategoryList(categoryId, page, pageSize);
-            var sidebarAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Sidebar, 4);
+            var sidebarAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Sidebar, 8);
             var headerAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Header, 1);
             var footerAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Footer, 1);
             var categories = await _categoryService.GetAllCategoriesAsync();
@@ -71,7 +71,7 @@ namespace Web_News.Controllers
             var paginatedNewsList = newsList.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
             // Gọi Service để lấy quảng cáo
-            var sidebarAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Sidebar, 5);
+            var sidebarAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Sidebar, 8);
             var headerAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Header, 1);
             var footerAds = await _newsService.GetActiveAdvertisementsAsync(BannerPosition.Footer, 1);
 

@@ -32,7 +32,7 @@ namespace Web_News.Controllers
             var trafficNews = await _newsService.GetNewsByCategory(62, 1); 
             var lifeNews = await _newsService.GetNewsByCategory(57, 1);
             // lấy tin nhanh 360
-            var news360 = await _newsService.GetTopNews360(7);
+            var news360 = await _newsService.GetTopNews360(8);
             // lấy 6 tin thế giới
             var get6WorldNews = await _newsService.GetNewsByCategory(53, 6);
             // Lấy 6 bài Kinh tế 
