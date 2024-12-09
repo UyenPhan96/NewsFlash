@@ -2,24 +2,24 @@
 @using Web_News.Areas.Admin.ServiceAd.AdvertisementSV
 
 @{
-    ViewData["Title"] = "Advertisement";
+    ViewData["Title"] = "Liên Hệ QC";
     
 }
 
 <div class="btn-group" role="group">
-    <!-- Nút để lọc theo trạng thái "Đang chờ duyệt" -->
+  
     <a href="@Url.Action("Index", new { status = Web_News.Models.ApprovalStatus.Pending })"
        class="btn @(ViewData["StatusFilter"]?.ToString() == "Pending" ? "btn-dark" : "btn-outline-secondary")">
         Đang chờ duyệt
     </a>
 
-    <!-- Nút để lọc theo trạng thái "Duyệt" -->
+   
     <a href="@Url.Action("Index", new { status = Web_News.Models.ApprovalStatus.Approved })"
        class="btn @(ViewData["StatusFilter"]?.ToString() == "Approved" ? "btn-dark" : "btn-outline-secondary")">
         Đã duyệt
     </a>
 
-    <!-- Nút để lọc theo trạng thái "Từ chối" -->
+  
     <a href="@Url.Action("Index", new { status = Web_News.Models.ApprovalStatus.Rejected })"
        class="btn @(ViewData["StatusFilter"]?.ToString() == "Rejected" ? "btn-dark" : "btn-outline-secondary")">
         Từ chối
@@ -48,7 +48,7 @@
                     {
                         var ad = Model[i];
                         <tr>
-                            <td>@(i + 1)</td> <!-- Hiển thị số thứ tự -->
+                            <td>@(i + 1)</td> 
                             <td>@ad.ContactName</td>
                             <td title="@ad.Content">
                                 @(ad.Content.Length > 25 ? ad.Content.Substring(0, 25) + "..." : ad.Content)
@@ -90,3 +90,28 @@
         </div>
     </div>
 </div>
+
+
+<script>
+   
+    document.querySelectorAll('form[action*="Reject"]').forEach(function(form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Ngừng việc gửi form ngay lập tức
+
+            // Hiển thị thông báo xác nhận bằng SweetAlert
+            Swal.fire({
+                title: 'Cập nhật trạng thái quảng cáo ',
+                text: 'Hãy cân nhắc trước khi chọn',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Không'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Nếu người dùng xác nhận, thực hiện việc gửi form
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>

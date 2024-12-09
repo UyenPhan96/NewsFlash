@@ -1,48 +1,67 @@
 ﻿@model Web_News.Models.Advertisement
 
-<h2>Advertisement Details</h2>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-header bg-gradient-dark text-white">
+            <h4 class="mb-0">Chi tiết quảng cáo</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Approve" method="post" enctype="multipart/form-data">
+                <!-- Trường tải lên file để chọn ảnh mới -->
+                <div class="form-group">
+                    <label for="Image">Hình ảnh</label>
+                    <input type="file" class="form-control" id="Image" name="MediaFile" onchange="previewImage(event)" />
 
-<form asp-action="Approve" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="Image">Image</label>
-        <!-- Trường tải lên file để chọn ảnh mới -->
-        <input type="file" class="form-control" id="Image" name="MediaFile" onchange="previewImage(event)" />
+                    <!-- Hiển thị hình ảnh hiện tại nếu có -->
+                    <div id="imagePreview" class="mt-2">
+                        @if (!string.IsNullOrEmpty(Model.Image))
+                        {
+                            <img src="@Url.Content("~/imagesAdvertisement/" + Model.Image)" alt="Advertisement Image" id="currentImage" style="max-width: 200px; height: auto;" />
+                        }
+                    </div>
 
-        <!-- Hiển thị hình ảnh hiện tại nếu có -->
-        <div id="imagePreview" class="mt-2">
-            @if (!string.IsNullOrEmpty(Model.Image))
-            {
-                <img src="@Url.Content("~/imagesAdvertisement/" + Model.Image)" alt="Advertisement Image" id="currentImage" style="max-width: 100%; height: auto;" />
-            }
+
+                </div>
+
+                <!-- Link quảng cáo -->
+                <div class="form-group">
+                    <label for="Link">Link</label>
+                    <input type="text" class="form-control" id="Link" name="Link" value="@Model.Link" placeholder="Nhập link quảng cáo" />
+                </div>
+                <!-- Ngày bắt đầu -->
+                <div class="form-group">
+                    <label for="StartDate">Ngày bắt đầu</label>
+                    <input type="date" class="form-control" id="StartDate" name="StartDate"
+                           value="@Model.StartDate.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString(" yyyy-MM-dd")" />
+                </div>
+
+                <!-- Ngày kết thúc -->
+                <div class="form-group">
+                    <label for="EndDate">Ngày kết thúc</label>
+                    <input type="date" class="form-control" id="EndDate" name="EndDate"
+                           value="@Model.EndDate.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString(" yyyy-MM-dd")" />
+                </div>
+
+
+
+
+                <!-- Vị trí banner -->
+                <div class="form-group">
+                    <label for="BannerPosition">Vị trí banner</label>
+                    <select asp-for="BannerPosition" class="form-control" asp-items="@(new SelectList(Enum.GetValues(typeof(Web_News.Models.BannerPosition)).Cast<BannerPosition>().Select(bp => new SelectListItem { Value = bp.ToString(), Text = bp.ToString() }), "Value", "Text", Model.BannerPosition))">
+                        <option value="">-- Chọn vị trí --</option>
+                    </select>
+                </div>
+
+                <!-- Nút duyệt và quay lại -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-gradient-dark btn-icon-text" name="action" value="approve">Duyệt</button>
+                    <a href="@Url.Action("Index", "Advertisement")" class="btn btn-outline-secondary">Quay lại danh sách</a>
+                </div>
+            </form>
         </div>
     </div>
-
-    <div class="form-group">
-        <label for="Link">Link</label>
-        <input type="text" class="form-control" id="Link" name="Link" value="@Model.Link" />
-    </div>
-
-    <div class="form-group">
-        <label for="StartDate">Start Date</label>
-        <input type="date" class="form-control" id="StartDate" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
-    </div>
-
-    <div class="form-group">
-        <label for="EndDate">End Date</label>
-        <input type="date" class="form-control" id="EndDate" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" />
-    </div>
-
-    <div class="form-group">
-        <label for="BannerPosition">Banner Position</label>
-        <select asp-for="BannerPosition" class="form-control" asp-items="@(new SelectList(Enum.GetValues(typeof(Web_News.Models.BannerPosition)).Cast<BannerPosition>().Select(bp => new SelectListItem { Value = bp.ToString(), Text = bp.ToString() }), "Value", "Text", Model.BannerPosition))">
-            <option value="">-- Select Position --</option>
-        </select>
-    </div>
-
-    <button type="submit" class="btn btn-success" name="action" value="approve">Duyệt</button>
-    <a href="@Url.Action("Index", "Advertisement")" class="btn btn-secondary">Back to List</a>
-</form>
-
+</div>
 <script>
     function previewImage(event) {
         const file = event.target.files[0];
@@ -60,8 +79,8 @@
             const img = document.createElement('img');
             img.src = e.target.result;
             img.alt = 'New Advertisement Image';
-            img.style.maxWidth = '100%';
-            img.style.height = 'auto';
+            img.style.maxWidth = '200px';  // Đặt chiều rộng tối đa cho ảnh
+            img.style.height = 'auto';     // Đảm bảo chiều cao tự động thay đổi
             img.id = 'currentImage';
 
             imagePreview.appendChild(img);
@@ -71,4 +90,20 @@
             reader.readAsDataURL(file);
         }
     }
+
+</script>
+<script>
+        function checkEndDate() {
+        var startDate = document.getElementById('StartDate').value;
+        var endDate = document.getElementById('EndDate').value;
+
+        // Kiểm tra nếu ngày kết thúc nhỏ hơn ngày bắt đầu
+        if (endDate < startDate) {
+            document.getElementById('dateError').style.display = 'inline'; // Hiển thị thông báo lỗi
+            document.getElementById('EndDate').value = startDate; // Đặt lại ngày kết thúc bằng ngày bắt đầu
+        } else {
+            document.getElementById('dateError').style.display = 'none'; // Ẩn thông báo lỗi
+        }
+    }
+
 </script>

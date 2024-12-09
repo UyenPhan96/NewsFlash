@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Web_News.Areas.Admin.ViewModels.NewsViewModel>
 
 @{
-    ViewData["Title"] = "All News";
+    ViewData["Title"] = "Bài viết của tôi";
     var statusFilter = ViewData["StatusFilter"]?.ToString();
     int currentPage = ViewData["CurrentPage"] != null ? (int)ViewData["CurrentPage"] : 1;
     int totalPages = ViewData["TotalPages"] != null ? (int)ViewData["TotalPages"] : 1;
@@ -99,9 +99,9 @@
                                 }
                             </td>
                             <td>
-                                <a asp-action="Details" asp-route-id="@item.NewsId" asp-route-returnUrl="@Url.Action("FilterByStatus", new { status = ViewData["StatusFilter"] })" class="btn btn-info btn-sm">Details</a>
-                                <a asp-action="Edit" asp-route-id="@item.NewsId" class="btn btn-primary btn-sm">Edit</a>
-                                <a asp-action="Delete" asp-route-id="@item.NewsId" class="btn btn-danger btn-sm">Delete</a>
+                                <a asp-action="Details" asp-route-id="@item.NewsId" asp-route-returnUrl="@Url.Action("FilterByStatus", new { status = ViewData["StatusFilter"] })" class="btn btn-info btn-sm">Xem</a>
+                                <a asp-action="Edit" asp-route-id="@item.NewsId" class="btn btn-primary btn-sm">Sửa</a>
+                                <a asp-action="Delete" asp-route-id="@item.NewsId" class="btn btn-danger btn-sm">Xóa</a>
                             </td>
                         </tr>
                     }

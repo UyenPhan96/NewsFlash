@@ -1,63 +1,94 @@
 ﻿@model Web_News.Areas.Admin.ViewModels.NewsViewModel
 
 @{
-    ViewBag.Title = "Create News";
+    ViewBag.Title = "Thêm bài viết";
 }
 
-<h2>Create News</h2>
-
-@using (Html.BeginForm("Create", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-    <div class="form-group">
-        @Html.Label("Image")
-        <div class="input-group">
-            <input type="text" id="selectedImage" class="form-control" readonly placeholder="Select an image..." />
-            <div class="input-group-append">
-                <button class="btn btn-secondary" type="button" onclick="openImageModal()">Select Image</button>
-            </div>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-header bg-gradient-dark text-white">
+            <h4 class="mb-0">Thêm bài viết mới</h4>
         </div>
-        @Html.HiddenFor(model => model.Image)
-        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Title)
-        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-    </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
 
-    <div class="form-group">
-        @Html.Label("Categories")
-        <div class="row">
-            @foreach (var category in Model.Categories)
-            {
-                <div class="col-sm-1">
-                    <!-- Chia thành 3 cột trên màn hình lớn -->
-                    <div class="form-check form-check-danger">
-                        <label class="form-check-label">
-                            <input type="checkbox" name="SelectedCategories" value="@category.CategoryId" />
-                            @category.NameCategory
-                        </label>
+                <!-- Hình ảnh -->
+                <div class="form-group" style="display: flex; flex-direction: column; align-items: center;">
+
+                    <div class="input-group" style="max-width: 300px;">
+                        <input type="text" id="selectedImage" class="form-control" readonly placeholder="Chọn hình ảnh..." />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-danger btn-icon-text" type="button" onclick="openImageModal()">Tải ảnh lên</button>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div style="text-align: center;">
+                        <strong>Hình ảnh bài viết </strong>
+                        <img id="selectedImagePreview" src="/js/default.jpg" alt="Hình ảnh thay thế" class="img-thumbnail mt-3" style="max-width: 300px; display: block;" />
+
+                    </div>
+
+                    <br />
+
+                    @Html.HiddenFor(model => model.Image)
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+
+
+                <!-- Tiêu đề -->
+                <div class="form-group">
+                    <br />
+                    <div style="text-align: center;">
+                        <strong>Tiêu đề bài viết </strong>
+                    </div>
+                    <br />
+                    <input asp-for="Title" class="form-control" placeholder="Nhập tiêu đề bài viết" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <!-- Danh mục -->
+                <div class="form-group">
+                    <br />
+                    <div style="text-align: center;">
+                        <strong>Danh mục bài viết </strong>
+                    </div>
+                    <br />
+                    <div class="row">
+                        @foreach (var category in Model.Categories)
+                        {
+                            <div class="col-md-3 col-sm-6">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="SelectedCategories" value="@category.CategoryId" />
+                                    <label class="form-check-label">@category.NameCategory</label>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
-            }
+
+                <!-- Nội dung -->
+                <div class="form-group">
+                    <br />
+                    <div style="text-align: center;">
+                        <strong>Nội dung bài viết </strong>
+                    </div>
+                    <br />
+                    @Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows = 5, placeholder = "Nhập nội dung bài viết" })
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+
+                <!-- Nút hành động -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-gradient-dark btn-icon-text">Thêm bài viết</button>
+                    <a href="@Url.Action("Index", "News")" class="btn btn-outline-secondary">Hủy</a>
+                </div>
+            </form>
         </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Content)
-        @Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows = 5 })
-        @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
-    </div>
-
-
-
-
-
-
-
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a href="@Url.Action("Index", "News")" class="btn btn-secondary">Cancel</a>
-}
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
@@ -103,10 +134,10 @@
                         const imageElement = document.createElement('div');
                         imageElement.className = 'col-md-3';
                         imageElement.innerHTML = `
-                                                            <img src="/images/${image}" alt="${image}" class="img-thumbnail" style="width: 100%; height: auto;" />
-                                                            <button class="btn btn-primary btn-sm mt-2" onclick="selectImage('${image}')">Select</button>
-                                                            <button class="btn btn-danger btn-sm mt-2" onclick="deleteImage('${image}')">Delete</button>
-                                                        `;
+                            <img src="/images/${image}" alt="${image}" class="img-thumbnail" style="width: 100%; height: auto;" />
+                            <button class="btn btn-primary btn-sm mt-2" onclick="selectImage('${image}')">Chọn</button>
+                            <button class="btn btn-danger btn-sm mt-2" onclick="deleteImage('${image}')">Xóa</button>
+                        `;
                         imageGallery.appendChild(imageElement);
                     });
 
@@ -115,15 +146,23 @@
         }
 
         function selectImage(imageName) {
-            document.getElementById('selectedImage').value = imageName;
+            const selectedImageInput = document.getElementById('selectedImage');
+            const selectedImagePreview = document.getElementById('selectedImagePreview');
+
+            selectedImageInput.value = imageName;
             document.querySelector('input[name="Image"]').value = imageName;
+
+            // Show the image preview
+            selectedImagePreview.src = `/images/${imageName}`;
+            selectedImagePreview.style.display = 'block';
+
             $('#imageModal').modal('hide');
         }
 
         function uploadNewImage() {
             const fileInput = document.getElementById('uploadImage');
             if (fileInput.files.length === 0) {
-                alert('Please select an image to upload.');
+                alert('Vui lòng chọn một hình ảnh để tải lên.');
                 return;
             }
 
@@ -141,17 +180,17 @@
                         openImageModal();
                         fileInput.value = ''; // Clear the file input
                     } else {
-                        alert('Upload failed: ' + (result.message || 'Unknown error.'));
+                        alert('Tải lên thất bại: ' + (result.message || 'Lỗi không xác định.'));
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
+                    console.error('Lỗi:', error);
                 });
         }
 
         function deleteImage(imageName) {
             if (!imageName) {
-                alert('Invalid image name.');
+                alert('Tên ảnh không hợp lệ.');
                 return;
             }
 
@@ -168,11 +207,11 @@
                         // Refresh image gallery
                         openImageModal();
                     } else {
-                        alert('Delete failed: ' + (result.message || 'Unknown error.'));
+                        alert('Xóa thất bại: ' + (result.message || 'Lỗi không xác định.'));
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
+                    console.error('Lỗi:', error);
                 });
         }
     </script>

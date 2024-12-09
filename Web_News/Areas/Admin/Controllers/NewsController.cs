@@ -80,7 +80,7 @@ namespace Web_News.Areas.Admin.Controllers
 
                     // Lưu bản ghi News trước để có được NewsId
                     await _newsService.CreateNewsAsync(news, model.SelectedCategories);
-
+                    TempData["success"] = "Bài viết đã được tạo thành công";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -148,6 +148,7 @@ namespace Web_News.Areas.Admin.Controllers
                     };
          
                     await _newsService.UpdateNewsAsync(news, model.SelectedCategories);
+                    TempData["success"] = "Sửa bài viết thành công";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -196,12 +197,14 @@ namespace Web_News.Areas.Admin.Controllers
             try
             {
                 await _newsService.DeleteNewsAsync(id);
+                TempData["success"] = "Xóa bài viết thành công";
                 return RedirectToAction(nameof(Index));
 
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "An error occurred while deleting the news.");
+                TempData["error"] = "Có lỗi xảy ra"; 
+                ModelState.AddModelError("", ex.Message);
             }
 
             // Nếu có lỗi, lấy lại đối tượng News để hiển thị thông báo lỗi
@@ -221,7 +224,7 @@ namespace Web_News.Areas.Admin.Controllers
             {
                 await _newsService.DeleteNewsAsync(id);
             }
-
+            TempData["success"] = "Xóa bài viết thành công!";
             return RedirectToAction("AllNews");
         }
 
@@ -290,6 +293,7 @@ namespace Web_News.Areas.Admin.Controllers
             {
                 return BadRequest("Không thể duyệt bài viết này.");
             }
+            TempData["success"] = "Duyệt bài viết thành công";
             return RedirectToAction("PendingNews");
         }
 

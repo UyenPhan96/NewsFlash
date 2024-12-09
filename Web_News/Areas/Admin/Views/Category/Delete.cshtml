@@ -19,9 +19,28 @@
         <dd>@Model.Describe</dd>
     </dl>
 
-    <form asp-action="Delete" method="post">
-        <input type="hidden" asp-for="CategoryId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="GetAllCategory">Back to List</a>
+    <form asp-action="Delete" method="post" id="deleteForm">
+        <input type="hidden" asp-for="CategoryId" value="@Model.CategoryId" />
+        <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button> |
+        <a asp-action="GetAllCategory">Quay lại</a>
     </form>
+
 </div>
+<script>
+    function confirmDelete() {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa?',
+            text: "Hành động này không thể hoàn tác!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Xóa',
+            cancelButtonText: 'Hủy'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('deleteForm').submit();
+            }
+        });
+    }
+</script>

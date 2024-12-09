@@ -5,86 +5,100 @@
 
 }
 
-
-
-@using (Html.BeginForm("Edit", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-
-    <!-- Display current image -->
-    <div class="form-group">
-        @if (!string.IsNullOrEmpty(Model.Image))
-        {
-            <div>
-                <label>Ảnh đã chọn:</label>
-                <img src="/images/@Model.Image" alt="Current Image" class="img-thumbnail" style="width: 200px; height: auto;" />
-            </div>
-        }
-        else
-        {
-            <div>No image available</div>
-        }
-    </div>
-    <div class="form-group">
-        @Html.Label("Ảnh")
-        <div class="input-group">
-            <input type="text" id="selectedImage" class="form-control" readonly placeholder="Select an image..." value="@Model.Image" />
-            <div class="input-group-append">
-                <button class="btn btn-secondary" type="button" onclick="openImageModal()">Select Image</button>
-            </div>
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-header bg-gradient-dark text-white">
+            <h4 class="mb-0">Chi tiết quảng cáo</h4>
         </div>
-        @Html.HiddenFor(model => model.Image)
-        @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-    </div>
+        <div class="card-body">
 
-    <div class="form-group">
-        @Html.Label("Tiêu đề")
-        @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-    </div>
-    <div class="form-group">
-        <div style="text-align: center;">
-            <strong>Danh sách các thể loại </strong>
-        </div>
-        <br />
-        <div class="row">
-            @foreach (var category in Model.Categories)
+            @using (Html.BeginForm("Edit", "News", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                <div class="col-sm-2">
-                    <!-- Chia thành 3 cột trên màn hình lớn -->
-                    <div class="form-check form-check-danger">
-                        <label class="form-check-label">
-                            <input type="checkbox" name="SelectedCategories" value="@category.CategoryId"
-                            @(Model.SelectedCategories.Contains(category.CategoryId) ? "checked" : "")
-                                   class="form-check-input" id="category_@category.CategoryId" />
-                        </label>
+                @Html.AntiForgeryToken()
 
-                        <label class="form-check-label" for="category_@category.CategoryId">@category.NameCategory</label>
+                <!-- Display current image -->
+                <div class="form-group">
+
+                    @if (!string.IsNullOrEmpty(Model.Image))
+                    {
+
+                        <div>
+                            <div style="text-align: center;">
+                                <strong>Ảnh hiện tại </strong>
+                            </div>
+                            <br />
+                            <img src="/images/@Model.Image" alt="Current Image" class="img-thumbnail" style="width: 200px; height: auto;" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div>No image available</div>
+                    }
+                </div>
+                <div class="form-group">
+                    @Html.Label("")
+                    <div class="input-group">
+                        <input type="text" id="selectedImage" class="form-control" readonly placeholder="Select an image..." value="@Model.Image" />
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="button" onclick="openImageModal()">Select Image</button>
+                        </div>
+                    </div>
+                    @Html.HiddenFor(model => model.Image)
+                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <br />
+                    <div style="text-align: center;">
+                        <strong>Tiêu đề </strong>
+                    </div>
+                    <br />
+                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <div style="text-align: center;">
+                        <strong>Danh sách các thể loại </strong>
+                    </div>
+                    <br />
+                    <div class="row">
+                        @foreach (var category in Model.Categories)
+                        {
+                            <div class="col-sm-2">
+                                <!-- Chia thành 3 cột trên màn hình lớn -->
+                                <div class="form-check form-check-danger">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" name="SelectedCategories" value="@category.CategoryId"
+                                        @(Model.SelectedCategories.Contains(category.CategoryId) ? "checked" : "")
+                                               class="form-check-input" id="category_@category.CategoryId" />
+                                    </label>
+
+                                    <label class="form-check-label" for="category_@category.CategoryId">@category.NameCategory</label>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <div style="text-align: center;">
+                        <strong>Nội dung bài viết </strong>
+                    </div>
+                    <br />
+                    @Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows = 5, id = "Content" })
+                    @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                </div>
+                <!-- Hidden field for News ID -->
+                <input type="hidden" name="NewsId" value="@Model.NewsId" />
+
+                <button type="submit" class="btn btn-gradient-dark">
+                    <i class="mdi mdi-file-check btn-icon-prepend"></i>
+                    Cập nhật</button>
+                <a href="@Url.Action("Index", "News")" class="btn btn-secondary">Quay lại</a>
             }
         </div>
     </div>
-
-    <div class="form-group">
-        <div style="text-align: center;">
-            <strong>Nội dung bài viết </strong>
-        </div>
-        <br />
-        @Html.TextAreaFor(model => model.Content, new { @class = "form-control", rows = 5, id = "Content" })
-        @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
-    </div>
-
-
-
-
-    <!-- Hidden field for News ID -->
-    <input type="hidden" name="NewsId" value="@Model.NewsId" />
-
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-    <a href="@Url.Action("Index", "News")" class="btn btn-secondary">Cancel</a>
-}
-
+</div>
 <!-- Modal for selecting or uploading image -->
 <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

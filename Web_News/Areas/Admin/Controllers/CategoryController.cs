@@ -49,13 +49,14 @@ namespace Web_News.Areas.Admin.Controllers
             {
                 // Thêm chuyên mục mới khi dữ liệu hợp lệ
                 await _categoryService.AddCategoryAsync(category);
+                TempData["success"] = "Thêm danh mục thành công";
                 return RedirectToAction(nameof(GetAllCategory));
             }
             
             // Nếu ModelState không hợp lệ, trả về form với dữ liệu đã nhập để người dùng có thể sửa
             var parentCategories = await _categoryService.GetParentCategoriesAsync();
             ViewData["ParentCategories"] = new SelectList(parentCategories, "CategoryId", "NameCategory");
-
+           
             return View(category);
         }
 
@@ -86,6 +87,7 @@ namespace Web_News.Areas.Admin.Controllers
                 {
                     // Cập nhật chuyên mục
                     await _categoryService.UpdateCategoryAsync(category);
+                    TempData["success"] = "Cập nhật danh mục thành công";
                     return RedirectToAction(nameof(GetAllCategory));
                 }
                 catch (Exception ex)
@@ -118,6 +120,7 @@ namespace Web_News.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _categoryService.DeleteCategoryAsync(id);
+            TempData["success"] = $"Xóa danh mục  thành công!";
             return RedirectToAction(nameof(GetAllCategory));
         }
     }

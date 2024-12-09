@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Web_News.Areas.Admin.ServiceAd.AdvertisementSV;
 using Web_News.Models;
 
@@ -50,6 +51,11 @@ namespace Web_News.Areas.Admin.Controllers
         {
             try
             {
+                if (model.BannerPosition == 0) // Kiểm tra nếu chưa chọn vị trí
+                {
+                    ModelState.AddModelError("BannerPosition", "Vui lòng chọn vị trí quảng cáo.");
+                    return View(model); // Trả về form với lỗi
+                }
                 var advertisement = await _advertisementService.GetAdvertisementByIdAsync(id);
 
                 if (advertisement == null)
@@ -70,7 +76,7 @@ namespace Web_News.Areas.Admin.Controllers
               
                 // Duyệt quảng cáo
                 await _advertisementService.ApproveAdvertisementAsync(id);
-
+                TempData["success"] = "Cập nhật bài viết thành công";
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -96,7 +102,7 @@ namespace Web_News.Areas.Admin.Controllers
 
                 // Từ chối quảng cáo và cập nhật trạng thái
                 await _advertisementService.RejectAdvertisementAsync(id);
-
+                TempData["success"] = "Cập nhật bài viết thành công";
                 return RedirectToAction("Index");
             }
             catch (Exception ex)

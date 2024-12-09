@@ -75,7 +75,7 @@ namespace Web_News.Areas.Admin.Controllers
 
             if (result)
             {
-                TempData["Message"] = "Đã thay đổi trạng thái tài khoản.";
+                TempData["success"] = "Tài khoản đã được khóa.";
             }
             else
             {
@@ -96,11 +96,11 @@ namespace Web_News.Areas.Admin.Controllers
 
             if (result)
             {
-                TempData["Message"] = "Tài khoản đã được xóa.";
+                TempData["success"] = "Tài khoản đã được xóa.";
             }
             else
             {
-                TempData["Error"] = "Không tìm thấy người dùng.";
+                TempData["error"] = "Không tìm thấy người dùng.";
             }
 
             if (!string.IsNullOrEmpty(returnUrl))

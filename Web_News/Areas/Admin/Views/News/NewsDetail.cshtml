@@ -1,28 +1,107 @@
 ﻿@model Web_News.Areas.Admin.ViewModels.NewsViewModel
 
-<h2>Chi tiết bài viết: @Model.Title</h2>
 
-<p><strong>Nội dung:</strong>   @Html.Raw(Model.Content)</p>
-<p><strong>Người tạo:</strong> @Model.CreatedByUserName</p>
-<p><strong>Ngày đăng:</strong> @Model.PublishDate.ToString("dd/MM/yyyy")</p>
-<p><strong>Thể loại:</strong></p>
-@* <ul>
-    @foreach (var category in Model.ListCategories)
-    {
-        <li>@category.NameCategory</li>
-    }
-</ul> *@
 
-<form asp-action="ApproveNews" method="post">
-    <input type="hidden" name="newsId" value="@Model.NewsId" />
-    <button type="submit" class="btn btn-success">Duyệt bài</button>
-</form>
-<br />
-<form asp-action="RejectNews" method="post">
-    <input type="hidden" name="newsId" value="@Model.NewsId" />
-    <label>Lý do từ chối:</label>
-    <textarea name="rejectionReason" class="form-control"></textarea>
-    <button type="submit" class="btn btn-danger">Từ chối</button>
-    <a href="@Url.Action("PendingNews", "News")" class="btn btn-secondary">Quay lại </a>
-</form>
-<br 
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-header bg-gradient-dark text-white">
+                <h4 class="mb-0">Thông tin bài viết</h4>
+            </div>
+            <hr />
+            <div style="text-align: center;">
+                <h1> <strong> @Model.Title</strong></h1>
+            </div>
+            <h4><strong>Người tạo:</strong> @Model.CreatedByUserName</h4>
+            <h4><strong>Ngày đăng:</strong> @Model.PublishDate.ToString("dd/MM/yyyy")</h4>
+
+
+
+            <h4><strong>- Nội dung:</strong> @Html.Raw(Model.Content)</h4>
+       
+            <!-- Form Duyệt bài -->
+            <form asp-action="ApproveNews" method="post" class="d-inline-block">
+                <input type="hidden" name="newsId" value="@Model.NewsId" />
+                <button type="submit" class="btn btn-success">Duyệt bài</button>
+            </form>
+
+            <!-- Dòng ngắt giữa các nút -->
+            &nbsp; <!-- Khoảng cách giữa hai nút -->
+            <!-- Nút "Từ chối" -->
+            <button id="reject-btn" class="btn btn-danger">Từ chối</button>
+
+            <!-- Form Từ chối bài viết (Ẩn) -->
+            <form id="reject-form" method="post" style="display:none;">
+                <input type="hidden" name="newsId" value="@Model.NewsId" />
+                <textarea name="rejectionReason" class="form-control" placeholder="Lý do từ chối"></textarea>
+            </form>
+            &nbsp;
+            <!-- Quay lại danh sách -->
+            <a href="@Url.Action("PendingNews", "News")" class="btn btn-outline-secondary">Quay lại</a>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function() {
+        // Khi nhấn vào nút "Từ chối", hiển thị SweetAlert để xác nhận
+        $('#reject-btn').click(function() {
+            Swal.fire({
+                title: "Bạn muốn từ chối bài viết này?",
+                text: "Hãy cân nhắc!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Có, từ chối bài viết!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Hiển thị form lý do từ chối
+                    Swal.fire({
+                        title: "Nhập lý do từ chối",
+                        input: 'textarea',
+                        inputPlaceholder: 'Nhập lý do...',
+                        showCancelButton: true,
+                        confirmButtonText: 'Từ chối bài viết',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Gửi yêu cầu từ chối qua AJAX
+                            var rejectionReason = result.value;
+
+                            // Gửi AJAX request
+                            $.ajax({
+                                url: '@Url.Action("RejectNews", "News")',
+                                type: 'POST',
+                                data: {
+                                    newsId: @Model.NewsId,
+                                    rejectionReason: rejectionReason
+                                },
+                                success: function(response) {
+                                    Swal.fire(
+                                        'Đã từ chối!',
+                                        'Bài viết của bạn đã bị từ chối.',
+                                        'success'
+                                    ).then(function() {
+                                        window.location.href = '@Url.Action("PendingNews", "News")'; // Quay lại danh sách bài viết chờ duyệt
+                                    });
+                                },
+                                error: function() {
+                                    Swal.fire(
+                                        'Có lỗi xảy ra!',
+                                        'Không thể từ chối bài viết.',
+                                        'error'
+                                    );
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>

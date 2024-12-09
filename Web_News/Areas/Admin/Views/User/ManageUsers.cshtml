@@ -14,6 +14,8 @@
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
+            <h4>Danh sách người dùng</h4>
+            <hr />
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -47,34 +49,38 @@
                             <td>
                                 @if (ViewBag.CurrentStatus == "active")
                                 {
-
-                                @*     <a href="@Url.Action("EditUser", new { userId = user.UserId, returnUrl = Url.Action("ManageUsers"), isAdmin = false })" class="btn btn-outline-info btn-sm"><i class="mdi mdi-eyedropper"></i></a>
-                                     *@
-
-
-                                    <!-- Form Xóa tài khoản -->
-                                    <form method="post" action="@Url.Action("DeleteUser", new { userId = user.UserId, returnUrl = returnUrl })" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');" style="display:inline;">
+                                    <!-- Form xóa -->
+                                    <form method="post" action="@Url.Action("DeleteUser", new { userId = user.UserId, returnUrl = returnUrl })" id="deleteForm-@user.UserId" style="display:none;">
                                         <input type="hidden" name="userId" value="@user.UserId" />
-                                        <button type="submit" class="btn btn-outline-warning btn-sm"><i class="mdi mdi-delete "></i></button>
                                     </form>
 
-                                    <!-- Form Khóa tài khoản -->
-                                    <form method="post" action="@Url.Action("AccountStatus", new { userId = user.UserId, status = "locked", returnUrl = returnUrl })" style="display:inline;">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="mdi mdi-lock"></i></button>
+                                    <button type="button" class="btn btn-outline-warning btn-sm" onclick="showDeleteAlert('@user.UserId')">
+                                        <i class="mdi mdi-delete"></i> Xóa
+                                    </button>
+
+                                    <!-- Form khóa tài khoản -->
+                                    <form method="post" action="@Url.Action("AccountStatus", new { userId = user.UserId, status = "locked", returnUrl = returnUrl })" id="lockForm-@user.UserId" style="display:none;">
                                     </form>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="showLockAlert('@user.UserId')">
+                                        <i class="mdi mdi-lock"></i> Khóa
+                                    </button>
                                 }
                                 else if (ViewBag.CurrentStatus == "locked")
                                 {
-                                    <!-- Form Mở khóa tài khoản -->
-                                    <form method="post" action="@Url.Action("AccountStatus", new { userId = user.UserId, status = "active", returnUrl = returnUrl })" style="display:inline;">
-                                        <button type="submit" class="btn btn-outline-success btn-sm"><i class="mdi mdi-lock-open"></i></button>
+                                    <!-- Form mở khóa tài khoản -->
+                                    <form method="post" action="@Url.Action("AccountStatus", new { userId = user.UserId, status = "active", returnUrl = returnUrl })" id="unlockForm-@user.UserId" style="display:none;">
                                     </form>
+                                    <button type="button" class="btn btn-outline-success btn-sm" onclick="showUnlockAlert('@user.UserId')">
+                                        <i class="mdi mdi-lock-open"></i> Mở khóa
+                                    </button>
 
-                                    <!-- Form Xóa tài khoản -->
-                                    <form method="post" action="@Url.Action("DeleteUser", new { userId = user.UserId, returnUrl = returnUrl })" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');" style="display:inline;">
+                                    <!-- Form xóa -->
+                                    <form method="post" action="@Url.Action("DeleteUser", new { userId = user.UserId, returnUrl = returnUrl })" id="deleteForm-@user.UserId" style="display:none;">
                                         <input type="hidden" name="userId" value="@user.UserId" />
-                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="mdi mdi-delete "></i></button>
                                     </form>
+                                    <button type="button" class="btn btn-outline-warning btn-sm" onclick="showDeleteAlert('@user.UserId')">
+                                        <i class="mdi mdi-delete"></i> Xóa
+                                    </button>
                                 }
                             </td>
                         </tr>
@@ -84,3 +90,51 @@
         </div>
     </div>
 </div>
+<script>
+      function showDeleteAlert(userId) {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn xóa tài khoản này?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Xóa',
+            cancelButtonText: 'Hủy',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Tìm và submit form xóa
+                document.getElementById('deleteForm-' + userId).submit();
+            }
+        });
+    }
+
+    function showLockAlert(userId) {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn khóa tài khoản này?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Khóa',
+            cancelButtonText: 'Hủy',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('lockForm-' + userId).submit();
+            }
+        });
+    }
+
+    function showUnlockAlert(userId) {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn mở khóa tài khoản này?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Mở khóa',
+            cancelButtonText: 'Hủy',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('unlockForm-' + userId).submit();
+            }
+        });
+    }
+
+</script>

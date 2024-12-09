@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="~/LayoutAdmin/assets/css/style.css">
     <link rel="stylesheet" href="~/Web_News.styles.css" asp-append-version="true" />
     <link href="~/js/notificationlist.css" rel="stylesheet" />
-
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet" />
 
     <!-- End layout styles -->
     <link rel="shortcut icon" href="~/LayoutAdmin/assets/images/favicon.ico" />
@@ -145,7 +145,7 @@
                             </ul>
                         </div>
                     </li>
-             
+
                     <li class="nav-item">
                         <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="GetAllCategory">
                             <span class="menu-title">Danh Sách thể loại</span>
@@ -200,7 +200,7 @@
         </div>
         <!-- page-body-wrapper ends -->
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
     <script src="~/lib/microsoft-signalr/signalr.min.js"></script>
     <script src="~/js/notification.js"></script>
     <script src="~/ck/ckeditor/ckeditor.js"></script>
@@ -208,7 +208,30 @@
     <script src="~/LayoutAdmin/assets/js/off-canvas.js"></script>
     <script src="~/LayoutAdmin/assets/js/hoverable-collapse.js"></script>
     <script src="~/LayoutAdmin/assets/js/misc.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+@*     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script> *@
+
+    <script>
+        $(function () {
+            var successMessage = '@Html.Raw(TempData["success"])';
+            var errorMessage = '@Html.Raw(TempData["error"])';
+
+            if (successMessage) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công',
+                    text: successMessage
+                });
+            }
+
+            if (errorMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: errorMessage
+                });
+            }
+        });
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>
