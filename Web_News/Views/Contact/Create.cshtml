@@ -93,14 +93,31 @@
 
 @section Scripts {
     @* Thêm script để xử lý validation *@
-    <partial name="_ValidationScriptsPartial" />
+
     <script src="./LayoutAds/jsADS/ADS.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css" rel="stylesheet" />
     <script>
-        // Thêm hiệu ứng lắc cho icon điện thoại
+
         window.onload = function () {
             const phoneIcon = document.getElementById('phone-icon');
-            phoneIcon.classList.add('shake'); // Thêm lớp 'shake' khi trang tải xong
+            phoneIcon.classList.add('shake');
         };
     </script>
-
+    <script>
+        $(document).ready(function () {
+            var successMessage = '@Html.Raw(TempData["success"])';
+            if (successMessage) {
+                Swal.fire({
+                    title: 'Thành công!',
+                    text: successMessage,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    </script>
+         
 }

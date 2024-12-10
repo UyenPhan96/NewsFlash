@@ -44,7 +44,7 @@ namespace Web_News.Controllers
                 }
 
                 await _contactService.CreateContact(model);
-
+                TempData["success"] = "Liên hệ đã được gửi thành công!";
                 return RedirectToAction("Create");
             }
 

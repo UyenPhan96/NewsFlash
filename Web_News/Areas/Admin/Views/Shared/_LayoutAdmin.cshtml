@@ -113,7 +113,18 @@
             <!-- partial:../../partials/_sidebar.html -->
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
-                    <partial name="_LayoutLoginAd" />
+                    <li class="nav-item nav-profile">
+                        <a href="#" class="nav-link">
+                            <div class="nav-profile-image">
+                                <img src="@Url.Content("~/LayoutAdmin/assets/images/faces/face1.jpg")" alt="profile">
+                                <span class="login-status online"></span>
+                                <!--change to offline or busy as needed-->
+                            </div>
+                            <partial name="_LayoutLoginAd" />
+                            <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+                        </a>
+                    </li>
+                   
                     <li class="nav-item">
                         <a class="nav-link" asp-area="Admin" asp-controller="HomeAdmin" asp-action="HomePage">
                             <span class="menu-title">Trang chủ</span>
