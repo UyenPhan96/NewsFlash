@@ -152,8 +152,11 @@ namespace Web_News.Controllers
         {
             return View();
         }
-
-        // POST: Account/ForgotPassword
+        /// <summary>
+        /// POST: Account/ForgotPassword
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
@@ -166,21 +169,62 @@ namespace Web_News.Controllers
             var result = await _accountSV.SendPasswordResetCodeAsync(model.Email);
             if (result)
             {
-                // Thông báo thành công hoặc chuyển hướng đến trang khác
-                return RedirectToAction("ResetPassword");
+                HttpContext.Session.SetString("ResetEmail", model.Email);
+                return RedirectToAction("VerifyResetCode");
             }
 
             ModelState.AddModelError("", "Email không hợp lệ hoặc không tồn tại.");
             return View(model);
         }
 
-        // GET: Account/ResetPassword
-        public IActionResult ResetPassword()
+        // GET: Account/VerifyResetCode
+        public IActionResult VerifyResetCode()
         {
             return View();
         }
+        /// <summary>
+        /// POST: Account/VerifyResetCode
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> VerifyResetCode(VerifyResetCodeViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
-        // POST: Account/ResetPassword
+            var isValidCode = await _accountSV.VerifyResetCodeAsync(model.ResetCode);
+            if (isValidCode)
+            {
+                HttpContext.Session.SetString("ValidResetCode", model.ResetCode); // Lưu mã vào Session
+                return RedirectToAction("ResetPassword");
+            }
+
+            ModelState.AddModelError("", "Mã xác nhận không hợp lệ hoặc đã hết hạn.");
+            return View(model);
+        }
+
+
+
+
+        // GET: Account/ResetPassword
+        public IActionResult ResetPassword()
+        {
+            var resetCode = HttpContext.Session.GetString("ValidResetCode");
+            if (string.IsNullOrEmpty(resetCode))
+            {
+                return RedirectToAction("ForgotPassword");
+            }
+            return View();
+        }
+        /// <summary>
+        /// POST: Account/ResetPassword
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
@@ -190,15 +234,25 @@ namespace Web_News.Controllers
                 return View(model);
             }
 
-            var result = await _accountSV.ResetPasswordAsync( model.ResetCode, model.NewPassword);
+            var resetCode = HttpContext.Session.GetString("ValidResetCode");
+            if (string.IsNullOrEmpty(resetCode))
+            {
+                ModelState.AddModelError("", "Bạn chưa nhập mã xác thực.");
+                return View(model);
+            }
+            var result = await _accountSV.ResetPasswordAsync(resetCode, model.NewPassword);
+           
             if (result)
             {
-                // Thông báo thành công hoặc chuyển hướng đến trang đăng nhập
+
+                TempData["SuccessMessage"] = "Mật khẩu của bạn đã được thay đổi thành công";
                 return RedirectToAction("Login");
             }
+
             ModelState.AddModelError("", "Mã xác nhận không hợp lệ hoặc đã hết hạn.");
             return View(model);
         }
+
 
 
         // Phần đăng nhập bằng Facebook

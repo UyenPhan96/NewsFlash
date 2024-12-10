@@ -164,15 +164,19 @@ namespace Web_News.Services.Account
             }
         }
 
-
+        // Phương thức gửi mã xác nhận
         public async Task<bool> SendPasswordResetCodeAsync(string email)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
             if (user == null)
             {
-                return false; 
+                return false;
             }
-
+            // Kiểm tra mã đã tồn tại và chưa hết hạn
+            //if (!string.IsNullOrEmpty(user.PasswordResetCode) && user.ResetCodeExpiration > DateTime.UtcNow)
+            //{
+            //    return false;
+            //}
             var resetCode = GenerateResetCode();
             user.PasswordResetCode = resetCode;
             user.ResetCodeExpiration = DateTime.UtcNow.AddMinutes(1); // 1 phút
@@ -180,49 +184,68 @@ namespace Web_News.Services.Account
 
             var subject = "Yêu cầu đặt lại mật khẩu";
             var message = $@"
-            <p>Xin chào {user.Name},</p>
-            <p>Bạn đã yêu cầu đặt lại mật khẩu cho tài khoản của mình.</p>
-            <p>Mã xác nhận của bạn là:</p>
-            <div style='border: 2px solid #000; padding: 10px; text-align: center; display: inline-block; font-size: 24px; font-weight: bold;'>
-                {resetCode}
-            </div>
-            <p>Mã sẽ hết hạn sau 1 giờ.</p>
-            <p>Nếu bạn không yêu cầu điều này, hãy bỏ qua email này và mật khẩu của bạn sẽ không thay đổi.</p>
-            <p>Trân trọng,<br/>Đội ngũ hỗ trợ</p>";
+            <div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 10px; padding: 20px;'>
+                <h2 style='color: #4CAF50; text-align: center;'>Yêu cầu đặt lại mật khẩu</h2>
+                <p>Xin chào <strong>{user.Name}</strong>,</p>
+                <p>Bạn đã yêu cầu đặt lại mật khẩu cho tài khoản của mình. Dưới đây là mã xác nhận của bạn:</p>
+                <div style='text-align: center; margin: 20px 0;'>
+                    <div style='border: 2px solid #4CAF50; display: inline-block; padding: 15px 20px; font-size: 24px; font-weight: bold; background: #f9f9f9; border-radius: 8px;' id='resetCode'>
+                        {resetCode}
+                    </div>
+                    <br>
+              
+                </div>
+                <p style='font-size: 14px; color: #666;'>Mã sẽ hết hạn sau <strong>1 phút</strong>. Nếu bạn không yêu cầu điều này, hãy bỏ qua email này và mật khẩu của bạn sẽ không thay đổi.</p>
+                <p style='text-align: center; margin-top: 20px; font-size: 14px; color: #aaa;'>Trân trọng,<br/>Đội ngũ hỗ trợ</p>
+               
+            </div>";
+
 
             try
             {
                 await _emailService.SendEmailAsync(email, subject, message);
-                return true; // Email được gửi thành công
+                return true;
             }
             catch (SmtpFailedRecipientException)
             {
-                return false; // Trường hợp email không hợp lệ
+                return false;
             }
             catch (Exception)
             {
-                return false; // Các lỗi khác 
+                return false;
             }
         }
 
 
+
+        // Kiểm tra mã xác nhận
+        public async Task<bool> VerifyResetCodeAsync(string resetCode)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.PasswordResetCode == resetCode);
+            return user != null && user.ResetCodeExpiration >= DateTime.UtcNow;
+        }
+
+
+        // Phương thức tạo mã xác nhận
         private string GenerateResetCode()
         {
-            
             return Guid.NewGuid().ToString("N").Substring(0, 6);
         }
+
 
         // Phương thức xác thực mã và đổi mật khẩu
         public async Task<bool> ResetPasswordAsync(string resetCode, string newPassword)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.PasswordResetCode == resetCode);
-            if (user == null || user.ResetCodeExpiration < DateTime.UtcNow)
+            if (user == null)
             {
+                // Mã xác thực không hợp lệ
                 return false;
             }
 
             if (!IsValidPassword(newPassword))
             {
+                // Mật khẩu không hợp lệ
                 return false;
             }
 
@@ -231,8 +254,9 @@ namespace Web_News.Services.Account
             user.ResetCodeExpiration = null;
             await _context.SaveChangesAsync();
 
-            return true;
+            return true; // Thành công
         }
+
 
         public async Task<User> FacebookLoginAsync(string facebookId, string name, string email)
         {

@@ -4,10 +4,6 @@ namespace Web_News.ViewModels
 {
     public class ResetPasswordViewModel
     {
-        [Required(ErrorMessage = "Vui lòng nhập mã xác nhận")]
-        [Display(Name = "Mã xác nhận")]
-        public string ResetCode { get; set; }
-
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu mới.")]
         [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu mới")]

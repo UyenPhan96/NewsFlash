@@ -15,7 +15,6 @@ namespace Web_News.Services.Account
         Task<bool> ResetPasswordAsync( string resetCode, string newPassword);
         Task<User> FacebookLoginAsync(string facebookId, string name, string email);
         Task<User> GoogleLoginAsync(string googleId, string name, string email);
-
-
+        Task<bool> VerifyResetCodeAsync(string resetCode);
     }
 }
